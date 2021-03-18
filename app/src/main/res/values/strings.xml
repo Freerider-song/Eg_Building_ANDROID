@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Eg Building</string>
+
+
+    <string name="font_open_sans_regular">fonts/OpenSans-Regular.ttf</string>
+    <string name="font_nanumgothic">fonts/NanumGothic.ttf</string>
+</resources>
