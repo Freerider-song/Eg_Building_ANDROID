@@ -1,13 +1,11 @@
 package com.enernet.eg.building;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.enernet.eg.building.activity.ActivityHome;
+import com.enernet.eg.building.activity.ActivityHome_2;
 import com.enernet.eg.building.activity.BaseActivity;
 
 public class ActivityLogin extends BaseActivity {

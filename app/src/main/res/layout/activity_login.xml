@@ -9,6 +9,7 @@
 
     <Button
         android:id="@+id/btn_change_password"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="40dp"
@@ -19,12 +20,11 @@
         android:background="@drawable/shape_round_corner_cyan_light_hollow"
         android:text="비밀번호 변경"
         android:textColor="@color/ks_gray"
-        android:textSize="18dp"
+        android:textSize="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login"
-        style="?android:attr/borderlessButtonStyle"/>
+        app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -58,7 +58,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
         tools:hint="아이디"
-        tools:textSize="18dp" />
+        tools:textSize="16dp" />
 
     <EditText
         android:id="@+id/input_pw"
@@ -81,7 +81,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_id"
-        tools:textSize="18dp" />
+        tools:textSize="16dp" />
 
     <Button
         android:id="@+id/btn_login"
@@ -102,7 +102,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_pw"
         tools:textColor="#ffffff"
-        tools:textSize="20dp" />
+        tools:textSize="18dp" />
 
     <TextView
         android:id="@+id/tv_version"
@@ -112,6 +112,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:text="1.0.0"
+        android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -120,8 +121,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="환영합니다!"
-        android:textColor="@color/eg_cyan_dark"
+        android:text="EG 건물관리자"
+        android:textColor="@color/eg_cyan_light"
         android:textSize="26dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

@@ -14,10 +14,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.enernet.eg.building.ActivityLogin;
+//import com.enernet.eg.building.ActivityLogin;
 import com.enernet.eg.building.CaApplication;
 
 import com.enernet.eg.building.CaEngine;
+import com.enernet.eg.building.IaResultHandler;
 import com.enernet.eg.building.R;
 import com.enernet.eg.building.StringUtil;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -95,54 +96,62 @@ public class BaseActivity extends AppCompatActivity {
 
         return dt;
     }
-    /*
+
 
     public void prepareDrawer() {
-        String strAddress=CaApplication.m_Info.m_strSiteName + " " + CaApplication.m_Info.m_strAptDongName + "동 " + CaApplication.m_Info.m_strAptHoName + "호";
-        String strMember=CaApplication.m_Info.m_strMemberName + " 님";
+        //String strAddress=CaApplication.m_Info.m_strSiteName + " " + CaApplication.m_Info.m_strAptDongName + "동 " + CaApplication.m_Info.m_strAptHoName + "호";
+        //String strMember=CaApplication.m_Info.m_strMemberName + " 님";
 
         AccountHeaderBuilder ahb = new AccountHeaderBuilder();
 
         ahb.withActivity(this);
         ahb.withSelectionListEnabled(false);
         ahb.addProfiles(
-                new ProfileDrawerItem().withName(strAddress).withIcon(getResources().getDrawable(R.drawable.gg_1)).withEmail(strMember));
+                new ProfileDrawerItem().withName("김호송").withIcon(getResources().getDrawable(R.drawable.gg_1)).withEmail("호암노인종합복지관"));
 
         AccountHeader ah=ahb.build();
 
+        PrimaryDrawerItem itemHome = new PrimaryDrawerItem();
+        itemHome.withIdentifier(CaEngine.MENU_HOME);
+        itemHome.withName("홈");
+        itemHome.withTextColor(Color.rgb(255, 255, 255));
+        itemHome.withSelectable(false);
+        itemHome.withIcon(R.drawable.menu_usage);
+        itemHome.withDescription("우리 건물 전기는?");
+        itemHome.withDescriptionTextColor(Color.rgb(255, 255, 255));
+
+        PrimaryDrawerItem itemSaving = new PrimaryDrawerItem();
+        itemSaving.withIdentifier(CaEngine.MENU_SAVING);
+        itemSaving.withName("절감 성과 보기");
+        itemSaving.withTextColor(Color.rgb(255, 255, 255));
+        itemSaving.withSelectable(false);
+        itemSaving.withIcon(R.drawable.menu_site_state);
+
         PrimaryDrawerItem itemUsage = new PrimaryDrawerItem();
-        itemUsage.withIdentifier(CaEngine.MENU_USAGE);
-        itemUsage.withName("홈");
+        //itemSiteState.withIdentifier(CaEngine.MENU_SITE_STATE);
+        itemUsage.withName("계측기별 사용량 비교");
         itemUsage.withTextColor(Color.rgb(255, 255, 255));
         itemUsage.withSelectable(false);
-        itemUsage.withIcon(R.drawable.menu_usage);
-        itemUsage.withDescription("우리집 전기 사용");
-        itemUsage.withDescriptionTextColor(Color.rgb(255, 255, 255));
+        itemUsage.withIcon(R.drawable.menu_site_state);
 
         SecondaryDrawerItem itemUsageDaily=new SecondaryDrawerItem();
         itemUsageDaily.withIdentifier(CaEngine.MENU_USAGE_DAILY);
-        itemUsageDaily.withName("- 일일 상세 정보");
+        itemUsageDaily.withName("- 시간대별 정보");
         itemUsageDaily.withLevel(6);
         itemUsageDaily.withTextColor(Color.rgb(255, 255, 255));
 
         SecondaryDrawerItem itemUsageMonthly=new SecondaryDrawerItem();
         itemUsageMonthly.withIdentifier(CaEngine.MENU_USAGE_MONTHLY);
-        itemUsageMonthly.withName("- 월간 상세 정보");
+        itemUsageMonthly.withName("- 날짜별 정보");
         itemUsageMonthly.withLevel(6);
         itemUsageMonthly.withTextColor(Color.rgb(255, 255, 255));
 
         SecondaryDrawerItem itemUsageYearly=new SecondaryDrawerItem();
         itemUsageYearly.withIdentifier(CaEngine.MENU_USAGE_YEARLY);
-        itemUsageYearly.withName("- 연간 상세 정보");
+        itemUsageYearly.withName("- 월별 정보");
         itemUsageYearly.withLevel(6);
         itemUsageYearly.withTextColor(Color.rgb(255, 255, 255));
 
-        PrimaryDrawerItem itemSiteState = new PrimaryDrawerItem();
-        itemSiteState.withIdentifier(CaEngine.MENU_SITE_STATE);
-        itemSiteState.withName("우리 아파트 전기 사용");
-        itemSiteState.withTextColor(Color.rgb(255, 255, 255));
-        itemSiteState.withSelectable(false);
-        itemSiteState.withIcon(R.drawable.menu_site_state);
 
         BadgeStyle bs=new BadgeStyle(Color.rgb(255, 0, 0), Color.rgb(255, 0, 0)).withTextColor(Color.rgb(255, 255, 255));
 
@@ -162,22 +171,6 @@ public class BaseActivity extends AppCompatActivity {
         itemNotice.withIcon(R.drawable.menu_notice);
         itemNotice.withBadgeStyle(bs);
 
-        PrimaryDrawerItem itemFaq = new PrimaryDrawerItem();
-        itemFaq.withIdentifier(CaEngine.MENU_FAQ);
-        itemFaq.withName("자주묻는질문 (FAQ)");
-        itemFaq.withTextColor(Color.rgb(255, 255, 255));
-        itemFaq.withSelectable(false);
-        itemFaq.withIcon(R.drawable.menu_faq);
-        itemFaq.withBadgeStyle(bs);
-
-        PrimaryDrawerItem itemQna = new PrimaryDrawerItem();
-        itemQna.withIdentifier(CaEngine.MENU_QNA);
-        itemQna.withName("고객센터 (Q & A)");
-        itemQna.withTextColor(Color.rgb(255, 255, 255));
-        itemQna.withSelectable(false);
-        itemQna.withIcon(R.drawable.menu_qna);
-        itemQna.withBadgeStyle(bs);
-
         PrimaryDrawerItem itemSetting = new PrimaryDrawerItem();
         itemSetting.withIdentifier(CaEngine.MENU_SETTING);
         itemSetting.withName("설정");
@@ -196,11 +189,10 @@ public class BaseActivity extends AppCompatActivity {
         final Context Ctx=getApplicationContext();
 
         m_Drawer = new DrawerBuilder()
-                .withActivity(this).withSliderBackgroundColor(getResources().getColor(R.color.eg_menu_blue)).withAccountHeader(ah)
-                .addDrawerItems(itemUsage, itemUsageDaily, itemUsageMonthly, itemUsageYearly,
-                        itemSiteState,
+                .withActivity(this).withSliderBackgroundColor(getResources().getColor(R.color.eg_cyan_light)).withAccountHeader(ah)
+                .addDrawerItems(itemHome, itemSaving, itemUsage, itemUsageDaily, itemUsageMonthly, itemUsageYearly,
                         //itemPoint, itemElecInfoSave, itemElecInfoPrice,
-                        itemAlarm, itemNotice, itemFaq, itemQna, itemSetting, itemLogout)
+                        itemAlarm, itemNotice, itemSetting, itemLogout)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
@@ -208,11 +200,20 @@ public class BaseActivity extends AppCompatActivity {
                         Log.i("Drawer", "position="+position+", id="+nId);
 
                         switch (nId) {
-                            case CaEngine.MENU_USAGE: {
-                                Intent it = new Intent(This, ActivityUsage.class);
+
+                            case CaEngine.MENU_HOME: {
+                                Intent it = new Intent(This, ActivityHome.class);
                                 startActivity(it);
                             }
                             break;
+
+                            case CaEngine.MENU_SAVING: {
+                                Intent it = new Intent(This, ActivitySaving.class);
+                                startActivity(it);
+                            }
+                            break;
+
+                            /*
 
                             case CaEngine.MENU_USAGE_DAILY: {
                                 Intent it = new Intent(This, ActivityUsageDaily.class);
@@ -319,7 +320,7 @@ public class BaseActivity extends AppCompatActivity {
                                 m_dlgLogout.show();
                             }
                             break;
-
+                            */
                             default: {
                                 Log.d("Drawer", "Unknon menu with id="+nId);
                             }
@@ -336,6 +337,8 @@ public class BaseActivity extends AppCompatActivity {
                         Log.d("Drawer", "onDrawerOpened called...");
 
                         // alarm badge
+
+                        /*
                         int nCountUnreadAlarm=CaApplication.m_Info.getUnreadAlarmCount();
 
                         if (nCountUnreadAlarm==0) {
@@ -366,7 +369,7 @@ public class BaseActivity extends AppCompatActivity {
                         else {
                             String strCount=Integer.toString(nCountUnreadQna);
                             m_Drawer.updateBadge(CaEngine.MENU_QNA, new StringHolder(strCount));
-                        }
+                        }*/
 
                     }
 
@@ -383,5 +386,6 @@ public class BaseActivity extends AppCompatActivity {
                 })
                 .build();
 
-    }*/
+    }
+
 }

@@ -17,6 +17,18 @@ public class CaEngine {
 	public static final int KS_GET_NOTICE_LIST = 1004;
      */
 
+    public static final int MENU_USAGE = 100;
+    public static final int MENU_USAGE_DAILY = 101;
+    public static final int MENU_USAGE_MONTHLY = 102;
+    public static final int MENU_USAGE_YEARLY = 103;
+    public static final int MENU_HOME = 200;
+    public static final int MENU_SAVING = 300;
+    public static final int MENU_ALARM = 500;
+    public static final int MENU_NOTICE = 600;
+
+    public static final int MENU_SETTING = 800;
+    public static final int MENU_LOGOUT = 900;
+
     public static final String[] NO_CMD_ARGS = new String[]{};
 
     public CaEngine() {
