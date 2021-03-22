@@ -75,6 +75,8 @@ public class CaInfo {
 
      */
 
+    public int m_nAuthType = CaEngine.AUTH_TYPE_UNKNOWN;
+
     public String getPhoneNumber() {
         TelephonyManager telephony = (TelephonyManager) CaApplication.m_Context.getSystemService(Context.TELEPHONY_SERVICE);
         String phoneNumber ="";

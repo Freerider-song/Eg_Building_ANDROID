@@ -10,20 +10,15 @@
     <Button
         android:id="@+id/btn_change_password"
         style="?android:attr/borderlessButtonStyle"
-        android:layout_width="0dp"
+        android:layout_width="140dp"
         android:layout_height="40dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
-        android:background="@drawable/shape_round_corner_cyan_light_hollow"
-        android:text="비밀번호 변경"
-        android:textColor="@color/ks_gray"
-        android:textSize="16dp"
+        android:layout_marginTop="40dp"
+        android:onClick="onClick"
+        android:text="비밀번호 변경하기"
+        android:textColor="@color/eg_cyan_light"
+        android:textSize="14dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView23"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 
     <ImageView
@@ -58,7 +53,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
         tools:hint="아이디"
-        tools:textSize="16dp" />
+        tools:textSize="14dp" />
 
     <EditText
         android:id="@+id/input_pw"
@@ -81,11 +76,10 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_id"
-        tools:textSize="16dp" />
+        tools:textSize="14dp" />
 
     <Button
         android:id="@+id/btn_login"
-        style="?android:attr/borderlessButtonStyle"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_marginStart="40dp"
@@ -102,7 +96,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_pw"
         tools:textColor="#ffffff"
-        tools:textSize="18dp" />
+        tools:textSize="16dp" />
 
     <TextView
         android:id="@+id/tv_version"
@@ -128,5 +122,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="비밀번호를 잊으셨나요?"
+        android:textColor="@color/ks_gray"
+        app:layout_constraintEnd_toStartOf="@+id/btn_change_password"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_change_password" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

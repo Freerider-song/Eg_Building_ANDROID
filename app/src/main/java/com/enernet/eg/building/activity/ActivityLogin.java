@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.enernet.eg.building.activity.ActivityChangePasswordAuth;
 import com.enernet.eg.building.activity.ActivityHome;
 import com.enernet.eg.building.activity.ActivityHome_2;
 import com.enernet.eg.building.activity.BaseActivity;
@@ -21,6 +22,12 @@ public class ActivityLogin extends BaseActivity {
         switch (v.getId()) {
             case R.id.btn_login: {
                 Intent it = new Intent(this, ActivityHome.class);
+                startActivity(it);
+            }
+            break;
+
+            case R.id.btn_change_password: {
+                Intent it = new Intent(this, ActivityChangePasswordAuth.class);
                 startActivity(it);
             }
 

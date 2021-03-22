@@ -23,6 +23,7 @@ public class ActivityHome extends BaseActivity {
 
         ListView listView = (ListView) findViewById(R.id.lv_saving_list);
         ListAdapter listAdapter = listView.getAdapter();
+        listView.setAdapter(listAdapter);
         setListViewHeightBasedOnChildren(listView);
 
         prepareDrawer();
