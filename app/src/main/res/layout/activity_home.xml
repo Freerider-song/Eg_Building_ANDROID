@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     tools:context=".activity.ActivityHome">
-<!-- https://github.com/pkleczko/CustomGauge -->
+    <!-- https://github.com/pkleczko/CustomGauge -->
 
     <ScrollView
         android:layout_width="0dp"
@@ -108,7 +109,7 @@
             <ListView
                 android:id="@+id/lv_saving_list"
                 android:layout_width="0dp"
-                android:layout_height="290dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"

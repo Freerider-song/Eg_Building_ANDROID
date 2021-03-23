@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".activity.ActivityAuth"></activity>
+        <activity android:name=".activity.ActivityUsageDaily"></activity>
+        <activity android:name=".activity.ActivityAuth" />
         <activity android:name=".activity.ActivityChangePasswordInput" />
         <activity android:name=".activity.ActivityChangePasswordAuth" />
         <activity

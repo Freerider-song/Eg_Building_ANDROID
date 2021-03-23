@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     tools:context=".activity.ActivitySaving">
 
     <Button
@@ -38,9 +39,57 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/textView26"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="사용량 분석"
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.12"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView27"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="절감행동 실행"
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.75"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_small_dot_purple5"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                app:layout_constraintEnd_toStartOf="@+id/textView26"
+                app:layout_constraintTop_toTopOf="@+id/textView26"
+                app:srcCompat="@drawable/small_dot_grass" />
+
+            <ImageView
+                android:id="@+id/iv_small_dot_purple6"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                app:layout_constraintEnd_toStartOf="@+id/textView27"
+                app:layout_constraintTop_toTopOf="@+id/textView27"
+                app:srcCompat="@drawable/small_dot_pink2" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="1dp"
                 android:layout_marginLeft="1dp"
                 android:layout_marginTop="10dp"
@@ -49,15 +98,27 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/horizontalBar">
+                app:layout_constraintTop_toBottomOf="@+id/usage_bar_chart">
+
+                <TextView
+                    android:id="@+id/tv_empty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="계측기가 없습니다."
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView25"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:text="계측기별 절감결과 분석(kWh)"
                     android:textColor="@color/black"
                     android:textSize="17dp"
+                    app:layout_constraintBottom_toTopOf="@+id/lv_saving_result"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.22"
                     app:layout_constraintStart_toStartOf="parent"
@@ -84,6 +145,7 @@
                     android:layout_marginEnd="1dp"
                     android:layout_marginRight="1dp"
                     android:layout_marginBottom="1dp"
+                    android:dividerHeight="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -94,28 +156,31 @@
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                android:layout_marginTop="30dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/saving_action_chart"
+                    android:id="@+id/usage_total_bar_chart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:background="#ffffff" />
 
                 <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/usage_chart"
+                    android:id="@+id/saving_stacked_bar_chart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:background="#ffffff">
 
                 </com.github.mikephil.charting.charts.BarChart>
             </LinearLayout>
 
             <com.github.mikephil.charting.charts.HorizontalBarChart
-                android:id="@+id/horizontalBar"
+                android:id="@+id/usage_bar_chart"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_marginTop="20dp"
@@ -164,6 +229,7 @@
         android:id="@+id/title_bar"
         android:layout_width="0dp"
         android:layout_height="60dp"
+        android:onClick="onClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -175,6 +241,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
             android:background="@drawable/btn_back_colored"
+            android:onClick="onClick"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -186,6 +253,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/btn_menu"
+            android:onClick="onClick"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
