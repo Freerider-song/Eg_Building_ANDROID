@@ -15,10 +15,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".activity.ActivityAlarmList"></activity>
+        <activity android:name=".activity.ActivityUsageYearly"></activity>
+        <activity android:name=".activity.ActivityUsageMonthly" />
+        <activity android:name=".activity.ActivitySetting" />
+        <activity android:name=".activity.ActivityAlarmList" />
         <activity
             android:name=".activity.ActivityAlarm"
-            android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity android:name=".activity.ActivityNoticeList" />
         <activity android:name=".activity.ActivityNotice" />
         <activity android:name=".activity.ActivityUsageDaily" />

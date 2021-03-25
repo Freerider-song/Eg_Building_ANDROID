@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="usage_report">
+        <item>매일 00시</item>
+        <item>매일 01시</item>
+        <item>매일 02시</item>
+        <item>매일 03시</item>
+        <item>매일 04시</item>
+        <item>매일 05시</item>
+        <item>매일 06시</item>
+        <item>매일 07시</item>
+        <item>매일 08시</item>
+        <item>매일 09시</item>
+        <item>매일 10시</item>
+        <item>매일 11시</item>
+        <item>매일 12시</item>
+        <item>매일 13시</item>
+        <item>매일 14시</item>
+        <item>매일 15시</item>
+        <item>매일 16시</item>
+        <item>매일 17시</item>
+        <item>매일 18시</item>
+        <item>매일 19시</item>
+        <item>매일 20시</item>
+        <item>매일 21시</item>
+        <item>매일 22시</item>
+        <item>매일 23시</item>
+    </string-array>
+</resources>

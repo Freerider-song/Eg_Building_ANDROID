@@ -230,6 +230,12 @@ public class BaseActivity extends AppCompatActivity {
                                 startActivity(it);
                             }
                             break;
+
+                            case CaEngine.MENU_SETTING: {
+                                Intent it = new Intent(This, ActivitySetting.class);
+                                startActivity(it);
+                            }
+                            break;
                             /*
 
                             case CaEngine.MENU_USAGE_MONTHLY: {
@@ -274,11 +280,7 @@ public class BaseActivity extends AppCompatActivity {
                             }
                             break;
 
-                            case CaEngine.MENU_SETTING: {
-                                Intent it = new Intent(This, ActivitySetting.class);
-                                startActivity(it);
-                            }
-                            break;
+
 
                             case CaEngine.MENU_LOGOUT: {
 
