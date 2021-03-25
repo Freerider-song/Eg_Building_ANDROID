@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -92,7 +91,7 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
                 holder = new SavingResultViewHolder();
 
                 LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.saving_result_list, null);
+                convertView = inflater.inflate(R.layout.list_item_saving_result, null);
 
                 holder.m_clAreaRoot = convertView.findViewById(R.id.area_root2);
                 holder.m_tvInstrument = convertView.findViewById(R.id.tv_instrument);

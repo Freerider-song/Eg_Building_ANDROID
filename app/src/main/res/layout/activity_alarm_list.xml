@@ -2,25 +2,49 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/area_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.ActivityUsageDaily">
+    tools:context=".activity.ActivityAlarmList">
 
-    <Button
-        android:id="@+id/btn_select_time3"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="124dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/shape_round_corner_cyan_light_hollow"
-        android:onClick="onClick"
-        android:text="2021-02-16"
+    <TextView
+        android:id="@+id/tv_empty3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="알림이 없습니다"
         android:textColor="@color/eg_cyan_dark"
-        android:textSize="18dp"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.07"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.53"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tv_alarm_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="* 최대 20개의 최신 알림만 표시됩니다."
+        android:textColor="@color/ks_gray"
+        android:textSize="16sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="50dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_bar"
+        app:srcCompat="@drawable/alarm_icon" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/title_bar"
@@ -59,7 +83,7 @@
             android:id="@+id/textView17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="시간대별 사용량 비교"
+            android:text="알림"
             android:textColor="#000000"
             android:textSize="22dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -71,32 +95,17 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:background="@drawable/shape_round_corner_cyan_light_filled"
-        android:text="조회"
-        android:textColor="#ffffff"
-        app:layout_constraintStart_toEndOf="@+id/btn_select_time3"
-        app:layout_constraintTop_toTopOf="@+id/btn_select_time3" />
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/line_chart"
+    <ListView
+        android:id="@+id/lv_alarm_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button"
-        app:layout_constraintVertical_weight="1" />
-
+        app:layout_constraintTop_toBottomOf="@+id/imageView9" />
 </androidx.constraintlayout.widget.ConstraintLayout>

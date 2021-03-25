@@ -213,13 +213,24 @@ public class BaseActivity extends AppCompatActivity {
                             }
                             break;
 
-                            /*
-
                             case CaEngine.MENU_USAGE_DAILY: {
                                 Intent it = new Intent(This, ActivityUsageDaily.class);
                                 startActivity(it);
                             }
                             break;
+
+                            case CaEngine.MENU_ALARM: {
+                                Intent it = new Intent(This, ActivityAlarmList.class);
+                                startActivity(it);
+                            }
+                            break;
+
+                            case CaEngine.MENU_NOTICE: {
+                                Intent it = new Intent(This, ActivityNoticeList.class);
+                                startActivity(it);
+                            }
+                            break;
+                            /*
 
                             case CaEngine.MENU_USAGE_MONTHLY: {
                                 Intent it = new Intent(This, ActivityUsageMonthly.class);
@@ -245,17 +256,9 @@ public class BaseActivity extends AppCompatActivity {
                             }
                             break;
 
-                            case CaEngine.MENU_ALARM: {
-                                Intent it = new Intent(This, ActivityAlarm.class);
-                                startActivity(it);
-                            }
-                            break;
 
-                            case CaEngine.MENU_NOTICE: {
-                                Intent it = new Intent(This, ActivityNoticeList.class);
-                                startActivity(it);
-                            }
-                            break;
+
+
 
                             case CaEngine.MENU_FAQ: {
                                 Intent it = new Intent(This, ActivityFaq.class);

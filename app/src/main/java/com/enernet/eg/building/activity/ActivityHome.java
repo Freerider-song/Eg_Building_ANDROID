@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -58,7 +57,7 @@ public class ActivityHome extends BaseActivity {
                 holder = new SavingViewHolder();
 
                 LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.saving_list_item, null);
+                convertView = inflater.inflate(R.layout.list_item_saving, null);
 
                 holder.m_clAreaRoot = convertView.findViewById(R.id.area_root);
                 holder.m_tvTitle = convertView.findViewById(R.id.tv_saving_title);

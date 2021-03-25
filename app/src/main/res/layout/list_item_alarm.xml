@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/area_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    tools:background="@drawable/shape_round_corner_dark_cyan_hollow">
+
+
+    <TextView
+        android:id="@+id/tv_alarm_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:lineSpacingExtra="5sp"
+        android:text="[냉온방 공조기 / 11시 - 13시 / 30% 절감] 이 10분 후 시작됩니다."
+        android:textColor="@color/eg_cyan_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_alarm_time_created" />
+
+    <TextView
+        android:id="@+id/tv_alarm_time_created"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="2021-03-24 14:22:30"
+        android:textColor="@color/eg_cyan_light"
+        app:layout_constraintStart_toStartOf="@+id/tv_alarm_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_alarm_title" />
+
+    <ImageView
+        android:id="@+id/iv_alarm_dot"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_alarm_title"
+        app:layout_constraintTop_toTopOf="@+id/tv_alarm_title"
+        app:srcCompat="@drawable/small_dot_pink" />
+
+    <TextView
+        android:id="@+id/tv_alarm_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="절감목표 시작 안내"
+        android:textColor="@color/eg_cyan_dark"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.14"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_alarm_execute"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/shape_round_corner_dark_yellow_filled"
+        android:onClick="onClick"
+        android:text="지금조치하기"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_alarm_content" />
+
+    <ImageView
+        android:id="@+id/iv_new"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toEndOf="@+id/tv_alarm_title"
+        app:layout_constraintTop_toTopOf="@+id/tv_alarm_title"
+        app:srcCompat="@drawable/new_icon" />
+</androidx.constraintlayout.widget.ConstraintLayout>
