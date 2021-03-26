@@ -1,4 +1,4 @@
-package com.enernet.eg.building;
+package com.enernet.eg.building.model;
 
 import androidx.appcompat.app.AppCompatActivity;
 

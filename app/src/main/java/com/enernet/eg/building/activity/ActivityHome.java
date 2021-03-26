@@ -3,19 +3,27 @@ package com.enernet.eg.building.activity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.ekn.gruzer.gaugelibrary.HalfGauge;
+import com.ekn.gruzer.gaugelibrary.Range;
 import com.enernet.eg.building.R;
+
+import pl.pawelkleczkowski.customgauge.CustomGauge;
 
 public class ActivityHome extends BaseActivity {
 
     private SavingAdapter m_SavingAdapter;
+    private CustomGauge m_GaugeChart;
+    private HalfGauge m_HalfGauge;
 
     private class SavingViewHolder {
         public ConstraintLayout m_clAreaRoot;
@@ -36,7 +44,7 @@ public class ActivityHome extends BaseActivity {
         @Override
         public int getCount() {
             //return CaApplication.m_Info.m_alAlarm.size();
-            return 1;
+            return 4;
         }
 
         @Override
@@ -136,10 +144,16 @@ public class ActivityHome extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        prepareDrawer();
+
+        initChart();
+
         ListView listView = (ListView) findViewById(R.id.lv_saving_list);
         //ListAdapter listAdapter = listView.getAdapter();
         m_SavingAdapter= new SavingAdapter();
         listView.setAdapter(m_SavingAdapter);
+
+
 
         //리스트 뷰 높이 설정
 
@@ -161,8 +175,48 @@ public class ActivityHome extends BaseActivity {
         listView.requestLayout();
 
 
-        prepareDrawer();
+        //액티비티 전환시 리스트뷰 쪽으로 포커스가 맞춰지는 문제 해결
 
+        ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView_home);
+        //scrollView.fullScroll(ScrollView.FOCUS_UP);
+        View targetView = findViewById(R.id.iv_small_dot_purple2);
+        targetView.getParent().requestChildFocus(targetView,targetView);
+
+
+
+    }
+
+    public void initChart(){
+
+        m_HalfGauge = findViewById(R.id.halfGauge);
+
+        Range range = new Range();
+        range.setColor(Color.parseColor("#40ADB4"));
+        range.setFrom(0.0);
+        range.setTo(211.5);
+
+        Range range2 = new Range();
+        range2.setColor(Color.parseColor("#FFF35B"));
+        range2.setFrom(211.5);
+        range2.setTo(465.1);
+
+        Range range3 = new Range();
+        range3.setColor(Color.parseColor("#946525"));
+        range3.setFrom(465.1);
+        range3.setTo(780);
+
+
+        //add color ranges to gauge
+        m_HalfGauge.addRange(range);
+        m_HalfGauge.addRange(range2);
+        m_HalfGauge.addRange(range3);
+
+        //set value to gauge
+
+        m_HalfGauge.enableAnimation(true);
+        m_HalfGauge.setMinValue(0.0);
+        m_HalfGauge.setMaxValue(780.0);
+        m_HalfGauge.setValue(350.7);
 
     }
 

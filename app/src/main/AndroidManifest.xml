@@ -8,14 +8,15 @@
     <uses-permission android:name="android.permission.READ_SMS" />
 
     <application
-        android:name=".CaApplication"
+        android:name=".model.CaApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".activity.ActivityUsageYearly"></activity>
+        <activity android:name=".model.EgDialogLogout"></activity>
+        <activity android:name=".activity.ActivityUsageYearly" />
         <activity android:name=".activity.ActivityUsageMonthly" />
         <activity android:name=".activity.ActivitySetting" />
         <activity android:name=".activity.ActivityAlarmList" />
@@ -29,7 +30,7 @@
         <activity android:name=".activity.ActivityChangePasswordInput" />
         <activity android:name=".activity.ActivityChangePasswordAuth" />
         <activity
-            android:name=".EgYearMonthDayPicker"
+            android:name=".model.EgYearMonthDayPicker"
             android:theme="@style/PopupOverlay" />
         <activity android:name=".activity.ActivitySaving" />
         <activity android:name=".activity.ActivityHome" />

@@ -1,26 +1,18 @@
 package com.enernet.eg.building.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.enernet.eg.building.CaEngine;
-import com.enernet.eg.building.CaResult;
-import com.enernet.eg.building.IaResultHandler;
+import com.enernet.eg.building.model.CaResult;
+import com.enernet.eg.building.model.IaResultHandler;
 import com.enernet.eg.building.R;
 import com.enernet.eg.building.model.CaJsInterface;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 

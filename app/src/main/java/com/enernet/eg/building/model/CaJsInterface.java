@@ -1,12 +1,8 @@
 package com.enernet.eg.building.model;
 
-import android.content.Intent;
 import android.util.Log;
-import android.view.View;
 import android.webkit.JavascriptInterface;
 
-import com.enernet.eg.building.CaApplication;
-import com.enernet.eg.building.CaEngine;
 import com.enernet.eg.building.activity.ActivityAuth;
 
 import org.json.JSONException;

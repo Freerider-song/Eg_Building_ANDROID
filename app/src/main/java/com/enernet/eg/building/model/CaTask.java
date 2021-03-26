@@ -1,4 +1,4 @@
-package com.enernet.eg.building;
+package com.enernet.eg.building.model;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;

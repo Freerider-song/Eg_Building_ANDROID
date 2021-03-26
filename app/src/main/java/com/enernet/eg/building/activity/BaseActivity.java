@@ -15,12 +15,13 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 //import com.enernet.eg.building.ActivityLogin;
-import com.enernet.eg.building.CaApplication;
+import com.enernet.eg.building.ActivityLogin;
+import com.enernet.eg.building.model.CaApplication;
 
-import com.enernet.eg.building.CaEngine;
-import com.enernet.eg.building.IaResultHandler;
+import com.enernet.eg.building.model.CaEngine;
 import com.enernet.eg.building.R;
-import com.enernet.eg.building.StringUtil;
+import com.enernet.eg.building.model.EgDialogLogout;
+import com.enernet.eg.building.model.StringUtil;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -30,7 +31,6 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -40,8 +40,9 @@ import java.util.GregorianCalendar;
 public class BaseActivity extends AppCompatActivity {
 
     public Drawer m_Drawer;
+    private EgDialogLogout m_dlgLogout;
 
-    /*private EgDialogLogout m_dlgLogout;
+    /*
     private EgDialog m_dlgInform;*/
     private static Typeface mTypeface = null;
 
@@ -219,6 +220,18 @@ public class BaseActivity extends AppCompatActivity {
                             }
                             break;
 
+                            case CaEngine.MENU_USAGE_MONTHLY: {
+                                Intent it = new Intent(This, ActivityUsageMonthly.class);
+                                startActivity(it);
+                            }
+                            break;
+
+                            case CaEngine.MENU_USAGE_YEARLY: {
+                                Intent it = new Intent(This, ActivityUsageYearly.class);
+                                startActivity(it);
+                            }
+                            break;
+
                             case CaEngine.MENU_ALARM: {
                                 Intent it = new Intent(This, ActivityAlarmList.class);
                                 startActivity(it);
@@ -236,19 +249,56 @@ public class BaseActivity extends AppCompatActivity {
                                 startActivity(it);
                             }
                             break;
+
+                            case CaEngine.MENU_LOGOUT: {
+
+                                View.OnClickListener LsnConfirmYes=new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Log.i("BaseActivity", "Yes button clicked...");
+                                        m_dlgLogout.dismiss();
+                                        /*
+
+                                        CaPref pref = new CaPref(Ctx);
+
+                                        pref.setValue(CaPref.PREF_MEMBER_ID, "");
+                                        pref.setValue(CaPref.PREF_PASSWORD, "");
+
+                                         */
+
+                                        final Class Clazz= ActivityLogin.class;
+
+                                        Intent nextIntent = new Intent(Ctx, Clazz);
+                                        startActivity(nextIntent);
+                                    }
+                                };
+
+                                View.OnClickListener LsnConfirmNo=new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Log.i("BaseActivity", "No button clicked...");
+                                        m_dlgLogout.dismiss();
+                                    }
+                                };
+
+                                m_dlgLogout=new EgDialogLogout(This, LsnConfirmYes, LsnConfirmNo);
+                                m_dlgLogout.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                                    @Override
+                                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                                        if (keyCode==KeyEvent.KEYCODE_BACK) {
+                                            dialog.dismiss();
+                                            return true;
+                                        }
+                                        return false;
+                                    }
+                                });
+
+                                m_dlgLogout.show();
+                            }
+                            break;
                             /*
 
-                            case CaEngine.MENU_USAGE_MONTHLY: {
-                                Intent it = new Intent(This, ActivityUsageMonthly.class);
-                                startActivity(it);
-                            }
-                            break;
 
-                            case CaEngine.MENU_USAGE_YEARLY: {
-                                Intent it = new Intent(This, ActivityUsageYearly.class);
-                                startActivity(it);
-                            }
-                            break;
 
                             case CaEngine.MENU_SITE_STATE: {
                                 Intent it = new Intent(This, ActivitySiteState.class);
@@ -282,49 +332,7 @@ public class BaseActivity extends AppCompatActivity {
 
 
 
-                            case CaEngine.MENU_LOGOUT: {
 
-                                View.OnClickListener LsnConfirmYes=new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Log.i("BaseActivity", "Yes button clicked...");
-                                        m_dlgLogout.dismiss();
-
-                                        CaPref pref = new CaPref(Ctx);
-
-                                        pref.setValue(CaPref.PREF_MEMBER_ID, "");
-                                        pref.setValue(CaPref.PREF_PASSWORD, "");
-
-                                        final Class Clazz=ActivityLogin.class;
-
-                                        Intent nextIntent = new Intent(Ctx, Clazz);
-                                        startActivity(nextIntent);
-                                    }
-                                };
-
-                                View.OnClickListener LsnConfirmNo=new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Log.i("BaseActivity", "No button clicked...");
-                                        m_dlgLogout.dismiss();
-                                    }
-                                };
-
-                                m_dlgLogout=new EgDialogLogout(This, LsnConfirmYes, LsnConfirmNo);
-                                m_dlgLogout.setOnKeyListener(new DialogInterface.OnKeyListener() {
-                                    @Override
-                                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                                        if (keyCode==KeyEvent.KEYCODE_BACK) {
-                                            dialog.dismiss();
-                                            return true;
-                                        }
-                                        return false;
-                                    }
-                                });
-
-                                m_dlgLogout.show();
-                            }
-                            break;
                             */
                             default: {
                                 Log.d("Drawer", "Unknon menu with id="+nId);

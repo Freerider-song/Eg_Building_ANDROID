@@ -6,6 +6,39 @@
     android:layout_height="match_parent"
     tools:context=".activity.ActivityUsageMonthly">
 
+    <pl.pawelkleczkowski.customgauge.CustomGauge
+        android:id="@+id/gauge1"
+        android:layout_width="216dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        app:gaugeDividerColor="@color/ks_gray"
+        app:gaugeDividerStep="33"
+        app:gaugeEndValue="1000"
+        app:gaugePointEndColor="@color/eg_cyan_light"
+        app:gaugePointStartColor="@color/eg_cyan_light"
+        app:gaugeStartAngle="180"
+        app:gaugeStartValue="300"
+        app:gaugeStrokeCap="ROUND"
+        app:gaugeStrokeColor="@color/ks_light_gray"
+        app:gaugeStrokeWidth="15dp"
+        app:gaugeSweepAngle="180"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="482dp" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="310.6"
+        android:textColor="@color/eg_cyan_dark"
+        android:textSize="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/gauge1"
+        app:layout_constraintEnd_toEndOf="@+id/gauge1"
+        app:layout_constraintStart_toStartOf="@+id/gauge1"
+        app:layout_constraintTop_toTopOf="@+id/gauge1"
+        app:layout_constraintVertical_bias="0.43" />
+
     <Button
         android:id="@+id/btn_select_time"
         style="@style/Widget.AppCompat.Button.Borderless"
@@ -33,6 +66,15 @@
         android:textColor="#ffffff"
         app:layout_constraintStart_toEndOf="@+id/btn_select_time"
         app:layout_constraintTop_toTopOf="@+id/btn_select_time" />
+
+    <com.ekn.gruzer.gaugelibrary.HalfGauge
+        android:id="@+id/halfGauge"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_search2" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/title_bar"

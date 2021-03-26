@@ -1,4 +1,4 @@
-package com.enernet.eg.building;
+package com.enernet.eg.building.model;
 
 import android.content.Context;
 import android.telephony.PhoneNumberUtils;
@@ -7,7 +7,6 @@ import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -34,6 +33,13 @@ public class CaInfo {
     public String m_strMemberMail="";
     public String m_strMemberCompany="";
     public String m_strMemberRank="";
+
+    public boolean m_bNotiAll=true;
+    public boolean m_bNotiKwh=true;
+    public boolean m_bNotiWon=true;
+    public boolean m_bNotiSavingStandard=true;
+    public boolean m_bNotiSavingGoal=true;
+    public boolean m_bNotiUsageAtTime=true;
 
     public boolean m_bShowPush=true;
 

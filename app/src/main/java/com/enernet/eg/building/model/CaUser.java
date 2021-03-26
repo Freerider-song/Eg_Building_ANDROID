@@ -1,4 +1,4 @@
-package com.enernet.eg.building;
+package com.enernet.eg.building.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;

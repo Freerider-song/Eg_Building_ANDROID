@@ -1,4 +1,4 @@
-package com.enernet.eg.building;
+package com.enernet.eg.building.model;
 
 import android.graphics.Bitmap;
 import android.util.Pair;

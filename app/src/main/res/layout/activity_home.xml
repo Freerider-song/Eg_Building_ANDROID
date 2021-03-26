@@ -9,6 +9,7 @@
     <!-- https://github.com/pkleczko/CustomGauge -->
 
     <ScrollView
+        android:id="@+id/scrollView_home"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
@@ -48,26 +49,14 @@
                 app:layout_constraintTop_toTopOf="@+id/textView19"
                 app:srcCompat="@drawable/small_dot_pink" />
 
-            <pl.pawelkleczkowski.customgauge.CustomGauge
-                android:id="@+id/gauge1"
-                android:layout_width="216dp"
-                android:layout_height="200dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                app:gaugeDividerColor="@color/ks_gray"
-                app:gaugeDividerStep="33"
-                app:gaugeEndValue="1000"
-                app:gaugePointEndColor="@color/eg_cyan_light"
-                app:gaugePointStartColor="@color/eg_cyan_light"
-                app:gaugeStartAngle="180"
-                app:gaugeStartValue="300"
-                app:gaugeStrokeCap="ROUND"
-                app:gaugeStrokeColor="@color/ks_light_gray"
-                app:gaugeStrokeWidth="15dp"
-                app:gaugeSweepAngle="180"
+            <com.ekn.gruzer.gaugelibrary.HalfGauge
+                android:id="@+id/halfGauge"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.504"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView19" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textView21"
@@ -93,30 +82,16 @@
                 app:layout_constraintTop_toTopOf="@+id/textView21"
                 app:srcCompat="@drawable/small_dot_grass" />
 
-            <TextView
-                android:id="@+id/textView22"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="310.6"
-                android:textColor="@color/eg_cyan_dark"
-                android:textSize="32dp"
-                app:layout_constraintBottom_toBottomOf="@+id/gauge1"
-                app:layout_constraintEnd_toEndOf="@+id/gauge1"
-                app:layout_constraintStart_toStartOf="@+id/gauge1"
-                app:layout_constraintTop_toTopOf="@+id/gauge1"
-                app:layout_constraintVertical_bias="0.43" />
-
             <ListView
                 android:id="@+id/lv_saving_list"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="15dp"
-                android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginBottom="15dp"
                 android:divider="#00000000"
-                android:dividerHeight="5dp"
+                android:dividerHeight="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -131,14 +106,12 @@
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="140dp"
                 android:layout_marginEnd="15dp"
-                android:layout_marginRight="15dp"
                 android:background="@drawable/shape_round_corner_cyan_light_hollow"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/gauge1">
+                app:layout_constraintTop_toBottomOf="@+id/halfGauge">
 
                 <TextView
                     android:id="@+id/textView18"
@@ -166,6 +139,34 @@
                     app:layout_constraintVertical_bias="0.75" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/textView38"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="절감목표\n(211.5)"
+                android:textColor="@color/eg_cyan_dark"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/halfGauge"
+                app:layout_constraintEnd_toEndOf="@+id/halfGauge"
+                app:layout_constraintHorizontal_bias="0.225"
+                app:layout_constraintStart_toStartOf="@+id/halfGauge"
+                app:layout_constraintTop_toTopOf="@+id/halfGauge"
+                app:layout_constraintVertical_bias="0.218" />
+
+            <TextView
+                android:id="@+id/textView39"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="절감기준\n(465.5)"
+                android:textColor="@color/eg_cyan_dark"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/halfGauge"
+                app:layout_constraintEnd_toEndOf="@+id/halfGauge"
+                app:layout_constraintHorizontal_bias="0.822"
+                app:layout_constraintStart_toStartOf="@+id/halfGauge"
+                app:layout_constraintTop_toTopOf="@+id/halfGauge"
+                app:layout_constraintVertical_bias="0.218" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
@@ -176,6 +177,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView37"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="지금 우리 건물 전기는?"
+            android:textColor="#000000"
+            android:textSize="22dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.8" />
 
         <Button
             android:id="@+id/btn_back"

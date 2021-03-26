@@ -1,17 +1,13 @@
 package com.enernet.eg.building.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
-import com.enernet.eg.building.CaResult;
-import com.enernet.eg.building.EgYearMonthDayPicker;
-import com.enernet.eg.building.IaResultHandler;
+import com.enernet.eg.building.model.CaResult;
+import com.enernet.eg.building.model.EgYearMonthDayPicker;
+import com.enernet.eg.building.model.IaResultHandler;
 import com.enernet.eg.building.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -36,6 +32,8 @@ public class ActivityUsageDaily extends BaseActivity implements IaResultHandler 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usage_daily);
+
+        prepareDrawer();
 
         Calendar calCurr= Calendar.getInstance();
         requestUsageDaily(calCurr.get(Calendar.YEAR), calCurr.get(Calendar.MONTH)+1, calCurr.get(Calendar.DATE));

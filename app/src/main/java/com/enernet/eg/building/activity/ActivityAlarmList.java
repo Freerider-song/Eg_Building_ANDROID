@@ -1,6 +1,5 @@
 package com.enernet.eg.building.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
@@ -15,8 +14,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.enernet.eg.building.CaResult;
-import com.enernet.eg.building.IaResultHandler;
+import com.enernet.eg.building.model.CaResult;
+import com.enernet.eg.building.model.IaResultHandler;
 import com.enernet.eg.building.R;
 
 public class ActivityAlarmList extends BaseActivity implements IaResultHandler {

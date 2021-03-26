@@ -1,7 +1,6 @@
-package com.enernet.eg.building;
+package com.enernet.eg.building.model;
 
 import android.content.Context;
-import android.util.Log;
 
 public class CaEngine {
 

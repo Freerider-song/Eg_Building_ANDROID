@@ -1,8 +1,5 @@
 package com.enernet.eg.building.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -11,8 +8,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.enernet.eg.building.CaResult;
-import com.enernet.eg.building.IaResultHandler;
+import com.enernet.eg.building.model.CaResult;
+import com.enernet.eg.building.model.IaResultHandler;
 import com.enernet.eg.building.R;
 
 public class ActivityNotice extends Dialog implements IaResultHandler {
