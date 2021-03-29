@@ -1,38 +1,28 @@
-package com.enernet.eg.building.model;
+package com.enernet.eg.building;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.TextView;
 
 import com.enernet.eg.building.R;
-import com.enernet.eg.building.activity.BaseActivity;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+public class EgDialogLogout extends Dialog {
 
-public class EgYearMonthDayPicker extends Dialog {
-
-    public DatePicker m_DatePicker;
-    private TextView m_tvTitle;
     private Button m_BtnYes;
     private Button m_BtnNo;
-    private String m_strTitle;
+
     private View.OnClickListener m_ClickListenerYes;
     private View.OnClickListener m_ClickListenerNo;
 
-    public EgYearMonthDayPicker(Context ctx, String strTitle, View.OnClickListener ClickListenerYes, View.OnClickListener ClickListenerNo) {
+    public EgDialogLogout(Context ctx, View.OnClickListener ClickListenerYes, View.OnClickListener ClickListenerNo) {
         super(ctx, android.R.style.Theme_Translucent_NoTitleBar);
 
-        m_strTitle=strTitle;
         m_ClickListenerYes = ClickListenerYes;
         m_ClickListenerNo = ClickListenerNo;
     }
@@ -50,12 +40,7 @@ public class EgYearMonthDayPicker extends Dialog {
         setCancelable(false);
         getWindow().setGravity(Gravity.CENTER);
 
-        setContentView(R.layout.eg_year_month_day_picker);
-
-        m_DatePicker=findViewById(R.id.date_picker);
-
-        m_tvTitle = findViewById(R.id.dialog_text);
-        m_tvTitle.setText(m_strTitle);
+        setContentView(R.layout.eg_dialog_logout);
 
         m_BtnYes = findViewById(R.id.btn_yes);
         m_BtnNo = findViewById(R.id.btn_no);
@@ -67,7 +52,5 @@ public class EgYearMonthDayPicker extends Dialog {
         if (m_ClickListenerNo != null) {
             m_BtnNo.setOnClickListener(m_ClickListenerNo);
         }
-
     }
-
 }

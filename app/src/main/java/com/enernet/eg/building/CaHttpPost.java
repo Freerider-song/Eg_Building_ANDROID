@@ -1,10 +1,8 @@
-package com.enernet.eg.building.model;
+package com.enernet.eg.building;
 
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.util.Pair;
-
-import com.enernet.eg.building.BuildConfig;
 
 import org.json.JSONObject;
 

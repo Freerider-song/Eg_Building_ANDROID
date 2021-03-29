@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.enernet.eg.building.model.CaResult;
-import com.enernet.eg.building.model.EgYearMonthDayPicker;
-import com.enernet.eg.building.model.IaResultHandler;
+import com.enernet.eg.building.CaResult;
+import com.enernet.eg.building.EgYearMonthDayPicker;
+import com.enernet.eg.building.IaResultHandler;
 import com.enernet.eg.building.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;

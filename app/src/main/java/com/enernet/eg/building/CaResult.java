@@ -1,4 +1,4 @@
-package com.enernet.eg.building.model;
+package com.enernet.eg.building;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

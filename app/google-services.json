@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1034088218896",
+    "project_id": "egbuilding-5c314",
+    "storage_bucket": "egbuilding-5c314.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1034088218896:android:c4fcc71a4ec951a886e595",
+        "android_client_info": {
+          "package_name": "com.enernet.eg.building"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1034088218896-9lqf55tvlphv0l4027kbg5lja44278tv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClbN67y9Uq8QmKFnBoh8bRJWdIGYJE7SU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1034088218896-9lqf55tvlphv0l4027kbg5lja44278tv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

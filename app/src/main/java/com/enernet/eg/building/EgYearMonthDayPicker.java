@@ -1,33 +1,35 @@
-package com.enernet.eg.building.model;
+package com.enernet.eg.building;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.NumberPicker;
+import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.enernet.eg.building.R;
+import com.enernet.eg.building.activity.BaseActivity;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
-public class EgYearMonthPicker extends Dialog {
+public class EgYearMonthDayPicker extends Dialog {
 
+    public DatePicker m_DatePicker;
     private TextView m_tvTitle;
     private Button m_BtnYes;
     private Button m_BtnNo;
     private String m_strTitle;
-
-    public NumberPicker m_npYear;
-    public NumberPicker m_npMonth;
-
     private View.OnClickListener m_ClickListenerYes;
     private View.OnClickListener m_ClickListenerNo;
 
-    public EgYearMonthPicker(Context ctx, String strTitle, View.OnClickListener ClickListenerYes, View.OnClickListener ClickListenerNo) {
+    public EgYearMonthDayPicker(Context ctx, String strTitle, View.OnClickListener ClickListenerYes, View.OnClickListener ClickListenerNo) {
         super(ctx, android.R.style.Theme_Translucent_NoTitleBar);
 
         m_strTitle=strTitle;
@@ -48,19 +50,9 @@ public class EgYearMonthPicker extends Dialog {
         setCancelable(false);
         getWindow().setGravity(Gravity.CENTER);
 
-        setContentView(R.layout.eg_year_month_picker);
+        setContentView(R.layout.eg_year_month_day_picker);
 
-        //  m_DatePicker=findViewById(R.id.date_picker);
-        Calendar cal = Calendar.getInstance();
-        m_npYear=findViewById(R.id.picker_year);
-        m_npYear.setMinValue(2010);
-        m_npYear.setMaxValue(2030);
-        m_npYear.setValue(cal.get(Calendar.YEAR));
-
-        m_npMonth=findViewById(R.id.picker_month);
-        m_npMonth.setMinValue(1);
-        m_npMonth.setMaxValue(12);
-        m_npMonth.setValue(cal.get(Calendar.MONTH)+1);
+        m_DatePicker=findViewById(R.id.date_picker);
 
         m_tvTitle = findViewById(R.id.dialog_text);
         m_tvTitle.setText(m_strTitle);
@@ -77,4 +69,5 @@ public class EgYearMonthPicker extends Dialog {
         }
 
     }
+
 }

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -22,8 +23,12 @@ import pl.pawelkleczkowski.customgauge.CustomGauge;
 public class ActivityHome extends BaseActivity {
 
     private SavingAdapter m_SavingAdapter;
+    private SavingCheckAdapter m_SavingCheckAdapter;
+
     private CustomGauge m_GaugeChart;
     private HalfGauge m_HalfGauge;
+
+
 
     private class SavingViewHolder {
         public ConstraintLayout m_clAreaRoot;
@@ -33,6 +38,56 @@ public class ActivityHome extends BaseActivity {
         public TextView m_tvUsageToday;
         public ListView m_lvSavingCheckList;
         public TextView m_tvSavingResult;
+    }
+
+    private class SavingCheckViewHolder {
+        public CheckBox m_CheckBox;
+    }
+
+    private class SavingCheckAdapter extends BaseAdapter {
+
+        public SavingCheckAdapter() {
+            super();
+        }
+
+        @Override
+        public int getCount() {
+            //return CaApplication.m_Info.m_alAlarm.size();
+            return 3;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            //return CaApplication.m_Info.m_alAlarm.get(position);
+            //return position;
+            return position;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            SavingCheckViewHolder holder;
+            if (convertView == null) {
+                holder = new SavingCheckViewHolder();
+
+                LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.list_item_saving_check, null);
+
+                holder.m_CheckBox = convertView.findViewById(R.id.checkBox4);
+
+                convertView.setTag(holder);
+            }
+            else {
+                holder = (SavingCheckViewHolder) convertView.getTag();
+            }
+
+
+            return convertView;
+        }
     }
 
     private class SavingAdapter extends BaseAdapter {
@@ -72,8 +127,26 @@ public class ActivityHome extends BaseActivity {
                 holder.m_tvTime=convertView.findViewById(R.id.tv_time);
                 holder.m_tvUsageGoal=convertView.findViewById(R.id.tv_usage_goal);
                 holder.m_tvUsageToday=convertView.findViewById(R.id.tv_usage_today);
-                holder.m_lvSavingCheckList=convertView.findViewById(R.id.lv_saving_check_list);
                 holder.m_tvSavingResult=convertView.findViewById(R.id.tv_saving_result);
+
+                //list view in list view
+                holder.m_lvSavingCheckList=convertView.findViewById(R.id.lv_saving_check_list);
+                m_SavingCheckAdapter= new SavingCheckAdapter();
+                holder.m_lvSavingCheckList.setAdapter(m_SavingCheckAdapter);
+                //리스트 뷰 높이 설정
+                if (m_SavingCheckAdapter == null) {
+                    // pre-condition
+                }
+                int totalHeight = 0;
+                for (int i = 0; i < m_SavingCheckAdapter.getCount(); i++) {
+                    View listItem = m_SavingCheckAdapter.getView(i, null, holder.m_lvSavingCheckList);
+                    listItem.measure(0, 0);
+                    totalHeight += listItem.getMeasuredHeight();
+                }
+                ViewGroup.LayoutParams params = holder.m_lvSavingCheckList.getLayoutParams();
+                params.height = totalHeight + (holder.m_lvSavingCheckList.getDividerHeight() * (m_SavingCheckAdapter.getCount() - 1));
+                holder.m_lvSavingCheckList.setLayoutParams(params);
+                holder.m_lvSavingCheckList.requestLayout();
 
                 convertView.setTag(holder);
             }
@@ -152,8 +225,6 @@ public class ActivityHome extends BaseActivity {
         //ListAdapter listAdapter = listView.getAdapter();
         m_SavingAdapter= new SavingAdapter();
         listView.setAdapter(m_SavingAdapter);
-
-
 
         //리스트 뷰 높이 설정
 

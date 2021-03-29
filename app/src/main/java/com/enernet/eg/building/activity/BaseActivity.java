@@ -16,12 +16,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 //import com.enernet.eg.building.ActivityLogin;
 import com.enernet.eg.building.ActivityLogin;
-import com.enernet.eg.building.model.CaApplication;
+import com.enernet.eg.building.CaApplication;
 
-import com.enernet.eg.building.model.CaEngine;
+import com.enernet.eg.building.CaEngine;
 import com.enernet.eg.building.R;
-import com.enernet.eg.building.model.EgDialogLogout;
-import com.enernet.eg.building.model.StringUtil;
+import com.enernet.eg.building.EgDialogLogout;
+import com.enernet.eg.building.StringUtil;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;

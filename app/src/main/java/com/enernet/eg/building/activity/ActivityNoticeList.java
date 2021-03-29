@@ -15,10 +15,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.enernet.eg.building.model.CaResult;
-import com.enernet.eg.building.model.IaResultHandler;
+import com.enernet.eg.building.CaResult;
+import com.enernet.eg.building.IaResultHandler;
 import com.enernet.eg.building.R;
-import com.enernet.eg.building.model.ListViewInfinite;
+import com.enernet.eg.building.ListViewInfinite;
 
 public class ActivityNoticeList extends BaseActivity implements IaResultHandler, ListViewInfinite.ListenerInfinite {
 

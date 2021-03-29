@@ -1,21 +1,15 @@
 package com.enernet.eg.building.activity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.ekn.gruzer.gaugelibrary.HalfGauge;
-import com.ekn.gruzer.gaugelibrary.Range;
-import com.enernet.eg.building.model.CaResult;
-import com.enernet.eg.building.model.EgYearMonthPicker;
-import com.enernet.eg.building.model.IaResultHandler;
+import com.enernet.eg.building.CaResult;
+import com.enernet.eg.building.EgYearMonthPicker;
+import com.enernet.eg.building.IaResultHandler;
 import com.enernet.eg.building.R;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-
-import pl.pawelkleczkowski.customgauge.CustomGauge;
 
 public class ActivityUsageMonthly extends BaseActivity implements IaResultHandler {
 

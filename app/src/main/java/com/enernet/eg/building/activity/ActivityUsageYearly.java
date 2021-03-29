@@ -4,9 +4,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.enernet.eg.building.model.CaResult;
-import com.enernet.eg.building.model.EgYearPicker;
-import com.enernet.eg.building.model.IaResultHandler;
+import com.enernet.eg.building.CaResult;
+import com.enernet.eg.building.EgYearPicker;
+import com.enernet.eg.building.IaResultHandler;
 import com.enernet.eg.building.R;
 
 import java.util.Calendar;

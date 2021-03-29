@@ -1,4 +1,4 @@
-package com.enernet.eg.building.model;
+package com.enernet.eg.building;
 
 import android.content.Context;
 import android.util.AttributeSet;

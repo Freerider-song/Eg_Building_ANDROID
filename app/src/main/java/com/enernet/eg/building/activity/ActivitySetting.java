@@ -12,10 +12,10 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.enernet.eg.building.ActivityLogin;
-import com.enernet.eg.building.model.CaApplication;
-import com.enernet.eg.building.model.CaResult;
-import com.enernet.eg.building.model.EgDialogLogout;
-import com.enernet.eg.building.model.IaResultHandler;
+import com.enernet.eg.building.CaApplication;
+import com.enernet.eg.building.CaResult;
+import com.enernet.eg.building.EgDialogLogout;
+import com.enernet.eg.building.IaResultHandler;
 import com.enernet.eg.building.R;
 
 public class ActivitySetting extends BaseActivity implements IaResultHandler {

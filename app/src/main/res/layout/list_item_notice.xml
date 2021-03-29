@@ -11,30 +11,31 @@
         android:id="@+id/tv_notice_time_created"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="15dp"
+        android:fontFamily="@font/opensans_regular"
         android:gravity="center_horizontal"
+        android:text="2019-11-12 16:20"
         android:textColor="@color/eg_cyan_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tv_notice_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_notice_title"
-        tools:layout_editor_absoluteX="70dp"
-        tools:text="2019-11-12 16:20" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_notice_title" />
 
     <TextView
         android:id="@+id/tv_notice_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
         android:layout_marginBottom="10dp"
+        android:fontFamily="@font/opensans_regular"
         android:gravity="center_horizontal"
+        android:text="금천구청"
         android:textColor="@color/eg_cyan_light"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_notice_time_created"
         app:layout_constraintTop_toBottomOf="@+id/tv_notice_title"
-        app:layout_constraintVertical_bias="0.0"
-        tools:text="금천구청" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/iv_right_arrow"
@@ -59,14 +60,16 @@
         app:layout_constraintStart_toEndOf="@+id/iv_notice_type"
         app:layout_constraintTop_toTopOf="@+id/tv_notice_title"
         app:srcCompat="@drawable/new_icon"
-        tools:layout_editor_absoluteY="15dp" />
+        tools:layout_editor_absoluteY="15dp"
+        android:fontFamily="@font/opensans_regular"/>
 
     <ImageView
         android:id="@+id/iv_notice_type"
         android:layout_width="40dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginStart="10dp"
         android:adjustViewBounds="true"
+        android:background="@drawable/notice_site"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,12 +83,13 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="15dp"
         android:ellipsize="end"
+        android:fontFamily="@font/opensans_regular"
         android:singleLine="true"
+        android:text="금천구청 시설과입니다."
         android:textColor="@color/eg_cyan_dark"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/iv_right_arrow"
         app:layout_constraintStart_toEndOf="@+id/iv_new"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="금천구청 시설과입니다." />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

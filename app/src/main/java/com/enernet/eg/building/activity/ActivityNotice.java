@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.enernet.eg.building.model.CaResult;
-import com.enernet.eg.building.model.IaResultHandler;
+import com.enernet.eg.building.CaResult;
+import com.enernet.eg.building.IaResultHandler;
 import com.enernet.eg.building.R;
 
 public class ActivityNotice extends Dialog implements IaResultHandler {

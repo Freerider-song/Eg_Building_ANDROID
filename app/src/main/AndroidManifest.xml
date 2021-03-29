@@ -8,14 +8,24 @@
     <uses-permission android:name="android.permission.READ_SMS" />
 
     <application
-        android:name=".model.CaApplication"
+        android:name=".CaApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".model.EgDialogLogout"></activity>
+        <service
+            android:name=".ServicePush"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity android:name=".EgDialogLogout" />
         <activity android:name=".activity.ActivityUsageYearly" />
         <activity android:name=".activity.ActivityUsageMonthly" />
         <activity android:name=".activity.ActivitySetting" />
@@ -30,7 +40,7 @@
         <activity android:name=".activity.ActivityChangePasswordInput" />
         <activity android:name=".activity.ActivityChangePasswordAuth" />
         <activity
-            android:name=".model.EgYearMonthDayPicker"
+            android:name=".EgYearMonthDayPicker"
             android:theme="@style/PopupOverlay" />
         <activity android:name=".activity.ActivitySaving" />
         <activity android:name=".activity.ActivityHome" />

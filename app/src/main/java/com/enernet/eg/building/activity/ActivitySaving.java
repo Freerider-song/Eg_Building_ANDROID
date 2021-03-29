@@ -13,12 +13,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.enernet.eg.building.model.CaResult;
-import com.enernet.eg.building.model.EgYearMonthDayPicker;
-import com.enernet.eg.building.model.IaResultHandler;
+import com.enernet.eg.building.CaResult;
+import com.enernet.eg.building.EgYearMonthDayPicker;
+import com.enernet.eg.building.IaResultHandler;
 import com.enernet.eg.building.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;

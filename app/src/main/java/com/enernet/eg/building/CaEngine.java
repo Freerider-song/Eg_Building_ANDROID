@@ -1,4 +1,4 @@
-package com.enernet.eg.building.model;
+package com.enernet.eg.building;
 
 import android.content.Context;
 
@@ -33,6 +33,18 @@ public class CaEngine {
     public static final int MENU_LOGOUT = 900;
 
     public static final String[] NO_CMD_ARGS = new String[]{};
+
+    public static final int ALARM_TYPE_UNKNOWN = 0;
+    public static final int ALARM_TYPE_REQUEST_ACK_MEMBER = 1001;
+    public static final int ALARM_TYPE_RESPONSE_ACK_MEMBER_ACCEPTED = 1002;
+    public static final int ALARM_TYPE_RESPONSE_ACK_MEMBER_REJECTED = 1003;
+    public static final int ALARM_TYPE_RESPONSE_ACK_MEMBER_CANCELED = 1004;
+    public static final int ALARM_TYPE_NOTI_KWH = 1101;
+    public static final int ALARM_TYPE_NOTI_WON = 1102;
+    public static final int ALARM_TYPE_NOTI_PRICE_LEVEL = 1103;
+    public static final int ALARM_TYPE_NOTI_USAGE = 1104;
+    public static final int ALARM_TYPE_NOTI_TRANS = 1110;
+    public static final int ALARM_TEST = 2;
 
     public CaEngine() {
 

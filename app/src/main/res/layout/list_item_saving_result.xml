@@ -5,7 +5,7 @@
     android:id="@+id/area_root2"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:background="#c0f0f0">
+    android:background="@drawable/shape_round_corner_filled_yellow_a">
 
     <TextView
         android:id="@+id/tv_saving_standard"
@@ -13,14 +13,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        android:fontFamily="@font/opensans_regular"
         android:gravity="center_horizontal"
+        android:text="절감 기준  162.5"
         android:textColor="@color/eg_cyan_dark"
-        android:textSize="18sp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tv_instrument_usage"
         app:layout_constraintTop_toBottomOf="@+id/tv_instrument"
-        app:layout_constraintVertical_bias="0.5"
-        tools:text="절감 기준   162.5" />
+        app:layout_constraintVertical_bias="0.5" />
 
     <TextView
         android:id="@+id/tv_saving_goal"
@@ -28,13 +29,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        android:fontFamily="@font/opensans_regular"
         android:gravity="center_horizontal"
+        android:text="절감 목표  146.2"
         android:textColor="@color/eg_cyan_dark"
-        android:textSize="18sp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tv_instrument"
-        app:layout_constraintTop_toBottomOf="@+id/tv_instrument"
-        tools:text="절감 목표   146.2" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_instrument" />
 
     <TextView
         android:id="@+id/tv_instrument"
@@ -44,13 +46,14 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="16dp"
         android:ellipsize="end"
+        android:fontFamily="@font/opensans_regular"
         android:singleLine="true"
+        android:text="냉온방 공조기"
         android:textColor="@color/ks_gray"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="냉온방 공조기" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_instrument_usage"
@@ -58,14 +61,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="70dp"
-        android:layout_marginRight="70dp"
         android:ellipsize="end"
+        android:fontFamily="@font/opensans_regular"
         android:singleLine="true"
+        android:text="사용량   126.4"
         android:textColor="@color/eg_cyan_dark"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="사용량   126.4" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

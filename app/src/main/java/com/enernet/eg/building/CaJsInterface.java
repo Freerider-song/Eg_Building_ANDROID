@@ -1,4 +1,4 @@
-package com.enernet.eg.building.model;
+package com.enernet.eg.building;
 
 import android.util.Log;
 import android.webkit.JavascriptInterface;

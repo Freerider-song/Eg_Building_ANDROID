@@ -9,14 +9,15 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.enernet.eg.building.model.CaResult;
-import com.enernet.eg.building.model.IaResultHandler;
+import com.enernet.eg.building.CaResult;
+import com.enernet.eg.building.IaResultHandler;
 import com.enernet.eg.building.R;
-import com.enernet.eg.building.model.CaJsInterface;
+import com.enernet.eg.building.CaJsInterface;
 
 import java.net.URISyntaxException;
 
 public class ActivityAuth extends BaseActivity implements IaResultHandler {
+
 
     private WebView m_WebView;
     private static final String m_strUrlCert = "https://www.egservice.co.kr/CertNiceApp/index.jsp";

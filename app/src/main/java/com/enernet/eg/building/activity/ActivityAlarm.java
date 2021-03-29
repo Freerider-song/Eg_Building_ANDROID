@@ -12,8 +12,8 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.enernet.eg.building.model.CaResult;
-import com.enernet.eg.building.model.IaResultHandler;
+import com.enernet.eg.building.CaResult;
+import com.enernet.eg.building.IaResultHandler;
 import com.enernet.eg.building.R;
 
 public class ActivityAlarm extends BaseActivity implements IaResultHandler {
@@ -118,7 +118,6 @@ public class ActivityAlarm extends BaseActivity implements IaResultHandler {
 
     @Override
     public void onBackPressed() {
-
             finish();
 
     }
