@@ -53,5 +53,8 @@ dependencies {
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation 'com.google.firebase:firebase-analytics'
 
+    // Import Loading
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
 
 }

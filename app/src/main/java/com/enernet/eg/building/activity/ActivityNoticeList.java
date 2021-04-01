@@ -14,11 +14,24 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.enernet.eg.building.CaApplication;
+import com.enernet.eg.building.CaEngine;
+import com.enernet.eg.building.CaInfo;
 import com.enernet.eg.building.CaResult;
 import com.enernet.eg.building.IaResultHandler;
 import com.enernet.eg.building.R;
 import com.enernet.eg.building.ListViewInfinite;
+import com.enernet.eg.building.model.CaNotice;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class ActivityNoticeList extends BaseActivity implements IaResultHandler, ListViewInfinite.ListenerInfinite {
 
@@ -46,15 +59,15 @@ public class ActivityNoticeList extends BaseActivity implements IaResultHandler,
 
         @Override
         public int getCount() {
-            //return CaApplication.m_Info.m_alNotice.size();
-            return 15;
+            return CaApplication.m_Info.m_alNotice.size();
+            //return 15;
         }
 
         @Override
         public Object getItem(int position) {
 
-            //return CaApplication.m_Info.m_alNotice.get(position);
-            return position;
+            return CaApplication.m_Info.m_alNotice.get(position);
+            //return position;
         }
 
         @Override
@@ -86,7 +99,7 @@ public class ActivityNoticeList extends BaseActivity implements IaResultHandler,
             else {
                 holder = (NoticeViewHolder) convertView.getTag();
             }
-            /*
+
 
             final CaNotice notice = CaApplication.m_Info.m_alNotice.get(position);
 
@@ -97,20 +110,20 @@ public class ActivityNoticeList extends BaseActivity implements IaResultHandler,
                 holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_notice_normal));
             }
 
-            if (notice.m_nNoticeType==1) {
+            if (notice.m_nWriterType==1) {
                 holder.m_ivNoticeType.setImageDrawable(getDrawable(R.drawable.notice_site));
             }
             else {
                 holder.m_ivNoticeType.setImageDrawable(getDrawable(R.drawable.notice_eg));
             }
 
-            holder.m_tvTitle.setText(notice.m_strTitle);
+            holder.m_tvNoticeTitle.setText(notice.m_strTitle);
             holder.m_tvTimeCreated.setText(notice.getTimeCreated());
 
             if (notice.m_bRead) holder.m_ivNew.setVisibility(View.INVISIBLE);
             else holder.m_ivNew.setVisibility(View.VISIBLE);
 
-             */
+
 
             return convertView;
         }
@@ -122,6 +135,13 @@ public class ActivityNoticeList extends BaseActivity implements IaResultHandler,
         setContentView(R.layout.activity_notice_list);
 
         prepareDrawer();
+
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+        String getTime = sdf.format(date);
+
+        CaApplication.m_Engine.GetBldNoticeList(CaApplication.m_Info.m_nSeqAdmin, getTime, 7, this , this);
 
         m_lvNotice = findViewById(R.id.lv_notice_list);
         TextView tvEmpty = findViewById(R.id.tv_empty2);
@@ -139,13 +159,13 @@ public class ActivityNoticeList extends BaseActivity implements IaResultHandler,
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.i("ListNotice", "Item clicked, pos="+position);
-                /*
+
 
                 CaNotice notice=CaApplication.m_Info.m_alNotice.get(position);
                 notice.m_bRead=true;
                 notice.m_bReadStateChanged=true;
                 notice.m_dtRead= Calendar.getInstance().getTime();
-                m_NoticeAdapter.notifyDataSetChanged();*/
+                m_NoticeAdapter.notifyDataSetChanged();
 
                 View.OnClickListener LsnBack=new View.OnClickListener() {
                     @Override
@@ -173,16 +193,16 @@ public class ActivityNoticeList extends BaseActivity implements IaResultHandler,
             }
         });
     }
-/*
+
     public void setNoticeReadStateToDb() {
         String strSeqNoticeList = CaApplication.m_Info.getNoticeReadListString();
         if (strSeqNoticeList.isEmpty()) {
             finish();
         }
         else {
-            CaApplication.m_Engine.SetNoticeListAsRead(CaApplication.m_Info.m_nSeqMember, strSeqNoticeList, this, this);
+            CaApplication.m_Engine.SetBldNoticeListAsRead(CaApplication.m_Info.m_nSeqMember, strSeqNoticeList, this, this);
         }
-    }*/
+    }
 
     @Override
     public void onBackPressed() {
@@ -190,7 +210,7 @@ public class ActivityNoticeList extends BaseActivity implements IaResultHandler,
             m_Drawer.closeDrawer();
         }
         else {
-            //setNoticeReadStateToDb();
+            setNoticeReadStateToDb();
             finish();
         }
 
@@ -207,8 +227,8 @@ public class ActivityNoticeList extends BaseActivity implements IaResultHandler,
 
     public void setNoticeCount() {
         TextView tvNoticeCount=findViewById(R.id.tv_notice_count);
-        //String strNoticeCount="* 총 "+CaApplication.m_Info.m_alNotice.size()+" 건";
-        String strNoticeCount="* 총 5건";
+        String strNoticeCount="* 총 "+CaApplication.m_Info.m_alNotice.size()+" 건";
+        //String strNoticeCount="* 총 5건";
         tvNoticeCount.setText(strNoticeCount);
     }
 
@@ -232,14 +252,53 @@ public class ActivityNoticeList extends BaseActivity implements IaResultHandler,
     @Override
     public void onResult(CaResult Result) {
 
+        if (Result.object==null) {
+            Toast.makeText(getApplicationContext(),"Check Network", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        switch (Result.m_nCallback) {
+            case CaEngine.CB_GET_BLD_NOTICE_LIST: {
+                Log.i("NoticeList", "Result of GetNoticeList received...");
+
+                try {
+                    JSONObject jo = Result.object;
+                    JSONArray jaTop = jo.getJSONArray("notice_top_list");
+                    JSONArray jaNormal = jo.getJSONArray("notice_list");
+
+                    Log.i("NoticeList", "jaNormal length="+jaNormal.length());
+
+                    if (jaNormal.length()==0) {
+                        m_lvNotice.m_bNoMoreData=true;
+                    }
+
+                    CaApplication.m_Info.setNoticeList(jaTop, jaNormal);
+                    setNoticeCount();
+
+                    m_lvNotice.onDataAppended();
+
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            break;
+
+            default: {
+                Log.i("NoticeList", "Unknown type result received : " + Result.m_nCallback);
+            }
+            break;
+
+        } // end of switch
+
     }
 
     @Override
     public void onNeedLoadData() {
         Log.i("NoticeList", "onNeedLoadData called...");
 
-        //String strTimeMax=CaApplication.m_Info.m_dfyyyyMMddhhmmss.format(CaApplication.m_Info.m_dtNoticeCreatedMaxForNextRequest);
+        String strTimeMax=CaApplication.m_Info.m_dfyyyyMMddhhmmss.format(CaApplication.m_Info.m_dtNoticeCreatedMaxForNextRequest);
 
-        //CaApplication.m_Engine.GetNoticeList(CaApplication.m_Info.m_nSeqMember, strTimeMax, CaInfo.DEFAULT_REQUEST_NOTICE_COUNT, this, this);
+        CaApplication.m_Engine.GetBldNoticeList(CaApplication.m_Info.m_nSeqMember, strTimeMax, CaInfo.DEFAULT_REQUEST_NOTICE_COUNT, this, this);
     }
 }

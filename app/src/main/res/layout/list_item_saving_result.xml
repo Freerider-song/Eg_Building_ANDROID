@@ -5,7 +5,7 @@
     android:id="@+id/area_root2"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:background="@drawable/shape_round_corner_filled_yellow_a">
+    android:background="@drawable/shape_round_corner_pastel_yellow_filled">
 
     <TextView
         android:id="@+id/tv_saving_standard"

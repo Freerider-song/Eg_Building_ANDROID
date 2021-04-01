@@ -1,20 +1,26 @@
 package com.enernet.eg.building;
 
 import android.content.Context;
+import android.util.Log;
+
+import java.sql.Time;
 
 public class CaEngine {
 
     public static final int CB_NONE = 0;
-    /*
-    public static final int AUTH_TYPE_UNKNOWN = 100;
 
     //API 요청
-	public static final int KS_CHECK_MEMBER_LOGIN = 1000;
-	public static final int KS_GET_MEMBER_INFO = 1001;
-	public static final int KS_GET_PROJECT_LIST_FOR_MEMBER = 1002;
-	public static final int KS_GET_PROJECT_INFO = 1003;
-	public static final int KS_GET_NOTICE_LIST = 1004;
-     */
+    public static final int CB_CHECK_ADMIN_LOGIN = 1001;
+    public static final int CB_GET_BLD_ADMIN_INFO = 1002;
+    public static final int CB_CHANGE_ADMIN_PASSWORD = 1003;
+    public static final int CB_REQUEST_AUTH_CODE = 1004;
+    public static final int CB_CHECK_AUTH_CODE = 1005;
+    public static final int CB_CHECK_ADMIN_CANDIDATE = 1006;
+    public static final int CB_GET_ADMIN_USAGE_CURRENT = 1007;
+    public static final int CB_GET_ADMIN_ALARM_LIST = 1008;
+    public static final int CB_GET_BLD_NOTICE_LIST = 1009;
+    public static final int CB_SET_BLD_NOTICE_AS_READ = 1010;
+
 
     public static final int AUTH_TYPE_UNKNOWN = 1000;
     public static final int AUTH_TYPE_SUBSCRIBE = 1001;
@@ -28,7 +34,6 @@ public class CaEngine {
     public static final int MENU_SAVING = 300;
     public static final int MENU_ALARM = 500;
     public static final int MENU_NOTICE = 600;
-
     public static final int MENU_SETTING = 800;
     public static final int MENU_LOGOUT = 900;
 
@@ -67,20 +72,79 @@ public class CaEngine {
 
         return Result;
     }
-    /*
 
-    public void CheckMemberLogin(final String Id, final String Password, Context Ctx, IaResultHandler ResultHandler){
-        Log.i("ENGINE", "Id=" + Id + ", Password=" + Password);
+    public void CheckAdminLogin(final String AdminId, final String Password, Context Ctx, IaResultHandler ResultHandler){
+        Log.i("ENGINE", "Id=" + AdminId + ", Password=" + Password);
 
-        CaArg Arg = new CaArg("CheckMemberLogin", NO_CMD_ARGS, null);
-        Arg.addArg("Id", Id);
+        CaArg Arg = new CaArg("CheckAdminLogin", NO_CMD_ARGS, null);
+        Arg.addArg("AdminId", AdminId);
         Arg.addArg("Password", Password);
-        Arg.addArg("DeviceId", CaApplication.m_Info.m_strPushId);
-        Arg.addArg("Os", "ANDROID");
-        Arg.addArg("Version", 1910231);
 
-        executeCommand(Arg, KS_CHECK_MEMBER_LOGIN, false, true, Ctx, ResultHandler);
+        executeCommand(Arg, CB_CHECK_ADMIN_LOGIN, false, true, Ctx, ResultHandler);
     }
 
-     */
+    public void GetBldAdminInfo(final int SeqAdmin, Context Ctx, IaResultHandler ResultHandler){
+        Log.i("ENGINE", "-");
+
+        CaArg Arg = new CaArg("GetBldAdminInfo", NO_CMD_ARGS, null);
+        Arg.addArg("SeqAdmin", SeqAdmin);
+
+        executeCommand(Arg, CB_GET_BLD_ADMIN_INFO, false, true, Ctx, ResultHandler);
+    }
+
+    public void ChangeAdminPassword(final int SeqAdmin, final String PasswordNew, Context Ctx, IaResultHandler ResultHandler){
+        Log.i("ENGINE", "-");
+
+        CaArg Arg = new CaArg("ChangeAdminPassword", NO_CMD_ARGS, null);
+        Arg.addArg("SeqAdmin", SeqAdmin);
+        Arg.addArg("PasswordNew", PasswordNew);
+
+        executeCommand(Arg, CB_CHANGE_ADMIN_PASSWORD, false, true, Ctx, ResultHandler);
+    }
+
+    public void RequestAuthCode(final String Id, final String Phone, Context Ctx, IaResultHandler ResultHandler){
+        Log.i("ENGINE", "-");
+
+        CaArg Arg = new CaArg("RequestAuthCode", NO_CMD_ARGS, null);
+        Arg.addArg("Id", Id);
+        Arg.addArg("Phone", Phone);
+
+        executeCommand(Arg, CB_REQUEST_AUTH_CODE, false, true, Ctx, ResultHandler);
+    }
+
+    public void CheckAuthCode(final String Phone, final String AuthCode, final int SecTimeLimit, Context Ctx, IaResultHandler ResultHandler){
+        Log.i("ENGINE", "-");
+
+        CaArg Arg = new CaArg("CheckAuthCode", NO_CMD_ARGS, null);
+        Arg.addArg("Phone", Phone);
+        Arg.addArg("AuthCode", AuthCode);
+        Arg.addArg("SecTimeLimit", SecTimeLimit);
+
+        executeCommand(Arg, CB_CHECK_AUTH_CODE, false, true, Ctx, ResultHandler);
+    }
+
+    public void GetBldNoticeList(final int SeqAdmin, final String TimeCreatedMax, final int CountNotice, Context Ctx, IaResultHandler ResultHandler){
+        Log.i("ENGINE", "-");
+
+        CaArg Arg = new CaArg("GetBldNoticeList", NO_CMD_ARGS, null);
+        Arg.addArg("SeqAdmin", SeqAdmin);
+        Arg.addArg("TimeCreatedMax", TimeCreatedMax);
+        Arg.addArg("CountNotice", CountNotice);
+
+        executeCommand(Arg, CB_GET_BLD_NOTICE_LIST, false, true, Ctx, ResultHandler);
+    }
+
+    public void SetBldNoticeListAsRead(final int SeqAdmin, final String strSeqNoticeList, Context Ctx, IaResultHandler ResultHandler){
+        Log.i("ENGINE", "-");
+
+        CaArg Arg = new CaArg("GetBldNoticeList", NO_CMD_ARGS, null);
+        Arg.addArg("SeqAdmin", SeqAdmin);
+        Arg.addArg("SeqNoticeList", strSeqNoticeList);
+
+        executeCommand(Arg, CB_SET_BLD_NOTICE_AS_READ, false, true, Ctx, ResultHandler);
+    }
+
+
+
+
 }

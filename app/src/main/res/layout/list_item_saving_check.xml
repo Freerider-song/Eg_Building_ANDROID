@@ -9,8 +9,9 @@
         android:id="@+id/checkBox4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="2층 에어컨 끄기"
+        android:background="@drawable/shape_round_corner_pastel_red_filled"
         android:fontFamily="@font/opensans_regular"
+        android:text="2층 에어컨 끄기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="16dp" />

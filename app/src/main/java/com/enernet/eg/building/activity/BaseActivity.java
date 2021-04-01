@@ -19,6 +19,7 @@ import com.enernet.eg.building.ActivityLogin;
 import com.enernet.eg.building.CaApplication;
 
 import com.enernet.eg.building.CaEngine;
+import com.enernet.eg.building.CaPref;
 import com.enernet.eg.building.R;
 import com.enernet.eg.building.EgDialogLogout;
 import com.enernet.eg.building.StringUtil;
@@ -27,6 +28,7 @@ import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.holder.BadgeStyle;
+import com.mikepenz.materialdrawer.holder.StringHolder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
@@ -257,14 +259,14 @@ public class BaseActivity extends AppCompatActivity {
                                     public void onClick(View v) {
                                         Log.i("BaseActivity", "Yes button clicked...");
                                         m_dlgLogout.dismiss();
-                                        /*
+
 
                                         CaPref pref = new CaPref(Ctx);
 
                                         pref.setValue(CaPref.PREF_MEMBER_ID, "");
                                         pref.setValue(CaPref.PREF_PASSWORD, "");
 
-                                         */
+
 
                                         final Class Clazz= ActivityLogin.class;
 
@@ -296,44 +298,7 @@ public class BaseActivity extends AppCompatActivity {
                                 m_dlgLogout.show();
                             }
                             break;
-                            /*
 
-
-
-                            case CaEngine.MENU_SITE_STATE: {
-                                Intent it = new Intent(This, ActivitySiteState.class);
-                                startActivity(it);
-                            }
-                            break;
-
-                            case CaEngine.MENU_POINT: {
-                                Intent it = new Intent(This, ActivityPoint.class);
-                                startActivity(it);
-                            }
-                            break;
-
-
-
-
-
-                            case CaEngine.MENU_FAQ: {
-                                Intent it = new Intent(This, ActivityFaq.class);
-                                startActivity(it);
-                            }
-                            break;
-
-                            case CaEngine.MENU_QNA: {
-
-                                Intent it = new Intent(This, ActivityQnaList.class);
-                                startActivity(it);
-
-                            }
-                            break;
-
-
-
-
-                            */
                             default: {
                                 Log.d("Drawer", "Unknon menu with id="+nId);
                             }
@@ -350,9 +315,7 @@ public class BaseActivity extends AppCompatActivity {
                         Log.d("Drawer", "onDrawerOpened called...");
 
                         // alarm badge
-
-                        /*
-                        int nCountUnreadAlarm=CaApplication.m_Info.getUnreadAlarmCount();
+                        int nCountUnreadAlarm=CaApplication.m_Info.m_nUnreadAlarmCount;
 
                         if (nCountUnreadAlarm==0) {
                             m_Drawer.updateBadge(CaEngine.MENU_ALARM, null);
@@ -363,7 +326,7 @@ public class BaseActivity extends AppCompatActivity {
                         }
 
                         // notice badge
-                        int nCountUnreadNotice=CaApplication.m_Info.getUnreadNoticeCount();
+                        int nCountUnreadNotice=CaApplication.m_Info.m_nUnreadNoticeCount;
 
                         if (nCountUnreadNotice==0) {
                             m_Drawer.updateBadge(CaEngine.MENU_NOTICE, null);
@@ -372,17 +335,6 @@ public class BaseActivity extends AppCompatActivity {
                             String strCount=Integer.toString(nCountUnreadNotice);
                             m_Drawer.updateBadge(CaEngine.MENU_NOTICE, new StringHolder(strCount));
                         }
-
-                        // qna badge
-                        int nCountUnreadQna=CaApplication.m_Info.getUnreadQnaCount();
-
-                        if (nCountUnreadQna==0) {
-                            m_Drawer.updateBadge(CaEngine.MENU_QNA, null);
-                        }
-                        else {
-                            String strCount=Integer.toString(nCountUnreadQna);
-                            m_Drawer.updateBadge(CaEngine.MENU_QNA, new StringHolder(strCount));
-                        }*/
 
                     }
 

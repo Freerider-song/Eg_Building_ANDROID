@@ -2,7 +2,9 @@ package com.enernet.eg.building.activity;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 
 import com.ekn.gruzer.gaugelibrary.HalfGauge;
 import com.ekn.gruzer.gaugelibrary.Range;
+import com.enernet.eg.building.ActivityLogin;
 import com.enernet.eg.building.R;
 
 import pl.pawelkleczkowski.customgauge.CustomGauge;
@@ -321,15 +324,30 @@ public class ActivityHome extends BaseActivity {
 
     public void promptAppExit() {
         // kill app
-        finishAffinity();
-        System.runFinalization();
-        System.exit(0);
+        AlertDialog.Builder dlg = new AlertDialog.Builder(ActivityHome.this);
+        dlg.setTitle("경고"); //제목
+        dlg.setMessage("앱을 종료하시겠습니까?"); // 메시지
+        //dlg.setIcon(R.drawable.deum); // 아이콘 설정
+//                버튼 클릭시 동작
+
+        dlg.setNegativeButton("취소",new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int which) {
+                // kill app
+                finishAffinity();
+                System.runFinalization();
+                System.exit(0);
+            }
+        });
+
+        dlg.show();
+
 
     }
-
-
-
-
 
 }
 

@@ -68,6 +68,11 @@
     <color name="eg_yellow_dark">#F4C322</color>
     <color name="eg_brown">#946525</color>
     <color name="eg_menu_blue">#29ABE2</color>
+    <color name="eg_pastel_blue">#E2FCFB</color>
+
+    <color name="eg_pastel_red">#FF9AA2</color>
+    <color name="eg_pastel_yellow">#FDFD96</color>
+    <color name="eg_pastel_green">#B5EAD7</color>
 
     <color name="main">#FFFFFF</color>
     <color name="ks_yellow">#F0E805</color>

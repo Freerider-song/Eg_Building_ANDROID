@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 public class CaTask extends AsyncTask<CaArg, Void, CaResult> {
 
-    private static final String m_strUrlApi  = "https://www.egservice.co.kr:6187/KepcoSafety/";
+    private static final String m_strUrlApi  = "https://www.egservice.co.kr:7187/api/";
 
     private IaResultHandler m_ResultHandler;
     private Context m_Context;
