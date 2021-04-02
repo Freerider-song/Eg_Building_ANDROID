@@ -20,6 +20,7 @@ public class CaEngine {
     public static final int CB_GET_ADMIN_ALARM_LIST = 1008;
     public static final int CB_GET_BLD_NOTICE_LIST = 1009;
     public static final int CB_SET_BLD_NOTICE_AS_READ = 1010;
+    public static final int CB_GET_SAVE_RESULT_DAILY = 1011;
 
 
     public static final int AUTH_TYPE_UNKNOWN = 1000;
@@ -92,11 +93,11 @@ public class CaEngine {
         executeCommand(Arg, CB_GET_BLD_ADMIN_INFO, false, true, Ctx, ResultHandler);
     }
 
-    public void ChangeAdminPassword(final int SeqAdmin, final String PasswordNew, Context Ctx, IaResultHandler ResultHandler){
+    public void ChangeAdminPassword(final String Id, final String PasswordNew, Context Ctx, IaResultHandler ResultHandler){
         Log.i("ENGINE", "-");
 
         CaArg Arg = new CaArg("ChangeAdminPassword", NO_CMD_ARGS, null);
-        Arg.addArg("SeqAdmin", SeqAdmin);
+        Arg.addArg("Id", Id);
         Arg.addArg("PasswordNew", PasswordNew);
 
         executeCommand(Arg, CB_CHANGE_ADMIN_PASSWORD, false, true, Ctx, ResultHandler);
@@ -142,6 +143,16 @@ public class CaEngine {
         Arg.addArg("SeqNoticeList", strSeqNoticeList);
 
         executeCommand(Arg, CB_SET_BLD_NOTICE_AS_READ, false, true, Ctx, ResultHandler);
+    }
+
+    public void GetSaveResultDaily(final int SeqSavePlanActive, final String DateTarget, Context Ctx, IaResultHandler ResultHandler){
+        Log.i("ENGINE", "-");
+
+        CaArg Arg = new CaArg("GetSaveResultDaily", NO_CMD_ARGS, null);
+        Arg.addArg("SeqSavePlan", SeqSavePlanActive);
+        Arg.addArg("DateTarget", DateTarget);
+
+        executeCommand(Arg, CB_GET_SAVE_RESULT_DAILY, false, true, Ctx, ResultHandler);
     }
 
 

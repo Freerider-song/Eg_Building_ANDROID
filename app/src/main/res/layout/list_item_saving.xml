@@ -11,14 +11,32 @@
         android:id="@+id/tv_usage_today"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
         android:ellipsize="end"
         android:fontFamily="@font/opensans_regular"
         android:singleLine="true"
-        android:text="오늘 사용량  31.4 kWh"
+        android:text="오늘 사용량  42.4 kWh"
         android:textColor="@color/eg_cyan_dark"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_usage_goal" />
+
+    <TextView
+        android:id="@+id/tv_usage_ref"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/opensans_regular"
+        android:singleLine="true"
+        android:text="기준 사용량  31.4 kWh"
+        android:textColor="@color/eg_cyan_dark"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/lv_saving_check_list"
         app:layout_constraintStart_toStartOf="@+id/tv_usage_goal"
         app:layout_constraintTop_toBottomOf="@+id/tv_usage_goal" />
 
@@ -33,7 +51,7 @@
         android:singleLine="true"
         android:text="목표 사용량  42.4 kWh"
         android:textColor="@color/eg_cyan_dark"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_saving_title" />
@@ -42,7 +60,7 @@
         android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="30dp"
         android:fontFamily="@font/opensans_regular"
         android:gravity="center_horizontal"
         android:text="08시 - 11시"
@@ -61,7 +79,7 @@
         app:layout_constraintBottom_toTopOf="@+id/tv_saving_result"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_usage_today" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_usage_ref" />
 
     <TextView
         android:id="@+id/tv_saving_result"

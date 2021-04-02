@@ -86,9 +86,9 @@
                 android:id="@+id/lv_saving_list"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="15dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="15dp"
-                android:layout_marginEnd="15dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginBottom="15dp"
                 android:divider="#00000000"
                 android:dividerHeight="8dp"
@@ -105,8 +105,8 @@
                 android:id="@+id/constraintLayout"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:background="@drawable/shape_round_corner_cyan_light_hollow"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -141,7 +141,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/textView38"
+                android:id="@+id/tv_kwh_plan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="절감목표\n(211.5)"
@@ -149,13 +149,13 @@
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/halfGauge"
                 app:layout_constraintEnd_toEndOf="@+id/halfGauge"
-                app:layout_constraintHorizontal_bias="0.225"
+                app:layout_constraintHorizontal_bias="0.47"
                 app:layout_constraintStart_toStartOf="@+id/halfGauge"
                 app:layout_constraintTop_toTopOf="@+id/halfGauge"
-                app:layout_constraintVertical_bias="0.218" />
+                app:layout_constraintVertical_bias="0.19999999" />
 
             <TextView
-                android:id="@+id/textView39"
+                android:id="@+id/tv_kwh_ref"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="절감기준\n(465.5)"

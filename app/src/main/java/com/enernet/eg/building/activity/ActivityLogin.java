@@ -29,6 +29,7 @@ import com.google.firebase.iid.FirebaseInstanceIdReceiver;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -221,7 +222,7 @@ public class ActivityLogin extends BaseActivity implements IaResultHandler {
                 //Log.i{TAG, "Result of GetBldAdminInfo received...");
                 try {
                     JSONObject jo = Result.object;
-                    JSONObject joListSite = jo.getJSONObject("list_site");
+                    JSONArray jaListSite = jo.getJSONArray("list_site");
 
                     CaApplication.m_Info.m_strAdminName = jo.getString("admin_name");
                     CaApplication.m_Info.m_strAdminPhone = jo.getString("admin_phone");
@@ -245,20 +246,24 @@ public class ActivityLogin extends BaseActivity implements IaResultHandler {
                     CaApplication.m_Info.m_dThresholdThisMonthWon = jo.getDouble("threshold_this_month_won");
                     CaApplication.m_Info.m_nHourNotiThisMonthUsage = jo.getInt("hour_noti_this_month_usage");
 
-                    CaApplication.m_Info.m_nSeqSite = joListSite.getInt("seq_site");
-                    CaApplication.m_Info.m_nSiteType = joListSite.getInt("site_type");
-                    CaApplication.m_Info.m_strSiteName = joListSite.getString("site_name");
-                    CaApplication.m_Info.m_nBuiltYear = joListSite.getInt("built_year");
-                    CaApplication.m_Info.m_nBuiltMonth = joListSite.getInt("built_month");
-                    CaApplication.m_Info.m_strFloorInfo = joListSite.getString("floor_info");
-                    CaApplication.m_Info.m_strHomePage = joListSite.getString("home_page");
-                    CaApplication.m_Info.m_strSitePhone = joListSite.getString("site_phone");
-                    CaApplication.m_Info.m_strSiteFax = joListSite.getString("site_fax");
-                    CaApplication.m_Info.m_strSiteAddress = joListSite.getString("site_address");
-                    CaApplication.m_Info.m_dSiteDx = joListSite.getDouble("site_dx");
-                    CaApplication.m_Info.m_dSiteDy = joListSite.getDouble("site_dy");
-                    CaApplication.m_Info.m_dKwContracted = joListSite.getDouble("kw_contracted");
-                    CaApplication.m_Info.m_nReadDay = joListSite.getInt("read_day");
+                    for(int i =0; i<jaListSite.length();i++){
+                        JSONObject joListSite = jaListSite.getJSONObject(i);
+                        CaApplication.m_Info.m_nSeqSite = joListSite.getInt("seq_site");
+                        CaApplication.m_Info.m_nSiteType = joListSite.getInt("site_type");
+                        CaApplication.m_Info.m_strSiteName = joListSite.getString("site_name");
+                        CaApplication.m_Info.m_nBuiltYear = joListSite.getInt("built_year");
+                        CaApplication.m_Info.m_nBuiltMonth = joListSite.getInt("built_month");
+                        CaApplication.m_Info.m_strFloorInfo = joListSite.getString("floor_info");
+                        CaApplication.m_Info.m_strHomePage = joListSite.getString("home_page");
+                        CaApplication.m_Info.m_strSitePhone = joListSite.getString("site_phone");
+                        CaApplication.m_Info.m_strSiteFax = joListSite.getString("site_fax");
+                        CaApplication.m_Info.m_strSiteAddress = joListSite.getString("site_address");
+                        CaApplication.m_Info.m_dSiteDx = joListSite.getDouble("site_dx");
+                        CaApplication.m_Info.m_dSiteDy = joListSite.getDouble("site_dy");
+                        CaApplication.m_Info.m_dKwContracted = joListSite.getDouble("kw_contracted");
+                        CaApplication.m_Info.m_nReadDay = joListSite.getInt("read_day");
+                        CaApplication.m_Info.m_nSeqSavePlanActive= joListSite.getInt("seq_save_plan_active");
+                    }
 
                     Log.i("eee", "성공적으로 불려졌습니다."+CaApplication.m_Info.m_nReadDay);
 

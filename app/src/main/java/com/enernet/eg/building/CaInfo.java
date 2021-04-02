@@ -5,12 +5,16 @@ import android.telephony.PhoneNumberUtils;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.enernet.eg.building.model.CaAct;
+import com.enernet.eg.building.model.CaActHistory;
 import com.enernet.eg.building.model.CaNotice;
+import com.enernet.eg.building.model.CaPlan;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,6 +32,9 @@ public class CaInfo {
     public SimpleDateFormat m_dfyyyyMMddhhmmss=new SimpleDateFormat("yyyyMMddHHmmss");
     public SimpleDateFormat m_dfyyyyMMdd=new SimpleDateFormat("yyyyMMdd");
     public SimpleDateFormat m_dfyyyyMMddhhmm_ampm=new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+
+    public DecimalFormat m_dfKwh = new DecimalFormat("0.#"); // 12345.7
+    public DecimalFormat m_dfWon = new DecimalFormat("#,##0"); // 87,654
 
 
     public int m_nResultCode =0;
@@ -68,6 +75,26 @@ public class CaInfo {
     public double m_dSiteDy=0.0;
     public double m_dKwContracted=0.0;
     public int m_nReadDay=0;
+    public int m_nSeqSavePlanActive=0;
+
+    public int m_nSeqSavePlan=0;
+    public int m_nSeqSaveRef=0;
+    public String m_strSavePlanName ="";
+    public String m_strSaveRefName = "";
+    public double m_dSaveKwhTotalFromElem=0.0;
+    public double m_dSaveWonTotalFromElem=0.0;
+    public double m_dSaveKwhTotalFromMeter=0.0;
+    public double m_dSaveWonTotalFromMeter=0.0;
+    public double m_dKwhRefForAllMeter=0.0;
+    public double m_dKwhPlanForAllMeter=0.0;
+    public double m_dKwhRealForAllMeter=0.0;
+    public double m_dWonRefForAllMeter=0.0;
+    public double m_dWonPlanForAllMeter=0.0;
+    public double m_dWonRealForAllMeter=0.0;
+    public Date m_dtSavePlanCreated= null;
+    public Date m_dtSavePlanEnded= null;
+    public int m_nActCount = 0;
+    public int m_nActCountWithHistory=0;
 
 
 
@@ -102,6 +129,7 @@ public class CaInfo {
     public String m_strPhoneSubscribing="";
 
     public ArrayList<CaNotice> m_alNotice=new ArrayList<>();
+    public ArrayList<CaPlan> m_alPlan = new ArrayList<>();
 
     /*
     public int m_nAuthType=CaEngine.AUTH_TYPE_UNKNOWN;
@@ -183,6 +211,73 @@ public class CaInfo {
         return dt;
     }
 
+
+    public void setPlanList(JSONArray jaPlan) {
+
+        Log.i("CaInfo", "SetPlanList is activated...");
+
+        m_alPlan.clear();
+
+        try{
+            for(int i =0; i<jaPlan.length(); i++){
+                JSONObject joPlan=jaPlan.getJSONObject(i);
+
+                CaPlan plan = new CaPlan();
+                plan.m_nSeqPlanElem=joPlan.getInt("seq_plan_elem");
+                plan.m_nSeqMeter=joPlan.getInt("seq_meter");
+                plan.m_strMid=joPlan.getString("mid");
+                plan.m_strMeterDescr=joPlan.getString("meter_descr");
+                plan.m_nHourFrom=joPlan.getInt("hour_from");
+                plan.m_nHourTo=joPlan.getInt("hour_to");
+                plan.m_nPercentToSave=joPlan.getInt("percent_to_save");
+                plan.m_dSaveKwh=joPlan.getDouble("save_kwh");
+                plan.m_dSaveWon=joPlan.getDouble("save_won");
+                plan.m_dKwhRef=joPlan.getDouble("kwh_ref");
+                plan.m_dKwhPlan=joPlan.getDouble("kwh_plan");
+                plan.m_dKwhReal=joPlan.getDouble("kwh_real");
+                plan.m_dWonRef=joPlan.getDouble("won_ref");
+                plan.m_dWonPlan=joPlan.getDouble("won_plan");
+                plan.m_dWonReal=joPlan.getDouble("won_real");
+
+                JSONArray jaAct = joPlan.getJSONArray("list_act");
+
+                plan.m_alAct = new ArrayList<>();
+                for(int j=0; j<jaAct.length(); j++){
+                    JSONObject joAct = jaAct.getJSONObject(j);
+
+                    CaAct act = new CaAct();
+                    act.m_nSeqAct=joAct.getInt("seq_act");
+                    act.m_strActContent=joAct.getString("act_content");
+
+                    JSONArray jaActHistory = joAct.getJSONArray("list_act_history");
+
+                    act.m_alActHistory = new ArrayList<>();
+                    for(int k=0; k<jaActHistory.length();k++){
+                        JSONObject joActHistory = jaActHistory.getJSONObject(k);
+
+                        CaActHistory actHistory = new CaActHistory();
+                        actHistory.m_nSeqActHistory = joActHistory.getInt("seq_act_history");
+                        actHistory.m_nSeqAdminBegin = joActHistory.getInt("seq_admin_begin");
+                        actHistory.m_nSeqAdminEnd = joActHistory.getInt("seq_admin_end");
+                        actHistory.m_dtBegin = parseDate(joActHistory.getString("time_begin"));
+                        actHistory.m_dtEnd = parseDate(joActHistory.getString("time_end"));
+
+                        act.m_alActHistory.add(actHistory);
+                    }
+                    plan.m_alAct.add(act);
+
+                }
+
+                m_alPlan.add(plan);
+                Log.i("CaInfo", "alPlan is" + m_alPlan);
+
+            }
+
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
     public CaNotice findNotice(int nSeqNotice) {
 
         for (CaNotice notice : m_alNotice) {
@@ -203,8 +298,9 @@ public class CaInfo {
         return notice;
     }
 
-
     public void setNoticeList(JSONArray jaTop, JSONArray jaNormal) {
+
+        m_alNotice.clear();
 
         try {
 
@@ -286,5 +382,17 @@ public class CaInfo {
         catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String getDecoPhoneNumber(String src) {
+        if (src == null) {
+            return "";
+        }
+        if (src.length() == 8) {
+            return src.replaceFirst("^([0-9]{4})([0-9]{4})$", "$1-$2");
+        } else if (src.length() == 12) {
+            return src.replaceFirst("(^[0-9]{4})([0-9]{4})([0-9]{4})$", "$1-$2-$3");
+        }
+        return src.replaceFirst("(^02|[0-9]{3})([0-9]{3,4})([0-9]{4})$", "$1-$2-$3");
     }
 }
