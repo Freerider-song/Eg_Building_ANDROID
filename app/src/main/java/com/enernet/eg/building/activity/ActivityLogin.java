@@ -33,6 +33,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ActivityLogin extends BaseActivity implements IaResultHandler {
 
     private EditText m_etUserId;
@@ -267,17 +270,65 @@ public class ActivityLogin extends BaseActivity implements IaResultHandler {
 
                     Log.i("eee", "성공적으로 불려졌습니다."+CaApplication.m_Info.m_nReadDay);
 
+                    long now = System.currentTimeMillis();
+                    Date date = new Date(now);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+                    String getTime = sdf.format(date);
+
+                    Log.i("get time is ", "is "+ getTime + "and saveplan is" + CaApplication.m_Info.m_nSeqSavePlanActive);
+
+                    CaApplication.m_Engine.GetSaveResultDaily(CaApplication.m_Info.m_nSeqSavePlanActive, getTime, this, this);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                finish();
 
-                Intent it = new Intent(this, ActivityHome.class);
-                startActivity(it);
 
 
             }
             break;
+
+            case CaEngine.CB_GET_SAVE_RESULT_DAILY: {
+                Log.i("Home", "Result of GetSaveResultDaily received...");
+
+                try {
+                    JSONObject jo = Result.object;
+                    JSONObject joSave = jo.getJSONObject("save_result_daily");
+                    JSONArray jaPlan = joSave.getJSONArray("list_plan_elem");
+
+                    CaApplication.m_Info.m_nSeqSaveRef = joSave.getInt("seq_save_ref");
+                    CaApplication.m_Info.m_nSeqSite = joSave.getInt("seq_site");
+                    CaApplication.m_Info.m_strSavePlanName = joSave.getString("save_plan_name");
+                    CaApplication.m_Info.m_strSaveRefName = joSave.getString("save_ref_name");
+                    CaApplication.m_Info.m_dSaveKwhTotalFromElem = joSave.getDouble("save_kwh_total_from_elem");
+                    CaApplication.m_Info.m_dSaveWonTotalFromElem = joSave.getDouble("save_won_total_from_elem");
+                    CaApplication.m_Info.m_dSaveKwhTotalFromMeter = joSave.getDouble("save_kwh_total_from_meter");
+                    CaApplication.m_Info.m_dSaveWonTotalFromMeter = joSave.getDouble("save_kwh_total_from_meter");
+                    CaApplication.m_Info.m_dKwhPlanForAllMeter = joSave.getDouble("kwh_plan_for_all_meter");
+                    CaApplication.m_Info.m_dKwhRealForAllMeter = joSave.getDouble("kwh_real_for_all_meter");
+                    CaApplication.m_Info.m_dKwhRefForAllMeter = joSave.getDouble("kwh_ref_for_all_meter");
+                    CaApplication.m_Info.m_dWonPlanForAllMeter = joSave.getDouble("won_plan_for_all_meter");
+                    CaApplication.m_Info.m_dWonRealForAllMeter = joSave.getDouble("won_real_for_all_meter");
+                    CaApplication.m_Info.m_dWonRefForAllMeter = joSave.getDouble("won_ref_for_all_meter");
+                    CaApplication.m_Info.m_dtSavePlanEnded = parseDate(joSave.getString("time_ended"));
+                    CaApplication.m_Info.m_dtSavePlanCreated = parseDate(joSave.getString("time_created"));
+                    CaApplication.m_Info.m_nActCount = joSave.getInt("act_count");
+                    CaApplication.m_Info.m_nActCountWithHistory = joSave.getInt("act_count_with_history");
+
+
+                    CaApplication.m_Info.setPlanList(jaPlan);
+
+                    finish();
+
+                    Intent it = new Intent(this, ActivityHome.class);
+                    startActivity(it);
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            break;
+
 
             default: {
                 //Log.i(TAG, "Unknown type result received");

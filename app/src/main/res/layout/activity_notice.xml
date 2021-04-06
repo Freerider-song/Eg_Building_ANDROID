@@ -5,7 +5,7 @@
     android:layout_width="60mm"
     android:layout_height="80mm"
     android:layout_gravity="center"
-    android:background="@drawable/shape_round_corner_light_cyan_hollow"
+    android:background="@drawable/shape_square_corner_light_cyan_hollow"
     tools:context=".activity.ActivityNotice">
 
     <ScrollView
@@ -14,7 +14,7 @@
         android:layout_height="0dp"
 
         android:layout_below="@id/title_bar"
-        android:background="@drawable/shape_round_corner_cyan_light_filled"
+        android:background="@drawable/shape_squared_corner_cyan_light_filled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
