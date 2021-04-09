@@ -21,6 +21,11 @@ public class CaEngine {
     public static final int CB_GET_BLD_NOTICE_LIST = 1009;
     public static final int CB_SET_BLD_NOTICE_AS_READ = 1010;
     public static final int CB_GET_SAVE_RESULT_DAILY = 1011;
+    public static final int CB_GET_SAVE_RESULT = 1012;
+    public static final int CB_GET_USAGE_FOR_ALL_METER_DAY = 1013;
+    public static final int CB_GET_USAGE_FOR_ALL_METER_MONTH = 1014;
+    public static final int CB_GET_USAGE_FOR_ALL_METER_YEAR = 1015;
+
 
 
     public static final int AUTH_TYPE_UNKNOWN = 1000;
@@ -153,6 +158,51 @@ public class CaEngine {
         Arg.addArg("DateTarget", DateTarget);
 
         executeCommand(Arg, CB_GET_SAVE_RESULT_DAILY, false, true, Ctx, ResultHandler);
+    }
+
+    public void GetSaveResult(final int SeqSavePlanActive, final String DateFrom, final String DateTo, Context Ctx, IaResultHandler ResultHandler){
+        Log.i("ENGINE", "-");
+
+        CaArg Arg = new CaArg("GetSaveResult", NO_CMD_ARGS, null);
+        Arg.addArg("SeqSavePlan", SeqSavePlanActive);
+        Arg.addArg("DateFrom", DateFrom);
+        Arg.addArg("DateTo", DateTo);
+
+        executeCommand(Arg, CB_GET_SAVE_RESULT, false, true, Ctx, ResultHandler);
+    }
+
+    public void GetUsageForAllMeterDay(final int SeqSite, final int Year, final int Month, final int Day, Context Ctx, IaResultHandler ResultHandler){
+        Log.i("ENGINE", "-");
+
+        CaArg Arg = new CaArg("GetUsageForAllMeterDay", NO_CMD_ARGS, null);
+        Arg.addArg("SeqSite", SeqSite);
+        Arg.addArg("Year", Year);
+        Arg.addArg("Month", Month);
+        Arg.addArg("Day", Day);
+
+        executeCommand(Arg, CB_GET_USAGE_FOR_ALL_METER_DAY, false, true, Ctx, ResultHandler);
+    }
+
+    public void GetUsageForAllMeterMonth(final int SeqSite, final int Year, final int Month, Context Ctx, IaResultHandler ResultHandler){
+        Log.i("ENGINE", "-");
+
+        CaArg Arg = new CaArg("GetUsageForAllMeterMonth", NO_CMD_ARGS, null);
+        Arg.addArg("SeqSite", SeqSite);
+        Arg.addArg("Year", Year);
+        Arg.addArg("Month", Month);
+
+
+        executeCommand(Arg, CB_GET_USAGE_FOR_ALL_METER_MONTH, false, true, Ctx, ResultHandler);
+    }
+
+    public void GetUsageForAllMeterYear(final int SeqSite, final int Year, Context Ctx, IaResultHandler ResultHandler){
+        Log.i("ENGINE", "-");
+
+        CaArg Arg = new CaArg("GetUsageForAllMeterYear", NO_CMD_ARGS, null);
+        Arg.addArg("SeqSite", SeqSite);
+        Arg.addArg("Year", Year);
+
+        executeCommand(Arg, CB_GET_USAGE_FOR_ALL_METER_YEAR, false, true, Ctx, ResultHandler);
     }
 
 

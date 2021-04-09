@@ -9,13 +9,13 @@
 
     <Button
         android:id="@+id/btn_search"
-        android:layout_width="55dp"
-        android:layout_height="30dp"
+        android:layout_width="70dp"
+        android:layout_height="35dp"
         android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="3dp"
-        android:background="@drawable/btn_search"
+        android:background="@drawable/shape_round_corner_cyan_light_filled"
         android:onClick="onClick"
+        android:text="조회"
+        android:textColor="#ffffff"
         app:layout_constraintStart_toEndOf="@+id/btn_select_time2"
         app:layout_constraintTop_toTopOf="@+id/btn_select_time2" />
 
@@ -178,7 +178,7 @@
             <com.github.mikephil.charting.charts.HorizontalBarChart
                 android:id="@+id/usage_bar_chart"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="450dp"
                 android:layout_marginTop="20dp"
                 android:background="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -225,6 +225,7 @@
         android:id="@+id/title_bar"
         android:layout_width="0dp"
         android:layout_height="60dp"
+        android:background="@color/eg_pastel_blue"
         android:onClick="onClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -265,7 +266,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.8" />
+            app:layout_constraintVertical_bias="0.5" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

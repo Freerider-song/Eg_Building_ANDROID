@@ -6,38 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".activity.ActivityUsageMonthly">
 
-    <pl.pawelkleczkowski.customgauge.CustomGauge
-        android:id="@+id/gauge1"
-        android:layout_width="216dp"
-        android:layout_height="200dp"
-        android:layout_centerHorizontal="true"
-        app:gaugeDividerColor="@color/ks_gray"
-        app:gaugeDividerStep="33"
-        app:gaugeEndValue="1000"
-        app:gaugePointEndColor="@color/eg_cyan_light"
-        app:gaugePointStartColor="@color/eg_cyan_light"
-        app:gaugeStartAngle="180"
-        app:gaugeStartValue="300"
-        app:gaugeStrokeCap="ROUND"
-        app:gaugeStrokeColor="@color/ks_light_gray"
-        app:gaugeStrokeWidth="15dp"
-        app:gaugeSweepAngle="180"
+    <Spinner
+        android:id="@+id/sp_meter"
+        android:layout_width="130dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/shape_round_corner_cyan_light_hollow"
+        android:spinnerMode="dropdown"
+        app:layout_constraintStart_toEndOf="@+id/btn_select_time"
+        app:layout_constraintTop_toTopOf="@+id/btn_select_time" />
+
+    <com.github.mikephil.charting.charts.HorizontalBarChart
+        android:id="@+id/usage_chart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="482dp" />
-
-    <TextView
-        android:id="@+id/textView22"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="310.6"
-        android:textColor="@color/eg_cyan_dark"
-        android:textSize="32dp"
-        app:layout_constraintBottom_toBottomOf="@+id/gauge1"
-        app:layout_constraintEnd_toEndOf="@+id/gauge1"
-        app:layout_constraintStart_toStartOf="@+id/gauge1"
-        app:layout_constraintTop_toTopOf="@+id/gauge1"
-        app:layout_constraintVertical_bias="0.43" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_search"
+        app:layout_constraintVertical_weight="1" />
 
     <Button
         android:id="@+id/btn_select_time"
@@ -56,30 +47,22 @@
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
     <Button
-        android:id="@+id/btn_search2"
-        android:layout_width="wrap_content"
+        android:id="@+id/btn_search"
+        android:layout_width="70dp"
         android:layout_height="35dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="5dp"
         android:background="@drawable/shape_round_corner_cyan_light_filled"
+        android:onClick="onClick"
         android:text="조회"
         android:textColor="#ffffff"
-        app:layout_constraintStart_toEndOf="@+id/btn_select_time"
+        app:layout_constraintStart_toEndOf="@+id/sp_meter"
         app:layout_constraintTop_toTopOf="@+id/btn_select_time" />
-
-    <com.ekn.gruzer.gaugelibrary.HalfGauge
-        android:id="@+id/halfGauge"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_search2" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/title_bar"
         android:layout_width="0dp"
         android:layout_height="60dp"
+        android:background="@color/eg_pastel_blue"
         android:onClick="onClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -120,7 +103,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.8" />
+            app:layout_constraintVertical_bias="0.5" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

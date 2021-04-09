@@ -2,7 +2,9 @@ package com.enernet.eg.building.activity;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -14,25 +16,40 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.enernet.eg.building.CaApplication;
+import com.enernet.eg.building.CaEngine;
 import com.enernet.eg.building.CaResult;
 import com.enernet.eg.building.EgYearMonthDayPicker;
 import com.enernet.eg.building.IaResultHandler;
 import com.enernet.eg.building.R;
+import com.enernet.eg.building.model.CaMeter;
+import com.enernet.eg.building.model.CaMeterUsage;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import static java.lang.Float.parseFloat;
 
 public class ActivitySaving extends BaseActivity implements IaResultHandler {
 
@@ -43,7 +60,16 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
     public int Month;
     public int Day;
 
+    public String m_strSelectedDate1;
+    public String m_strSelectedDate2;
+
+
+    public ArrayList<CaMeter> m_alMeterGross = new ArrayList<>();
+    public ArrayList<CaMeterUsage> m_alUsageForAllMeter = new ArrayList<>();
+
+
     SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat myyyyMMddFormat = new SimpleDateFormat("yyyyMMdd");
 
     private EgYearMonthDayPicker m_dlgYearMonthDayPicker;
     BarChart savingStackedBarChart, usageTotalBarChart;
@@ -68,15 +94,14 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
 
         @Override
         public int getCount() {
-            //return CaApplication.m_Info.m_alAlarm.size();
-            return 10;
+            return m_alMeterGross.size();
+            //return 10;
         }
 
         @Override
         public Object getItem(int position) {
-            //return CaApplication.m_Info.m_alAlarm.get(position);
+            return m_alMeterGross.get(position);
             //return position;
-            return position;
         }
 
         @Override
@@ -105,59 +130,20 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
             else {
                 holder = (SavingResultViewHolder) convertView.getTag();
             }
-            /*
 
-            final CaAlarm alarm = CaApplication.m_Info.m_alAlarm.get(position);
 
-            switch (alarm.m_nAlarmType) {
-                case CaEngine.ALARM_TYPE_NOTI_KWH:
-                case CaEngine.ALARM_TYPE_NOTI_WON:
-                case CaEngine.ALARM_TYPE_NOTI_PRICE_LEVEL:
-                case CaEngine.ALARM_TYPE_NOTI_USAGE:
-                    holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_filled_yellow_a));
-                    break;
+            final CaMeter meter = m_alMeterGross.get(position);
 
-                case CaEngine.ALARM_TYPE_REQUEST_ACK_MEMBER:
-                case CaEngine.ALARM_TYPE_RESPONSE_ACK_MEMBER_ACCEPTED:
-                case CaEngine.ALARM_TYPE_RESPONSE_ACK_MEMBER_REJECTED:
-                case CaEngine.ALARM_TYPE_RESPONSE_ACK_MEMBER_CANCELED:
-                case CaEngine.ALARM_TYPE_NOTI_TRANS:
-                    holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_filled_yellow_b));
-                    break;
-            }
 
-            holder.m_tvTitle.setText(alarm.m_strTitle);
-            holder.m_tvContent.setText(alarm.m_strContent);
-            holder.m_tvTimeCreated.setText(alarm.getTimeCreated());
+            holder.m_tvInstrument.setText(meter.m_strDescr);
+            holder.m_tvInstrumentUsage.setText("사용량  "+CaApplication.m_Info.m_dfKwh.format(meter.m_dKwhReal));
+            holder.m_tvSavingStandard.setText("절감 기준  "+CaApplication.m_Info.m_dfKwh.format(meter.m_dKwhRef));
+            holder.m_tvSavingGoal.setText("절감 목표  " + CaApplication.m_Info.m_dfKwh.format(meter.m_dKwhPlan));
 
-            if (alarm.m_bRead) holder.m_ivNew.setVisibility(View.INVISIBLE);
-            else holder.m_ivNew.setVisibility(View.VISIBLE);
+            if(meter.m_dKwhReal<meter.m_dKwhPlan) holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_green_filled));
+            else if(meter.m_dKwhReal< meter.m_dKwhRef) holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_yellow_filled));
+            else if(meter.m_dKwhReal>= meter.m_dKwhRef) holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_red_filled));
 
-            //Log.i("Alarm", "m_bRead="+alarm.m_bRead);
-
-            if (alarm.isRequestAck()) {
-                switch (alarm.m_nResponse) {
-                    case 0:
-                        holder.m_tvAckResponse.setText("승인 대기중");
-                        break;
-
-                    case 1:
-                        holder.m_tvAckResponse.setText("승인함");
-                        break;
-
-                    case 2:
-                        holder.m_tvAckResponse.setText("거절함");
-                        break;
-
-                    default:
-                        holder.m_tvAckResponse.setText("미정");
-                        break;
-                }
-            }
-            else {
-                holder.m_tvAckResponse.setVisibility(View.INVISIBLE);
-            }
-            */
 
             return convertView;
         }
@@ -173,9 +159,12 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
 
         Log.i("ActivitySaving", "onCreate called...");
 
+        //time 세팅과 getsaveResult 호출
         timeSetting();
 
+    }
 
+    public void listSetting(){
 
         ListView listView = (ListView) findViewById(R.id.lv_saving_result);
 
@@ -201,9 +190,6 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
         params.height = totalHeight + (listView.getDividerHeight() * (m_SavingResultAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
-
-        initChart();
-
 
     }
 
@@ -243,7 +229,8 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
         savingStackedBarChart.setDescription(descriptionSaving);*/
         savingStackedBarChart.setDescription(null);
 
-        Legend legendSaving = savingStackedBarChart.getLegend();
+        savingStackedBarChart.getLegend().setEnabled(false);
+
 
         savingStackedBarChart.animateY(2500);
 
@@ -268,14 +255,14 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
         yAxisLeftTotal.setTypeface(tf2);
         yAxisLeftTotal.setDrawGridLines(false);
 
-        LimitLine llStandard = new LimitLine(150f, "기준");
+        LimitLine llStandard = new LimitLine(parseFloat(CaApplication.m_Info.m_dfKwh.format(CaApplication.m_Info.m_dKwhRefForAllMeter)), "기준");
         llStandard.setLineWidth(1f);
         //llStandard.enableDashedLine(10f,10f,0f);
         //llStandard.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
         //llStandard.setTextSize(10f);
         //llStandard.setTypeface(tf2);
 
-        LimitLine llGoal = new LimitLine(130f, "목표");
+        LimitLine llGoal = new LimitLine(parseFloat(CaApplication.m_Info.m_dfKwh.format(CaApplication.m_Info.m_dKwhPlanForAllMeter)), "목표");
         llGoal.setLineWidth(1f);
         //llGoal.enableDashedLine(10f,10f,0f);
         //llGoal.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
@@ -295,7 +282,7 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
         */
 
 
-        Legend legendTotal = savingStackedBarChart.getLegend();
+
 
 
         usageTotalBarChart.animateY(2500);
@@ -333,55 +320,152 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
         yLeft.setDrawGridLines(true);
         yLeft.setGranularity(0.3f);
 
+        yLeft.addLimitLine(llStandard);
+        yLeft.addLimitLine(llGoal);
+
+
         Legend lgd = usageBarChart.getLegend();
         lgd.setDrawInside(false);
         lgd.setFormSize(8f);
         lgd.setXEntrySpace(4f);
 
-        //barchart 데이터 입력
+
+        //실천 횟수 데이터 입력
         BarDataSet barDataSetSaving = new BarDataSet(dataValueSaving(),"Bar Set");
         barDataSetSaving.setColors(colorArray);
 
+
         BarData barDataSaving = new BarData(barDataSetSaving);
+        barDataSaving.setBarWidth(0.5f);
         savingStackedBarChart.setData(barDataSaving);
 
+
         //사용량분석 차트 데이터 입력
-        BarDataSet barDataSetTotal = new BarDataSet(dataValueUsageTotal(),"Bar Set");
-        barDataSetTotal.setColor(Color.MAGENTA);
+        BarDataSet barDataSetTotal = new BarDataSet(dataValueUsageTotal(),"평균 사용량");
+        if(CaApplication.m_Info.m_dAvgKwhForAllMeter<CaApplication.m_Info.m_dKwhPlanForAllMeter) barDataSetTotal.setColor(getResources().getColor(R.color.eg_pastel_green));
+        else if(CaApplication.m_Info.m_dAvgKwhForAllMeter<CaApplication.m_Info.m_dKwhRefForAllMeter) barDataSetTotal.setColor(getResources().getColor(R.color.eg_pastel_yellow));
+        else if(CaApplication.m_Info.m_dAvgKwhForAllMeter>=CaApplication.m_Info.m_dKwhRefForAllMeter) barDataSetTotal.setColor(getResources().getColor(R.color.eg_pastel_red));
+
         BarData barDataTotal = new BarData(barDataSetTotal);
+        barDataTotal.setBarWidth(0.5f);
 
         usageTotalBarChart.setData(barDataTotal);
     }
 
     private ArrayList dataValueSaving(){
         ArrayList dataVals = new ArrayList<>();
+        Log.i("Saving", "count is" + CaApplication.m_Info.m_nTotalSaveActWithHistoryCount);
+        float m_fTotalSaveActCount= parseFloat(CaApplication.m_Info.m_dfKwh.format(CaApplication.m_Info.m_nTotalSaveActCount-CaApplication.m_Info.m_nTotalSaveActWithHistoryCount));
+        float m_fTotalSaveActWithHistoryCount= Float.parseFloat(CaApplication.m_Info.m_dfKwh.format(CaApplication.m_Info.m_nTotalSaveActWithHistoryCount));
 
-        dataVals.add(new BarEntry(0, new float[]{2f,1f}));
+        dataVals.add(new BarEntry(0, new float[]{m_fTotalSaveActWithHistoryCount,m_fTotalSaveActCount}));
+
 
         return dataVals;
     }
 
     private ArrayList dataValueUsageTotal(){
         ArrayList dataVals = new ArrayList<>();
-        dataVals.add(new BarEntry(0, new float[]{156.7f}));
+        dataVals.add(new BarEntry(0, new float[]{parseFloat(CaApplication.m_Info.m_dfKwh.format(CaApplication.m_Info.m_dAvgKwhForAllMeter))}));
 
         return dataVals;
+    }
+
+    public void setDataChart() {
+        usageBarChart.clear();
+
+        ArrayList<BarEntry> yValsKwh = new ArrayList<>();
+        List<Integer> colors = new ArrayList<>();
+
+        float groupSpace = 0.2f;
+        float barSpace = 0.10f;
+        float barWidth = 0.30f;
+
+        int nCountUsage=m_alUsageForAllMeter.size();
+        for (int i=0; i<nCountUsage; i++) {
+            CaMeterUsage Usage=m_alUsageForAllMeter.get(nCountUsage-1-i);
+            //CaMeterUsage Usage=m_alUsageForAllMeter.get(i);
+            yValsKwh.add(new BarEntry(i, (float)Usage.m_dKwh));
+            if(Usage.m_dKwh<CaApplication.m_Info.m_dKwhPlanForAllMeter) colors.add(getResources().getColor(R.color.eg_pastel_green));
+            else if(Usage.m_dKwh<CaApplication.m_Info.m_dKwhRefForAllMeter) colors.add(getResources().getColor(R.color.eg_pastel_yellow));
+            else if(Usage.m_dKwh>=CaApplication.m_Info.m_dKwhRefForAllMeter) colors.add(getResources().getColor(R.color.eg_pastel_red));
+            //Log.i("Saving", "each Usage is " + Usage.m_dKwh);
+
+        }
+        ValueFormatter vfKwhWithUnit=new ValueFormatter() {
+
+            @Override
+            public String getFormattedValue(float v) {
+                if (v==0) return "";
+                else return CaApplication.m_Info.m_dfKwh.format(v)+" kWh";
+            }
+        };
+
+        ValueFormatter vfKwh=new ValueFormatter() {
+
+            @Override
+            public String getFormattedValue(float v) {
+                return CaApplication.m_Info.m_dfKwh.format(v);
+            }
+        };
+
+        YAxis yLeft = usageBarChart.getAxisLeft();
+        yLeft.setValueFormatter(vfKwh);
+
+        YAxis yRight = usageBarChart.getAxisRight();
+        yRight.setValueFormatter(vfKwh);
+
+        XAxis xAxis = usageBarChart.getXAxis();
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(getAreaCount()));
+        xAxis.setLabelCount(m_alUsageForAllMeter.size());
+
+        BarDataSet setKwhCurr=new BarDataSet(yValsKwh, "사용량");
+        setKwhCurr.setColors(colors);
+        setKwhCurr.setValueFormatter(vfKwhWithUnit);
+
+
+        BarData dataKwh = new BarData(setKwhCurr);
+
+        dataKwh.setValueTextSize(10f);
+        dataKwh.setBarWidth(barWidth);
+        dataKwh.setHighlightEnabled(false);
+        //dataKwh.setValueTypeface(m_Typeface);
+        usageBarChart.getXAxis().setAxisMinimum(0);
+        usageBarChart.getXAxis().setAxisMaximum(nCountUsage);
+        usageBarChart.setData(dataKwh);
+        usageBarChart.getAxisLeft().setAxisMinimum(0f);
+        usageBarChart.getAxisRight().setAxisMinimum(0f);
+        usageBarChart.getLegend().setEnabled(false);
+        //usageBarChart.groupBars(0f, groupSpace, barSpace);
+    }
+
+    public ArrayList<String> getAreaCount(){
+        int nCountUsage=m_alUsageForAllMeter.size();
+        ArrayList<String> label = new ArrayList<>();
+        for (int i = 0; i <nCountUsage; i++) {
+            CaMeterUsage Usage=m_alUsageForAllMeter.get(nCountUsage-1-i);
+
+            label.add(Usage.m_nDay + " 일");
+        };
+        return label;
     }
 
     public void timeSetting() {
         btnSelectTime2 = (Button) findViewById(R.id.btn_select_time2);
         btnSelectTime = (Button) findViewById(R.id.btn_select_time);
 
-        Date today = new Date();
-        Calendar calCurr = Calendar.getInstance();
-        calCurr.setTime(today);
-        String timeCurr = mFormat.format(calCurr.getTime());
-        btnSelectTime2.setText(timeCurr);
 
-        Calendar calMonthAgo = Calendar.getInstance();
-        calMonthAgo.add(Calendar.MONTH, -1);
-        String beforeMonth = mFormat.format(calMonthAgo.getTime());
-        btnSelectTime.setText(beforeMonth);
+        Calendar calYesterday = Calendar.getInstance();
+        calYesterday.add(Calendar.DATE, -1);
+        String m_dtYesterday = mFormat.format(calYesterday.getTime());
+        btnSelectTime2.setText(m_dtYesterday);
+        m_strSelectedDate2 = myyyyMMddFormat.format(calYesterday.getTime());
+
+        String m_dtSavePlanCreated = mFormat.format(CaApplication.m_Info.m_dtSavePlanCreated);
+        btnSelectTime.setText(m_dtSavePlanCreated);
+        m_strSelectedDate1 = myyyyMMddFormat.format(CaApplication.m_Info.m_dtSavePlanCreated);
+
+        CaApplication.m_Engine.GetSaveResult(CaApplication.m_Info.m_nSeqSavePlanActive, m_strSelectedDate1, m_strSelectedDate2,this,this);
 
     }
 
@@ -418,19 +502,22 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
                         m_dlgYearMonthDayPicker.dismiss();
 
                         int nYear = m_dlgYearMonthDayPicker.m_DatePicker.getYear();
-                        int nMonth = m_dlgYearMonthDayPicker.m_DatePicker.getMonth();
+                        int nMonth = m_dlgYearMonthDayPicker.m_DatePicker.getMonth() + 1;
                         int nDay = m_dlgYearMonthDayPicker.m_DatePicker.getDayOfMonth();
 
                         Log.i("YearMonthDayPicker", "year="+nYear+", month="+nMonth+", day="+nDay);
 
                         //명령어
                         String strYear = Integer.toString(nYear);
-                        String strMonth = Integer.toString(nMonth);
+                        String strMonth =Integer.toString(nMonth);
+                        if(nMonth <=9) strMonth="0"+strMonth;
                         String strDay = Integer.toString(nDay);
+                        if(nDay <=9) strDay="0"+strDay;
 
                         String chosenDate = strYear+"-"+strMonth+"-"+strDay;
                         btnSelectTime = (Button) findViewById(R.id.btn_select_time);
                         btnSelectTime.setText(chosenDate);
+                        m_strSelectedDate1 = strYear+strMonth+strDay;
                     }
 
                 };
@@ -462,11 +549,14 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
                         //명령어
                         String strYear = Integer.toString(nYear);
                         String strMonth =Integer.toString(nMonth);
+                        if(nMonth <=9) strMonth="0"+strMonth;
                         String strDay = Integer.toString(nDay);
+                        if(nDay <=9) strDay="0"+strDay;
 
                         String chosenDate = strYear+"-"+strMonth+"-"+strDay;
                         btnSelectTime2 = (Button) findViewById(R.id.btn_select_time2);
                         btnSelectTime2.setText(chosenDate);
+                        m_strSelectedDate2 = strYear+strMonth+strDay;
                     }
 
                 };
@@ -481,13 +571,138 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
                 m_dlgYearMonthDayPicker.show();
             }
             break;
+
+            case R.id.btn_search: {
+                int date1 = Integer.parseInt(m_strSelectedDate1);
+                int date2 = Integer.parseInt(m_strSelectedDate2);
+                if(date1>=date2){
+                    AlertDialog.Builder dlg = new AlertDialog.Builder(ActivitySaving.this);
+                    dlg.setMessage("날짜입력이 잘못되었습니다.");
+                    dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    dlg.show();
+                }
+                else if(date1-date2>=40){
+                    AlertDialog.Builder dlg = new AlertDialog.Builder(ActivitySaving.this);
+                    dlg.setMessage("40일 이내의 데이터만 조회하실 수 있습니다.");
+                    dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    dlg.show();
+                }
+                else{
+                    CaApplication.m_Engine.GetSaveResult(CaApplication.m_Info.m_nSeqSavePlanActive, m_strSelectedDate1, m_strSelectedDate2, this, this);
+                }
+
+            }
+            break;
+
             default:
                 throw new IllegalStateException("Unexpected value: " + v.getId());
         }
     }
 
+
+
+
+    public void prepareChartData(JSONArray ja) {
+        Log.i("Saving", "prepareChartData is activated...");
+
+        m_alUsageForAllMeter.clear();
+        try{
+            for(int i=0;i<ja.length();i++){
+                JSONObject jo = ja.getJSONObject(i);
+                CaMeterUsage usage = new CaMeterUsage();
+
+                usage.m_nYear=jo.getInt("year");
+                usage.m_nMonth=jo.getInt("month");
+                usage.m_nDay=jo.getInt("day");
+                usage.m_bHoliday=jo.getBoolean("is_holiday");
+                usage.m_dKwh=jo.getDouble("kwh");
+                usage.m_dWon=jo.getDouble("won");
+
+
+                m_alUsageForAllMeter.add(usage);
+            }
+
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void prepareListData(JSONArray ja) {
+        Log.i("Saving", "prepareListData is activated...");
+
+        m_alMeterGross.clear();
+        try{
+            for(int i=0;i<ja.length();i++){
+                JSONObject jo = ja.getJSONObject(i);
+                CaMeter meter = new CaMeter();
+
+                meter.m_nSeqMeter=jo.getInt("seq_meter");
+                meter.m_strMid=jo.getString("mid");
+                meter.m_strDescr=jo.getString("descr");
+                meter.m_dKwhRef=jo.getDouble("kwh_ref");
+                meter.m_dWonRef=jo.getDouble("won_ref");
+                meter.m_dKwhPlan=jo.getDouble("kwh_plan");
+                meter.m_dWonPlan=jo.getDouble("kwh_plan");
+                meter.m_dKwhReal=jo.getDouble("kwh_plan");
+                meter.m_dWonReal=jo.getDouble("kwh_plan");
+
+
+                m_alMeterGross.add(meter);
+            }
+
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onResult(CaResult Result) {
+
+        if (Result.object==null) {
+            Toast.makeText(getApplicationContext(),"Check Network", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        switch (Result.m_nCallback) {
+            case CaEngine.CB_GET_SAVE_RESULT: {
+                Log.i("Saving", "Result of GetSaveResult received...");
+
+                try {
+                    JSONObject jo = Result.object;
+                    CaApplication.m_Info.m_nTotalSaveActCount=jo.getInt("total_save_act_count");
+                    CaApplication.m_Info.m_nTotalSaveActWithHistoryCount=jo.getInt("total_save_act_with_history_count");
+                    CaApplication.m_Info.m_dAvgKwhForAllMeter=jo.getDouble("avg_kwh_for_all_meter");
+                    CaApplication.m_Info.m_dAvgWonForAllMeter=jo.getDouble("avg_won_for_all_meter");
+                    JSONArray jaMeter = jo.getJSONArray("list_meter");
+                    JSONArray jaUsageForAllMeter = jo.getJSONArray("list_usage_for_all_meter");
+                    JSONArray jaMeterGross = jo.getJSONArray("list_meter_gross");
+                    CaApplication.m_Info.setMeterList(jaMeter);
+                    prepareChartData(jaUsageForAllMeter);
+                    prepareListData(jaMeterGross);
+
+                    initChart();
+                    setDataChart();
+                    listSetting();
+
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            break;
+
+            default: {
+                Log.i("Saving", "Unknown type result received : " + Result.m_nCallback);
+            }
+            break;
+
+        } // end of switch
 
     }
 }

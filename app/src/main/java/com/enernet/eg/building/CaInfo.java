@@ -7,6 +7,8 @@ import android.util.Log;
 
 import com.enernet.eg.building.model.CaAct;
 import com.enernet.eg.building.model.CaActHistory;
+import com.enernet.eg.building.model.CaMeter;
+import com.enernet.eg.building.model.CaMeterUsage;
 import com.enernet.eg.building.model.CaNotice;
 import com.enernet.eg.building.model.CaPlan;
 
@@ -34,6 +36,7 @@ public class CaInfo {
     public SimpleDateFormat m_dfyyyyMMddhhmm_ampm=new SimpleDateFormat("yyyy-MM-dd hh:mm a");
 
     public DecimalFormat m_dfKwh = new DecimalFormat("0.#"); // 12345.7
+    public DecimalFormat m_dfPercent = new DecimalFormat("0.##"); // 12345.7
     public DecimalFormat m_dfWon = new DecimalFormat("#,##0"); // 87,654
 
 
@@ -96,6 +99,13 @@ public class CaInfo {
     public int m_nActCount = 0;
     public int m_nActCountWithHistory=0;
 
+    //GetSaveResult
+    public int m_nTotalSaveActCount = 0;
+    public int m_nTotalSaveActWithHistoryCount=0;
+    public double m_dAvgKwhForAllMeter=0.0;
+    public double m_dAvgWonForAllMeter=0.0;
+
+
 
 
 
@@ -130,6 +140,9 @@ public class CaInfo {
 
     public ArrayList<CaNotice> m_alNotice=new ArrayList<>();
     public ArrayList<CaPlan> m_alPlan = new ArrayList<>();
+    public ArrayList<CaMeter> m_alMeter = new ArrayList<>();
+
+
 
     /*
     public int m_nAuthType=CaEngine.AUTH_TYPE_UNKNOWN;
@@ -211,6 +224,46 @@ public class CaInfo {
         return dt;
     }
 
+
+    public void setMeterList(JSONArray jaMeter) {
+        Log.i("CaInfo", "SetMeterList is activated...");
+
+        m_alMeter.clear();
+        try{
+            for(int i=0;i<jaMeter.length();i++){
+                JSONObject joMeter = jaMeter.getJSONObject(i);
+                CaMeter meter = new CaMeter();
+
+                meter.m_nSeqMeter=joMeter.getInt("seq_meter");
+                meter.m_strMid=joMeter.getString("mid");
+                meter.m_strDescr=joMeter.getString("descr");
+                meter.m_dKwhRef=joMeter.getDouble("kwh_ref");
+                meter.m_dWonRef=joMeter.getDouble("won_ref");
+                meter.m_dKwhPlan=joMeter.getDouble("kwh_plan");
+                meter.m_dWonPlan=joMeter.getDouble("kwh_plan");
+
+                JSONArray jaUsage = joMeter.getJSONArray("list_usage");
+                meter.m_alMeterUsage = new ArrayList<>();
+                for(int j=0; j<jaUsage.length();j++){
+                    JSONObject joUsage = jaUsage.getJSONObject(i);
+                    CaMeterUsage usage = new CaMeterUsage();
+                    usage.m_nYear=joUsage.getInt("year");
+                    usage.m_nMonth=joUsage.getInt("month");
+                    usage.m_nDay=joUsage.getInt("day");
+                    usage.m_bHoliday=joUsage.getBoolean("is_holiday");
+                    usage.m_dKwh=joUsage.getDouble("kwh");
+                    usage.m_dWon=joUsage.getDouble("won");
+
+                    meter.m_alMeterUsage.add(usage);
+
+                }
+                m_alMeter.add(meter);
+            }
+
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
 
     public void setPlanList(JSONArray jaPlan) {
 
@@ -300,7 +353,7 @@ public class CaInfo {
 
     public void setNoticeList(JSONArray jaTop, JSONArray jaNormal) {
 
-        m_alNotice.clear();
+        //m_alNotice.clear();
 
         try {
 

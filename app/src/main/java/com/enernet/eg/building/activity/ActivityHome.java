@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +33,9 @@ import com.enernet.eg.building.R;
 import com.enernet.eg.building.model.CaAct;
 import com.enernet.eg.building.model.CaActHistory;
 import com.enernet.eg.building.model.CaPlan;
+import com.github.ybq.android.spinkit.SpinKitView;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.WanderingCubes;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -268,6 +273,13 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
 
             prepareDrawer();
 
+            /*
+            ProgressBar progressBar = (ProgressBar)findViewById(R.id.spin_kit);
+            Sprite wanderingCubes = new WanderingCubes();
+            progressBar.setIndeterminateDrawable(wanderingCubes);
+
+             */
+
         /*
         long now = System.currentTimeMillis();
         Date date = new Date(now);
@@ -281,6 +293,35 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
 
         }
 
+        /*
+
+        private class CheckTypesTask extends AsyncTask<Void,Void,Void> {
+
+            SpinKitView asyncDialog = new SpinKitView(ActivityHome.this);
+
+            @Override
+            protected void onPreExecute() {
+                asyncDialog.animate();
+                super.onPreExecute();
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try{
+                    for(int i=0; i<5; i++) {
+                        Thread.sleep(2000);
+                    }
+                } catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+                return null;
+            }
+            @Override
+            protected void onPostExecute(Void result){
+
+            }
+        }
+*/
         public void onStart() {
             super.onStart();
             m_lvSavingList = findViewById(R.id.lv_saving_list);
@@ -328,7 +369,8 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
         private void setActCount() {
 
             TextView m_tvActCount = findViewById(R.id.tv_act_count);
-            int actRatio = (int) (100 * Double.parseDouble(CaApplication.m_Info.m_dfKwh.format(CaApplication.m_Info.m_nActCountWithHistory / CaApplication.m_Info.m_nActCount)));
+            int actRatio = (int) (100 * Double.parseDouble(CaApplication.m_Info.m_dfPercent.format((double)CaApplication.m_Info.m_nActCountWithHistory / (double)CaApplication.m_Info.m_nActCount)));
+            //int actRatio = (int) (100 * Double.parseDouble(CaApplication.m_Info.m_dfKwh.format(5/9.0)));
             m_tvActCount.setText("절감조치 시행률    " + actRatio + " %  (" + CaApplication.m_Info.m_nActCountWithHistory + " / " + CaApplication.m_Info.m_nActCount + ")");
         }
 
@@ -337,6 +379,7 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
             double kwhPlan = Double.parseDouble(CaApplication.m_Info.m_dfKwh.format(CaApplication.m_Info.m_dKwhPlanForAllMeter));
             double kwhRef = Double.parseDouble(CaApplication.m_Info.m_dfKwh.format(CaApplication.m_Info.m_dKwhRefForAllMeter));
             double kwhReal = Double.parseDouble(CaApplication.m_Info.m_dfKwh.format(CaApplication.m_Info.m_dKwhRealForAllMeter));
+            double kwhMax = Double.parseDouble(CaApplication.m_Info.m_dfKwh.format((kwhRef>kwhReal)? 1.5*kwhRef:1.5*kwhReal));
 
             TextView m_tvKwhRef = findViewById(R.id.tv_kwh_ref);
             TextView m_tvKwhPlan = findViewById(R.id.tv_kwh_plan);
@@ -358,14 +401,15 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
 
             Range range3 = new Range();
             range3.setColor(getResources().getColor(R.color.eg_pastel_red));
+            /*
             if (kwhRef > kwhReal) {
                 range3.setTo(1.5 * kwhRef);
                 m_HalfGauge.setMaxValue(1.5 * kwhRef);
             } else {
                 range3.setTo(1.5 * kwhReal);
                 m_HalfGauge.setMaxValue(1.5 * kwhReal);
-            }
-
+            }*/
+            range3.setTo(kwhMax);
             range3.setFrom(kwhRef);
 
 
@@ -378,7 +422,9 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
 
             m_HalfGauge.enableAnimation(true);
             m_HalfGauge.setMinValue(0.0);
+            m_HalfGauge.setMaxValue(kwhMax);
             m_HalfGauge.setValue(kwhReal);
+
 
         }
 
