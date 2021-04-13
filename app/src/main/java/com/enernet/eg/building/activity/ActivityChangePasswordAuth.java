@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.enernet.eg.building.ActivityLogin;
@@ -22,6 +24,8 @@ import com.enernet.eg.building.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Timer;
+
 public class ActivityChangePasswordAuth extends BaseActivity implements IaResultHandler {
 
     private EditText m_etUserId;
@@ -32,6 +36,10 @@ public class ActivityChangePasswordAuth extends BaseActivity implements IaResult
     private String m_strUserId;
     private String m_strUserPhone;
     private String m_strAuthCode;
+
+    private Timer mTimer;
+    private TextView m_tvTimer;
+
 
     private Context m_Context;
 
@@ -45,6 +53,9 @@ public class ActivityChangePasswordAuth extends BaseActivity implements IaResult
         m_etUserId = findViewById(R.id.et_member_id);
         m_etUserPhone = findViewById(R.id.et_member_phone);
         m_etAuthCode = findViewById(R.id.et_auth_code);
+
+        m_tvTimer = findViewById(R.id.tv_timer);
+        m_tvTimer.setVisibility(View.INVISIBLE);
 
     }
 
@@ -73,6 +84,7 @@ public class ActivityChangePasswordAuth extends BaseActivity implements IaResult
                 }
 
                 CaApplication.m_Engine.RequestAuthCode(m_strUserId,m_strUserPhone,this,this);
+
             }
             break;
 
@@ -89,6 +101,48 @@ public class ActivityChangePasswordAuth extends BaseActivity implements IaResult
         }
     }
 
+    public void countDown() {
+
+        long conversionTime = 180000;
+
+        // 변환시간
+
+        // 첫번쨰 인자 : 원하는 시간 (예를들어 30초면 30 x 1000(주기))
+        // 두번쨰 인자 : 주기( 1000 = 1초)
+        new CountDownTimer(conversionTime, 1000) {
+
+            // 특정 시간마다 뷰 변경
+            public void onTick(long millisUntilFinished) {
+
+                // 분단위
+                long getMin = millisUntilFinished - (millisUntilFinished / (60 * 60 * 1000)) ;
+                String min = String.valueOf(getMin / (60 * 1000)); // 몫
+
+                // 초단위
+                String second = String.valueOf((getMin % (60 * 1000)) / 1000); // 나머지
+
+
+                // 초가 한자리면 0을 붙인다
+                if (second.length() == 1) {
+                    second = "0" + second;
+                }
+
+                m_tvTimer.setText( min + ":" + second);
+            }
+
+            // 제한시간 종료시
+            public void onFinish() {
+
+                // 변경 후
+                m_tvTimer.setText("인증시간이 초과되었습니다");
+
+                // TODO : 타이머가 모두 종료될때 어떤 이벤트를 진행할지
+
+            }
+        }.start();
+
+    }
+
     @Override
     public void onResult(CaResult Result) {
         if (Result.object == null) {
@@ -97,7 +151,7 @@ public class ActivityChangePasswordAuth extends BaseActivity implements IaResult
         }
 
         switch (Result.m_nCallback) {
-            case CaEngine.CB_CHECK_ADMIN_LOGIN: {
+            case CaEngine.CB_REQUEST_AUTH_CODE: {
 
                 try {
                     JSONObject jo = Result.object;
@@ -108,6 +162,8 @@ public class ActivityChangePasswordAuth extends BaseActivity implements IaResult
                         dlg.setMessage("휴대폰으로 6자리 인증번호가 전송됩니다. 인증번호를 입력하신 후에 확인을 눌러주세요.");
                         dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                m_tvTimer.setVisibility(View.VISIBLE);
+                                countDown();
                             }
                         });
                         dlg.show();
@@ -140,8 +196,7 @@ public class ActivityChangePasswordAuth extends BaseActivity implements IaResult
                         });
                         dlg.show();
                     }
-
-                    if (nResultCode == 0) {
+                    else if (nResultCode == 0) {
                         AlertDialog.Builder dlg = new AlertDialog.Builder(ActivityChangePasswordAuth.this);
                         dlg.setMessage("문자인증번호가 잘못되었습니다. 다시 입력해주세요.");
                         dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -150,8 +205,7 @@ public class ActivityChangePasswordAuth extends BaseActivity implements IaResult
                         });
                         dlg.show();
                     }
-
-                    if (nResultCode == 1) {
+                    else if (nResultCode == 1) {
                         AlertDialog.Builder dlg = new AlertDialog.Builder(ActivityChangePasswordAuth.this);
                         dlg.setMessage("인증이 완료되었습니다. 다음 단계로 진행합니다.");
                         dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {

@@ -279,17 +279,26 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
             progressBar.setIndeterminateDrawable(wanderingCubes);
 
              */
+            //액티비티 전환시 리스트뷰 쪽으로 포커스가 맞춰지는 문제 해결
 
-        /*
-        long now = System.currentTimeMillis();
-        Date date = new Date(now);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-        String getTime = sdf.format(date);
+            m_lvSavingList = findViewById(R.id.lv_saving_list);
+            ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView_home);
+            //scrollView.fullScroll(ScrollView.FOCUS_UP);
+            View targetView = findViewById(R.id.iv_small_dot_purple2);
+            targetView.getParent().requestChildFocus(targetView, targetView);
 
-        Log.i("get time is ", "is "+ getTime + "and saveplan is" + CaApplication.m_Info.m_nSeqSavePlanActive);
 
-        CaApplication.m_Engine.GetSaveResultDaily(CaApplication.m_Info.m_nSeqSavePlanActive, getTime, this, this);
-         */
+            long now = System.currentTimeMillis();
+            Date date = new Date(now);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            String getTime = sdf.format(date);
+
+            Log.i("get time is ", "is "+ getTime + "and saveplan is" + CaApplication.m_Info.m_nSeqSavePlanActive);
+
+            CaApplication.m_Engine.GetSaveResultDaily(CaApplication.m_Info.m_nSeqSavePlanActive, getTime, this, this);
+
+
+
 
         }
 
@@ -324,11 +333,12 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
 */
         public void onStart() {
             super.onStart();
-            m_lvSavingList = findViewById(R.id.lv_saving_list);
 
-            setActCount();
 
-            initChart();
+
+        }
+
+        private void initListView() {
 
             ListView listView = (ListView) findViewById(R.id.lv_saving_list);
             //ListAdapter listAdapter = listView.getAdapter();
@@ -357,12 +367,6 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
             listView.requestLayout();
 
 
-            //액티비티 전환시 리스트뷰 쪽으로 포커스가 맞춰지는 문제 해결
-
-            ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView_home);
-            //scrollView.fullScroll(ScrollView.FOCUS_UP);
-            View targetView = findViewById(R.id.iv_small_dot_purple2);
-            targetView.getParent().requestChildFocus(targetView, targetView);
 
         }
 
@@ -375,6 +379,7 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
         }
 
         public void initChart() {
+            Log.i("HOme", "Gauge Chart가 정상적으로 호출되었습니다.");
 
             double kwhPlan = Double.parseDouble(CaApplication.m_Info.m_dfKwh.format(CaApplication.m_Info.m_dKwhPlanForAllMeter));
             double kwhRef = Double.parseDouble(CaApplication.m_Info.m_dfKwh.format(CaApplication.m_Info.m_dKwhRefForAllMeter));
@@ -491,7 +496,7 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
             }
 
             switch (Result.m_nCallback) {
-            /*
+
             case CaEngine.CB_GET_SAVE_RESULT_DAILY: {
                 Log.i("Home", "Result of GetSaveResultDaily received...");
 
@@ -521,12 +526,17 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
 
 
                     CaApplication.m_Info.setPlanList(jaPlan);
+
+                    setActCount();
+                    initChart();
+                    initListView();
+
                 }
                 catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-            break;*/
+            break;
 
                 default: {
                     Log.i("Home", "Unknown type result received : " + Result.m_nCallback);

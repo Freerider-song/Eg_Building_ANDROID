@@ -6,7 +6,7 @@
     android:layout_width="55mm"
     android:layout_height="55mm"
     android:layout_gravity="center"
-    android:background="@drawable/shape_round_corner_cyan_light_hollow"
+    android:background="@drawable/shape_round_corner_cyan_light_filled_pastel_blue"
     android:gravity="center"
     android:weightSum="10">
 

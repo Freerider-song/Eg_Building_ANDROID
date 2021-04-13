@@ -131,7 +131,7 @@ public class BaseActivity extends AppCompatActivity {
         itemSaving.withIcon(R.drawable.menu_site_state);
 
         PrimaryDrawerItem itemUsage = new PrimaryDrawerItem();
-        //itemSiteState.withIdentifier(CaEngine.MENU_SITE_STATE);
+        itemUsage.withIdentifier(CaEngine.MENU_USAGE_DAILY);
         itemUsage.withName("계측기별 사용량 비교");
         itemUsage.withTextColor(Color.rgb(255, 255, 255));
         itemUsage.withSelectable(false);

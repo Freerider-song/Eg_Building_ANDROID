@@ -25,6 +25,7 @@ public class CaEngine {
     public static final int CB_GET_USAGE_FOR_ALL_METER_DAY = 1013;
     public static final int CB_GET_USAGE_FOR_ALL_METER_MONTH = 1014;
     public static final int CB_GET_USAGE_FOR_ALL_METER_YEAR = 1015;
+    public static final int CB_CHANGE_ADMIN_BLD_SETTINGS= 1016;
 
 
 
@@ -203,6 +204,26 @@ public class CaEngine {
         Arg.addArg("Year", Year);
 
         executeCommand(Arg, CB_GET_USAGE_FOR_ALL_METER_YEAR, false, true, Ctx, ResultHandler);
+    }
+
+    public void ChangeAdminBldSettings(final int SeqAdmin, final boolean NotiAll, final boolean NotiThisMonthKwh, final boolean NotiThisMonthWon,final boolean NotiThisMonthUsageAtTime,
+                                       final boolean NotiMeterKwhOverSaveRef,final boolean NotiMeterKwhOverSavePlan,final double ThresholdThisMonthKwh,
+                                       final double ThresholdThisMonthWon, final int HourNotiThisMonthUsage, Context Ctx, IaResultHandler ResultHandler){
+        Log.i("ENGINE", "-");
+
+        CaArg Arg = new CaArg("ChangeAdminBldSettings", NO_CMD_ARGS, null);
+        Arg.addArg("SeqAdmin", SeqAdmin);
+        Arg.addArg("NotiAll", NotiAll ? 1 : 0);
+        Arg.addArg("NotiThisMonthKwh", NotiThisMonthKwh ? 1 : 0);
+        Arg.addArg("NotiThisMonthWon", NotiThisMonthWon ? 1 : 0);
+        Arg.addArg("NotiThisMonthUsageAtTime", NotiThisMonthUsageAtTime ? 1 : 0);
+        Arg.addArg("NotiMeterKwhOverSaveRef", NotiMeterKwhOverSaveRef ? 1 : 0);
+        Arg.addArg("NotiMeterKwhOverSavePlan", NotiMeterKwhOverSavePlan ? 1 : 0);
+        Arg.addArg("ThresholdThisMonthKwh", ThresholdThisMonthKwh);
+        Arg.addArg("ThresholdThisMonthWon", ThresholdThisMonthWon);
+        Arg.addArg("HourNotiThisMonthUsage", HourNotiThisMonthUsage);
+
+        executeCommand(Arg, CB_CHANGE_ADMIN_BLD_SETTINGS, false, true, Ctx, ResultHandler);
     }
 
 

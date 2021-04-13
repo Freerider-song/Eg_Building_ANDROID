@@ -1,14 +1,20 @@
 package com.enernet.eg.building.activity;
 
+import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.enernet.eg.building.CaApplication;
 import com.enernet.eg.building.CaEngine;
@@ -27,8 +33,11 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,8 +56,9 @@ public class ActivityUsageMonthly extends BaseActivity implements IaResultHandle
     public int Year;
     public int Month;
 
-    public int m_nMeter=1;
+    public int m_nMeter=0;
     public ArrayList<CaMeter> m_alMeter = new ArrayList<>();
+    public CaMeter m_AllMeter = new CaMeter();
 
     private EgYearMonthDayPicker m_dlgYearMonthDayPicker;
 
@@ -94,9 +104,21 @@ public class ActivityUsageMonthly extends BaseActivity implements IaResultHandle
             alMeter.add(ds.m_strDescr);
         }
 
-        ArrayAdapter<String> AdapterMeter;
+        ArrayAdapter<String> AdapterMeter = new ArrayAdapter<String>(this, R.layout.eg_spinner_style, alMeter) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        AdapterMeter=new ArrayAdapter<>(this, R.layout.eg_spinner_style, alMeter);
+                View v = super.getView(position, convertView, parent);
+                Typeface externalFont=Typeface.createFromAsset(getAssets(), getString(R.string.font_open_sans_regular));
+                ((TextView) v).setTypeface(externalFont);
+                ((TextView) v).setTextSize(17.0f);
+                ((TextView) v).setTextColor(getResources().getColor(R.color.eg_cyan_dark));
+                return v;
+
+            }
+
+        };
         m_spMeter.setEnabled(true);
 
 
@@ -110,7 +132,7 @@ public class ActivityUsageMonthly extends BaseActivity implements IaResultHandle
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 m_nMeter=position;
-                Log.i("DiscountFamily", "Selected="+alMeter.get(position)+", position="+position+", id="+id);
+                Log.i("UsageMonthly", "Selected="+alMeter.get(position)+", position="+position+", id="+id);
             }
 
             @Override
@@ -169,6 +191,24 @@ public class ActivityUsageMonthly extends BaseActivity implements IaResultHandle
         lgd.setFormSize(8f);
         lgd.setXEntrySpace(6f);
         lgd.setYEntrySpace(2f);
+
+        m_Chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                float x = e.getX();
+                String s = Float.toString(x);
+
+                float index_f = e.getY();
+                int index = Math.round(index_f);
+
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+
+        });
     }
 
     @Override
@@ -260,9 +300,23 @@ public class ActivityUsageMonthly extends BaseActivity implements IaResultHandle
 
                 try {
                     JSONObject jo = Result.object;
-                    JSONArray ja = jo.getJSONArray("list_meter");
+                    JSONArray jaMeter = jo.getJSONArray("list_meter");
+                    JSONArray jaAllMeter = jo.getJSONArray("list_usage_for_all_meter");
+                    m_AllMeter.m_alMeterUsage = new ArrayList<>();
+                    for(int j=0; j<jaAllMeter.length();j++){
+                        JSONObject joUsage = jaAllMeter.getJSONObject(j);
+                        CaMeterUsage usage = new CaMeterUsage();
+                        usage.m_nUnit=joUsage.getInt("unit");
+                        if(joUsage.isNull("kwh")){
+                            usage.m_dKwh=0.0;
+                        }
+                        else{
+                            usage.m_dKwh=joUsage.getDouble("kwh");
+                        }
+                        m_AllMeter.m_alMeterUsage.add(usage);
+                    }
                     initChartDaily();
-                    prepareChartData(ja);
+                    prepareChartData(jaMeter);
 
 
                 } catch (JSONException e) {
@@ -289,7 +343,7 @@ public class ActivityUsageMonthly extends BaseActivity implements IaResultHandle
                 CaMeter meter = new CaMeter();
 
                 meter.m_nSeqMeter=jo.getInt("seq_meter");
-                //Log.i("UsageD", "데이터 셋 계측기는? " +meter.m_nSeqMeter);
+
                 meter.m_strMid=jo.getString("mid");
                 meter.m_strDescr=jo.getString("descr");
 
@@ -305,7 +359,6 @@ public class ActivityUsageMonthly extends BaseActivity implements IaResultHandle
                         usage.m_dKwh=joUsage.getDouble("kwh");
                     }
 
-                    //Log.i("UsageDaily", "데이터 셋 유닛은 " +usage.m_nUnit + " 그에 따른 전기는? "+usage.m_dKwh);
                     meter.m_alMeterUsage.add(usage);
                 }
                 m_alMeter.add(meter);
@@ -344,7 +397,7 @@ public class ActivityUsageMonthly extends BaseActivity implements IaResultHandle
 
         int nCountUsage=m_alMeter.get(0).m_alMeterUsage.size();
         for (int i=0; i<nCountUsage; i++) {
-            CaMeterUsage UsageAll=m_alMeter.get(0).m_alMeterUsage.get(nCountUsage-1-i);
+            CaMeterUsage UsageAll=m_AllMeter.m_alMeterUsage.get(nCountUsage-1-i);
             CaMeterUsage UsageMeter=m_alMeter.get(m_nMeter).m_alMeterUsage.get(nCountUsage-1-i);
 
             yValsKwhAll.add(new BarEntry(UsageAll.m_nUnit, (float)UsageAll.m_dKwh));

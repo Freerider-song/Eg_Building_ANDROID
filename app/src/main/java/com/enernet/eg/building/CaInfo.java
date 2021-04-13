@@ -112,7 +112,7 @@ public class CaInfo {
     public int m_nSeqMember=0;
     public int m_nSeqProjectSelected=0;
     public int m_nMemberType=0;
-    public String m_strMemberId="";
+    public String m_strAdminId="";
     public String m_strPassword="";
     public String m_strMemberName="";
     public String m_strMemberPhone="";

@@ -202,7 +202,7 @@ public class ActivityLogin extends BaseActivity implements IaResultHandler {
                         CaApplication.m_Info.m_nSeqAdmin = jo.getInt("seq_admin");
                         CaApplication.m_Info.m_nTeamType = jo.getInt("team_type");
 
-                        CaApplication.m_Info.m_strMemberId = m_strMemberId;
+                        CaApplication.m_Info.m_strAdminId = m_strMemberId;
                         CaApplication.m_Info.m_strPassword = m_strPassword;
 
                         CaApplication.m_Engine.GetBldAdminInfo(CaApplication.m_Info.m_nSeqAdmin, this, this);
@@ -277,7 +277,12 @@ public class ActivityLogin extends BaseActivity implements IaResultHandler {
 
                     Log.i("get time is ", "is "+ getTime + "and saveplan is" + CaApplication.m_Info.m_nSeqSavePlanActive);
 
-                    CaApplication.m_Engine.GetSaveResultDaily(CaApplication.m_Info.m_nSeqSavePlanActive, getTime, this, this);
+                    //CaApplication.m_Engine.GetSaveResultDaily(CaApplication.m_Info.m_nSeqSavePlanActive, getTime, this, this);
+
+                    finish();
+
+                    Intent it = new Intent(this, ActivityHome.class);
+                    startActivity(it);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -288,6 +293,7 @@ public class ActivityLogin extends BaseActivity implements IaResultHandler {
             }
             break;
 
+            /*
             case CaEngine.CB_GET_SAVE_RESULT_DAILY: {
                 Log.i("Home", "Result of GetSaveResultDaily received...");
 
@@ -328,6 +334,8 @@ public class ActivityLogin extends BaseActivity implements IaResultHandler {
                 }
             }
             break;
+
+             */
 
 
             default: {

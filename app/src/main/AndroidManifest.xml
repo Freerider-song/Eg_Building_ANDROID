@@ -10,7 +10,7 @@
     <application
         android:name=".CaApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icon_bld"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -26,25 +26,54 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".EgDialogLogout" />
-        <activity android:name=".activity.ActivityUsageYearly" />
-        <activity android:name=".activity.ActivityUsageMonthly" />
-        <activity android:name=".activity.ActivitySetting" />
-        <activity android:name=".activity.ActivityAlarmList" />
+        <activity
+            android:name=".EgDialogLogout"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.ActivityUsageYearly"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.ActivityUsageMonthly"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.ActivitySetting"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.ActivityAlarmList"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.ActivityAlarm"
-            android:theme="@style/Theme.AppCompat.Light.Dialog" />
-        <activity android:name=".activity.ActivityNoticeList" />
-        <activity android:name=".activity.ActivityNotice" />
-        <activity android:name=".activity.ActivityUsageDaily" />
-        <activity android:name=".activity.ActivityAuth" />
-        <activity android:name=".activity.ActivityChangePasswordInput" />
-        <activity android:name=".activity.ActivityChangePasswordAuth" />
+            android:theme="@style/Theme.AppCompat.Light.Dialog"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.ActivityNoticeList"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.ActivityNotice"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.ActivityUsageDaily"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.ActivityAuth"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.ActivityChangePasswordInput"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.ActivityChangePasswordAuth"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".EgYearMonthDayPicker"
-            android:theme="@style/PopupOverlay" />
-        <activity android:name=".activity.ActivitySaving" />
-        <activity android:name=".activity.ActivityHome" />
+            android:theme="@style/PopupOverlay"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.ActivitySaving"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.ActivityHome"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activity.ActivityHome_2" />
         <activity
             android:name=".ActivityLogin"

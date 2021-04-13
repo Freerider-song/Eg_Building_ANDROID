@@ -6,6 +6,7 @@
     android:checkMark="?android:attr/listChoiceIndicatorSingle"
     android:checked="false"
     android:ellipsize="marquee"
+    android:fontFamily="@font/opensans_regular"
     android:gravity="center_vertical"
     android:minHeight="10dp"
     android:paddingStart="5dp"

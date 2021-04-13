@@ -4,6 +4,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -167,29 +168,10 @@ public class ActivityNoticeList extends BaseActivity implements IaResultHandler,
                 notice.m_dtRead= Calendar.getInstance().getTime();
                 m_NoticeAdapter.notifyDataSetChanged();
 
-                View.OnClickListener LsnBack=new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.i("BaseActivity", "Yes button clicked...");
-                        m_ActivityNotice.dismiss();
-                    }
-                };
+                Intent it = new Intent(This, ActivityNotice.class);
+                it.putExtra("position", position);
 
-
-                m_ActivityNotice=new ActivityNotice(This, LsnBack);
-                m_ActivityNotice.setOnKeyListener(new DialogInterface.OnKeyListener() {
-                    @Override
-                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                        if (keyCode==KeyEvent.KEYCODE_BACK) {
-                            dialog.dismiss();
-                            return true;
-                        }
-                        return false;
-                    }
-                });
-
-                m_ActivityNotice.show();
-
+                startActivity(it);
             }
         });
     }
@@ -299,6 +281,6 @@ public class ActivityNoticeList extends BaseActivity implements IaResultHandler,
 
         String strTimeMax=CaApplication.m_Info.m_dfyyyyMMddhhmmss.format(CaApplication.m_Info.m_dtNoticeCreatedMaxForNextRequest);
 
-        CaApplication.m_Engine.GetBldNoticeList(CaApplication.m_Info.m_nSeqMember, strTimeMax, CaInfo.DEFAULT_REQUEST_NOTICE_COUNT, this, this);
+        CaApplication.m_Engine.GetBldNoticeList(CaApplication.m_Info.m_nSeqAdmin, strTimeMax, CaInfo.DEFAULT_REQUEST_NOTICE_COUNT, this, this);
     }
 }
