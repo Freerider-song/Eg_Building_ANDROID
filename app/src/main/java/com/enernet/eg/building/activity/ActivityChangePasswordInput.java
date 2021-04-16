@@ -35,6 +35,9 @@ public class ActivityChangePasswordInput extends BaseActivity implements IaResul
         setContentView(R.layout.activity_change_password_input);
 
         m_strUserId=getIntent().getStringExtra("user_id");
+
+        Log.i("changepasswordInput", "user id received is " + m_strUserId);
+        m_etUserId= findViewById(R.id.et_member_id);
         m_etUserId.setText(m_strUserId);
 
         CaPref pref = new CaPref(getApplicationContext());

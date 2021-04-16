@@ -6,6 +6,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Pair;
+import android.widget.ProgressBar;
+
+import com.github.ybq.android.spinkit.SpinKitView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,6 +21,7 @@ public class CaTask extends AsyncTask<CaArg, Void, CaResult> {
     private IaResultHandler m_ResultHandler;
     private Context m_Context;
     private Dialog m_DialogWait = null;
+    private SpinKitView m_Spinkit;
 
     private int m_nCallMethod;
     private boolean m_bShowWaitDialog;
@@ -36,7 +40,9 @@ public class CaTask extends AsyncTask<CaArg, Void, CaResult> {
 
             try {
                 if (m_Context != null) {
-                    String holdOnWait = "Please, Wait.";
+                    String holdOnWait = "잠시만 기다려주세요";
+                    //m_Spinkit = ProgressDialog.show(m_Context,null,holdOnWait,true);
+
                     m_DialogWait = ProgressDialog.show(m_Context, null, holdOnWait, true);
                 }
             } catch (Exception ex) {

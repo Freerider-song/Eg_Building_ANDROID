@@ -212,6 +212,8 @@ public class ActivityChangePasswordAuth extends BaseActivity implements IaResult
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent it = new Intent(ActivityChangePasswordAuth.this, ActivityChangePasswordInput.class);
                                 it.putExtra("user_id", m_strUserId);
+                                Log.i("changepasswordAuth", "user id put extra is " + m_strUserId);
+
                                 startActivity(it);
                             }
                         });

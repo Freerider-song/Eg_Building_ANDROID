@@ -2,6 +2,7 @@ package com.enernet.eg.building.activity;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,7 @@ public class ActivityUsageYearly extends BaseActivity implements IaResultHandler
 
     public int m_nMeter=0;
     public ArrayList<CaMeter> m_alMeter = new ArrayList<>();
-    public CaMeter m_AllMeter = new CaMeter();
+    public CaMeter m_AllMeter;
 
     private EgYearMonthDayPicker m_dlgYearMonthDayPicker;
 
@@ -64,7 +65,7 @@ public class ActivityUsageYearly extends BaseActivity implements IaResultHandler
     private Button btnSelectTime;
     SimpleDateFormat mFormat = new SimpleDateFormat("yyyy");
 
-
+    private Long mLastClickTime = 0L;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -146,6 +147,7 @@ public class ActivityUsageYearly extends BaseActivity implements IaResultHandler
 
     public void initChartDaily()
     {
+
         m_Chart = findViewById(R.id.usage_chart);
 
         m_Chart.setDrawBarShadow(false);
@@ -200,58 +202,62 @@ public class ActivityUsageYearly extends BaseActivity implements IaResultHandler
 
 
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_back: {
-                finish();
+        if(SystemClock.elapsedRealtime() - mLastClickTime > 400) {
+            switch (v.getId()) {
+                case R.id.btn_back: {
+                    finish();
+                }
+                break;
+
+
+                case R.id.btn_menu: {
+                    m_Drawer.openDrawer();
+                }
+                break;
+
+                case R.id.btn_select_time: {
+
+                    View.OnClickListener LsnConfirmYes = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            m_dlgYearPicker.dismiss();
+                            int nYear = m_dlgYearPicker.m_npYear.getValue();
+                            Log.i("YearPicker", "year=" + nYear);
+                            Year = nYear;
+
+                            String strYear = Integer.toString(nYear);
+
+
+                            btnSelectTime = (Button) findViewById(R.id.btn_select_time);
+                            btnSelectTime.setText(strYear);
+
+                        }
+                    };
+
+                    View.OnClickListener LsnConfirmNo = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.i("ActivityCandidate", "No button clicked...");
+                            m_dlgYearPicker.dismiss();
+                        }
+                    };
+
+                    m_dlgYearPicker = new EgYearPicker(this, "조회할 날짜를 선택하세요", LsnConfirmYes, LsnConfirmNo);
+                    m_dlgYearPicker.show();
+                }
+                break;
+
+                case R.id.btn_search: {
+                    requestUsageYearly(Year);
+                    m_Chart.clear();
+
+                }
+                break;
+
             }
-            break;
-
-
-            case R.id.btn_menu: {
-                m_Drawer.openDrawer();
-            }
-            break;
-
-            case R.id.btn_select_time: {
-
-                View.OnClickListener LsnConfirmYes=new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        m_dlgYearPicker.dismiss();
-                        int nYear=m_dlgYearPicker.m_npYear.getValue();
-                        Log.i("YearPicker", "year="+nYear);
-                        Year = nYear;
-
-                        String strYear = Integer.toString(nYear);
-
-
-                        btnSelectTime = (Button) findViewById(R.id.btn_select_time);
-                        btnSelectTime.setText(strYear);
-
-                    }
-                };
-
-                View.OnClickListener LsnConfirmNo=new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.i("ActivityCandidate", "No button clicked...");
-                        m_dlgYearPicker.dismiss();
-                    }
-                };
-
-                m_dlgYearPicker=new EgYearPicker(this, "조회할 날짜를 선택하세요", LsnConfirmYes, LsnConfirmNo);
-                m_dlgYearPicker.show();
-            }
-            break;
-
-            case R.id.btn_search: {
-                requestUsageYearly(Year);
-
-            }
-            break;
-
         }
+        mLastClickTime = SystemClock.elapsedRealtime();
     }
 
     @Override
@@ -270,6 +276,7 @@ public class ActivityUsageYearly extends BaseActivity implements IaResultHandler
                     JSONObject jo = Result.object;
                     JSONArray jaMeter = jo.getJSONArray("list_meter");
                     JSONArray jaAllMeter = jo.getJSONArray("list_usage_for_all_meter");
+                    m_AllMeter=new CaMeter();
                     m_AllMeter.m_alMeterUsage = new ArrayList<>();
                     for(int j=0; j<jaAllMeter.length();j++){
                         JSONObject joUsage = jaAllMeter.getJSONObject(j);
@@ -283,8 +290,12 @@ public class ActivityUsageYearly extends BaseActivity implements IaResultHandler
                         }
                         m_AllMeter.m_alMeterUsage.add(usage);
                     }
+                    m_alMeter.clear();
                     initChartDaily();
-                    prepareChartData(jaMeter);
+                    if(jaMeter.length()!=0){
+                        prepareChartData(jaMeter);
+                    }
+
 
 
                 } catch (JSONException e) {
@@ -341,7 +352,7 @@ public class ActivityUsageYearly extends BaseActivity implements IaResultHandler
     }
 
     public ArrayList<String> getAreaCount(){
-        int nCountUsage=m_alMeter.get(0).m_alMeterUsage.size(); //24
+        int nCountUsage=m_AllMeter.m_alMeterUsage.size(); //24
 
         ArrayList<String> label = new ArrayList<>();
         for (int i = 0; i <nCountUsage; i++) {
@@ -364,7 +375,7 @@ public class ActivityUsageYearly extends BaseActivity implements IaResultHandler
         float barSpace = 0.10f;
         float barWidth = 0.30f;
 
-        int nCountUsage=m_alMeter.get(0).m_alMeterUsage.size();
+        int nCountUsage=m_AllMeter.m_alMeterUsage.size();
         for (int i=0; i<nCountUsage; i++) {
             CaMeterUsage UsageAll=m_AllMeter.m_alMeterUsage.get(nCountUsage-1-i);
             CaMeterUsage UsageMeter=m_alMeter.get(m_nMeter).m_alMeterUsage.get(nCountUsage-1-i);
@@ -423,7 +434,9 @@ public class ActivityUsageYearly extends BaseActivity implements IaResultHandler
         dataKwh.setValueTextSize(10f);
         dataKwh.setBarWidth(barWidth);
         dataKwh.setHighlightEnabled(false);
-        //dataKwh.setValueTypeface(tf2);
+        Typeface tf2 = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Regular.ttf");
+        dataKwh.setValueTypeface(tf2);
+        dataKwh.setValueTextColor(getResources().getColor(R.color.eg_cyan_dark));
         m_Chart.getXAxis().setAxisMinimum(0);
         m_Chart.getXAxis().setAxisMaximum(nCountUsage);
         m_Chart.setData(dataKwh);

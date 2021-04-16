@@ -10,7 +10,7 @@ public class CaEngine {
     public static final int CB_NONE = 0;
 
     //API 요청
-    public static final int CB_CHECK_ADMIN_LOGIN = 1001;
+    public static final int CB_CHECK_BLD_LOGIN = 1001;
     public static final int CB_GET_BLD_ADMIN_INFO = 1002;
     public static final int CB_CHANGE_ADMIN_PASSWORD = 1003;
     public static final int CB_REQUEST_AUTH_CODE = 1004;
@@ -26,6 +26,7 @@ public class CaEngine {
     public static final int CB_GET_USAGE_FOR_ALL_METER_MONTH = 1014;
     public static final int CB_GET_USAGE_FOR_ALL_METER_YEAR = 1015;
     public static final int CB_CHANGE_ADMIN_BLD_SETTINGS= 1016;
+    public static final int CB_GET_BLD_ALARM_LIST=1017;
 
 
 
@@ -47,16 +48,16 @@ public class CaEngine {
     public static final String[] NO_CMD_ARGS = new String[]{};
 
     public static final int ALARM_TYPE_UNKNOWN = 0;
-    public static final int ALARM_TYPE_REQUEST_ACK_MEMBER = 1001;
-    public static final int ALARM_TYPE_RESPONSE_ACK_MEMBER_ACCEPTED = 1002;
-    public static final int ALARM_TYPE_RESPONSE_ACK_MEMBER_REJECTED = 1003;
-    public static final int ALARM_TYPE_RESPONSE_ACK_MEMBER_CANCELED = 1004;
-    public static final int ALARM_TYPE_NOTI_KWH = 1101;
-    public static final int ALARM_TYPE_NOTI_WON = 1102;
-    public static final int ALARM_TYPE_NOTI_PRICE_LEVEL = 1103;
-    public static final int ALARM_TYPE_NOTI_USAGE = 1104;
-    public static final int ALARM_TYPE_NOTI_TRANS = 1110;
     public static final int ALARM_TEST = 2;
+    public static final int ALARM_NEW_NOTICE = 3001; // 새 공지사항발생
+    public static final int ALARM_PLAN_ELEM_BEGIN = 3002; //절감항목 시작
+    public static final int ALARM_PLAN_ELEM_END = 3003; // 절감항목종료
+    public static final int ALARM_SAVE_ACT_MISSED = 3004; // 미시행절감조치 있음 알림
+    public static final int ALARM_THIS_MONTH_USAGE_AT = 3005; //정해진 시간에 사용량과 사용요금 알림
+    public static final int ALARM_THIS_MONTH_KWH_OVER = 3006; //설정한 사용량 임계치 초과 알림
+    public static final int ALARM_THIS_MONTH_WON_OVER = 3007; //설정한 사용요금 임계치 초과 알림
+    public static final int ALARM_METER_KWH_OVER_SAVE_REF = 3008; //계측기별 사용량이 절감기준 사용량 초과
+    public static final int ALARM_METER_KWH_OVER_SAVE_PLAN = 3009;// 계측기별 사용량이 절감목표 사용량 초과
 
     public CaEngine() {
 
@@ -80,14 +81,17 @@ public class CaEngine {
         return Result;
     }
 
-    public void CheckAdminLogin(final String AdminId, final String Password, Context Ctx, IaResultHandler ResultHandler){
+    public void CheckBldLogin(final String AdminId, final String Password, final String Os, final String DeviceId,final String Version,Context Ctx, IaResultHandler ResultHandler){
         Log.i("ENGINE", "Id=" + AdminId + ", Password=" + Password);
 
-        CaArg Arg = new CaArg("CheckAdminLogin", NO_CMD_ARGS, null);
+        CaArg Arg = new CaArg("CheckBldLogin", NO_CMD_ARGS, null);
         Arg.addArg("AdminId", AdminId);
         Arg.addArg("Password", Password);
+        Arg.addArg("Os", Os);
+        Arg.addArg("DeviceId", DeviceId);
+        Arg.addArg("Version", Version);
 
-        executeCommand(Arg, CB_CHECK_ADMIN_LOGIN, false, true, Ctx, ResultHandler);
+        executeCommand(Arg, CB_CHECK_BLD_LOGIN, false, true, Ctx, ResultHandler);
     }
 
     public void GetBldAdminInfo(final int SeqAdmin, Context Ctx, IaResultHandler ResultHandler){
@@ -224,6 +228,16 @@ public class CaEngine {
         Arg.addArg("HourNotiThisMonthUsage", HourNotiThisMonthUsage);
 
         executeCommand(Arg, CB_CHANGE_ADMIN_BLD_SETTINGS, false, true, Ctx, ResultHandler);
+    }
+
+    public void GetBldAlarmList(final int SeqAdmin, final int CountMax, Context Ctx, IaResultHandler ResultHandler){
+        Log.i("ENGINE", "-");
+
+        CaArg Arg = new CaArg("GetBldAlarmList", NO_CMD_ARGS, null);
+        Arg.addArg("SeqAdmin", SeqAdmin);
+        Arg.addArg("CountMax", CountMax);
+
+        executeCommand(Arg, CB_GET_BLD_ALARM_LIST, false, true, Ctx, ResultHandler);
     }
 
 

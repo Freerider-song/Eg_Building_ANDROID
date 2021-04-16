@@ -206,25 +206,30 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
             String getTime = sdf.format(date);
 
             holder.m_tvTitle.setText(plan.m_strMeterDescr);
-            holder.m_tvUsageGoal.setText("절감목표  " + CaApplication.m_Info.m_dfKwh.format(plan.m_dKwhPlan) + "kWh");
-            holder.m_tvUsageToday.setText("오늘  " + CaApplication.m_Info.m_dfKwh.format(plan.m_dKwhReal) + "kWh");
-            holder.m_tvUsageRef.setText("절감기준  " + CaApplication.m_Info.m_dfKwh.format(plan.m_dKwhRef) + "kWh");
+            holder.m_tvUsageGoal.setText("절감목표  " + CaApplication.m_Info.m_dfKwh.format(plan.m_dKwhPlan) + " kWh");
+            holder.m_tvUsageToday.setText("오늘  " + CaApplication.m_Info.m_dfKwh.format(plan.m_dKwhReal) + " kWh");
+            holder.m_tvUsageRef.setText("절감기준  " + CaApplication.m_Info.m_dfKwh.format(plan.m_dKwhRef) + " kWh");
             holder.m_tvTime.setText(plan.m_nHourFrom + "시 ~ " + plan.m_nHourTo + "시");
 
             for (int i = 0; i < plan.m_alAct.size(); i++) {
                 CaAct act = plan.m_alAct.get(i);
                 if (act.m_alActHistory.isEmpty() && plan.m_nHourTo >= Integer.parseInt(getTime) && plan.m_nHourFrom <= Integer.parseInt(getTime)) {
                     holder.m_tvSavingResult.setText("지금 조치하기");
+                    holder.m_tvSavingResult.setTextColor(getResources().getColor(R.color.white));
+                    holder.m_tvSavingResult.setBackground(getResources().getDrawable(R.drawable.shape_round_corner_cyan_light_filled));
                     holder.m_tvSavingResult.setOnClickListener(new Button.OnClickListener(){
                         @Override
                         public void onClick(View v) {
                             Intent it = new Intent(ActivityHome.this, ActivityAlarm.class);
+                            it.putExtra("seq_meter",plan.m_nSeqMeter);
+                            it.putExtra("seq_plan_elem", plan.m_nSeqPlanElem);
                             startActivity(it);
                         }
                     });
                     break;
                 } else if (act.m_alActHistory.isEmpty() && plan.m_nHourTo <= Integer.parseInt(getTime)) {
                     holder.m_tvSavingResult.setText("조치 미흡");
+                    holder.m_tvSavingResult.setTextColor(getResources().getColor(R.color.red));
                     break;
                 } else if (plan.m_nHourFrom >= Integer.parseInt(getTime)) {
                     holder.m_tvSavingResult.setText("");
@@ -429,6 +434,7 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
             m_HalfGauge.setMinValue(0.0);
             m_HalfGauge.setMaxValue(kwhMax);
             m_HalfGauge.setValue(kwhReal);
+
 
 
         }

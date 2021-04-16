@@ -34,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class ActivityLogin extends BaseActivity implements IaResultHandler {
@@ -47,6 +48,8 @@ public class ActivityLogin extends BaseActivity implements IaResultHandler {
     String m_strMemberId;
     String m_strPassword;
     String m_strDeviceId;
+
+    String m_Os = "ANDROID";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -166,7 +169,12 @@ public class ActivityLogin extends BaseActivity implements IaResultHandler {
                     dlg.show();
                 }
                 else {
-                    CaApplication.m_Engine.CheckAdminLogin(m_strMemberId, m_strPassword, this, this);
+                    Calendar calToday = Calendar.getInstance();
+                    calToday.add(Calendar.DATE, -1);
+                    SimpleDateFormat myyyyMMddFormat = new SimpleDateFormat("yyMMdd");
+                    String m_dtToday = myyyyMMddFormat.format(calToday.getTime())+"1";
+
+                    CaApplication.m_Engine.CheckBldLogin(m_strMemberId, m_strPassword, "android", CaApplication.m_Info.m_strPushId, m_dtToday, this, this);
                 }
             }
             break;
@@ -188,7 +196,7 @@ public class ActivityLogin extends BaseActivity implements IaResultHandler {
         }
 
         switch (Result.m_nCallback) {
-            case CaEngine.CB_CHECK_ADMIN_LOGIN: {
+            case CaEngine.CB_CHECK_BLD_LOGIN: {
 
                 try {
                     JSONObject jo = Result.object;

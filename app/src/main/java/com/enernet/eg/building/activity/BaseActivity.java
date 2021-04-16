@@ -110,7 +110,7 @@ public class BaseActivity extends AppCompatActivity {
         ahb.withActivity(this);
         ahb.withSelectionListEnabled(false);
         ahb.addProfiles(
-                new ProfileDrawerItem().withName("김호송").withIcon(getResources().getDrawable(R.drawable.gg_1)).withEmail("호암노인종합복지관"));
+                new ProfileDrawerItem().withName(CaApplication.m_Info.m_strAdminName).withIcon(getResources().getDrawable(R.drawable.gg_1)).withEmail("호암노인종합복지관"));
 
         AccountHeader ah=ahb.build();
 
@@ -135,7 +135,7 @@ public class BaseActivity extends AppCompatActivity {
         itemUsage.withName("계측기별 사용량 비교");
         itemUsage.withTextColor(Color.rgb(255, 255, 255));
         itemUsage.withSelectable(false);
-        itemUsage.withIcon(R.drawable.menu_site_state);
+        itemUsage.withIcon(R.drawable.menu_chart2);
 
         SecondaryDrawerItem itemUsageDaily=new SecondaryDrawerItem();
         itemUsageDaily.withIdentifier(CaEngine.MENU_USAGE_DAILY);

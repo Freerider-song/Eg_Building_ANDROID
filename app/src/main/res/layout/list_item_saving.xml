@@ -82,14 +82,14 @@
 
     <TextView
         android:id="@+id/tv_saving_result"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="15dp"
         android:fontFamily="@font/opensans_regular"
-        android:onClick="onClick"
+        android:gravity="center"
         android:text="조치완료"
-        android:textColor="@color/eg_cyan_light"
+        android:textColor="@color/ks_gray"
         android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

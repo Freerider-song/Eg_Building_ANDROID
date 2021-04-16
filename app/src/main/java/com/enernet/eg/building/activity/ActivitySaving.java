@@ -75,6 +75,7 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
     BarChart savingStackedBarChart, usageTotalBarChart;
     HorizontalBarChart usageBarChart;
     int[] colorArray = new int[] {Color.CYAN, Color.LTGRAY};
+    String[] labelArray = new String[] {"시행 횟수", "미시행 횟수"};
     private SavingResultAdapter m_SavingResultAdapter;
 
 
@@ -221,6 +222,7 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
         yAxisLeftSaving.setTypeface(tf2);
         yAxisLeftSaving.setDrawGridLines(false);
 
+
         /*
         Description descriptionSaving = new Description();
         descriptionSaving.setText("절감행동 실행");
@@ -229,10 +231,13 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
         savingStackedBarChart.setDescription(descriptionSaving);*/
         savingStackedBarChart.setDescription(null);
 
-        savingStackedBarChart.getLegend().setEnabled(false);
+        savingStackedBarChart.getLegend().setEnabled(true);
 
 
-        savingStackedBarChart.animateY(2500);
+
+
+
+        savingStackedBarChart.animateY(2000);
 
         //사용량 분석 차트 설정
 
@@ -257,6 +262,9 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
 
         LimitLine llStandard = new LimitLine(parseFloat(CaApplication.m_Info.m_dfKwh.format(CaApplication.m_Info.m_dKwhRefForAllMeter)), "기준");
         llStandard.setLineWidth(1f);
+        llStandard.setTypeface(tf2);
+        //llStandard.setLineColor(getResources().getColor(R.color.ks_light_blue));
+        llStandard.setTextColor(getResources().getColor(R.color.ks_gray));
         //llStandard.enableDashedLine(10f,10f,0f);
         //llStandard.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
         //llStandard.setTextSize(10f);
@@ -264,6 +272,10 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
 
         LimitLine llGoal = new LimitLine(parseFloat(CaApplication.m_Info.m_dfKwh.format(CaApplication.m_Info.m_dKwhPlanForAllMeter)), "목표");
         llGoal.setLineWidth(1f);
+        llGoal.setLineColor(getResources().getColor(R.color.ks_light_blue));
+        llGoal.setTypeface(tf2);
+        llGoal.setTextColor(getResources().getColor(R.color.ks_gray));
+
         //llGoal.enableDashedLine(10f,10f,0f);
         //llGoal.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
         //llGoal.setTextSize(10f);
@@ -273,7 +285,10 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
         yAxisLeftTotal.addLimitLine(llStandard);
         yAxisLeftTotal.addLimitLine(llGoal);
 
+
+
         usageTotalBarChart.setDescription(null);
+
 
         /*
         Description descriptionTotal = new Description();
@@ -281,11 +296,7 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
         usageTotalBarChart.setDescription(descriptionTotal);
         */
 
-
-
-
-
-        usageTotalBarChart.animateY(2500);
+        usageTotalBarChart.animateY(2000);
 
 
 
@@ -304,7 +315,7 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
         // mChart.setDrawXLabels(false);
         usageBarChart.setDrawGridBackground(false);
         // mChart.setDrawYLabels(false);
-        usageBarChart.animateY(2500);
+        usageBarChart.animateY(2000);
 
 
 
@@ -331,23 +342,47 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
 
 
         //실천 횟수 데이터 입력
+        ValueFormatter vfCount=new ValueFormatter() {
+
+            @Override
+            public String getFormattedValue(float v) {
+                if (v==0) return "";
+                else return CaApplication.m_Info.m_dfKwh.format(v)+ " 회";
+            }
+        };
         BarDataSet barDataSetSaving = new BarDataSet(dataValueSaving(),"Bar Set");
         barDataSetSaving.setColors(colorArray);
-
-
+        barDataSetSaving.setValueFormatter(vfCount);
         BarData barDataSaving = new BarData(barDataSetSaving);
         barDataSaving.setBarWidth(0.5f);
+        barDataSaving.setValueTextSize(13f);
+        barDataSaving.setValueTypeface(tf2);
+
+
         savingStackedBarChart.setData(barDataSaving);
 
 
         //사용량분석 차트 데이터 입력
+        ValueFormatter vfKwhWithUnit=new ValueFormatter() {
+
+            @Override
+            public String getFormattedValue(float v) {
+                if (v==0) return "";
+                else return CaApplication.m_Info.m_dfKwh.format(v)+ " kWh";
+            }
+        };
+
         BarDataSet barDataSetTotal = new BarDataSet(dataValueUsageTotal(),"평균 사용량");
         if(CaApplication.m_Info.m_dAvgKwhForAllMeter<CaApplication.m_Info.m_dKwhPlanForAllMeter) barDataSetTotal.setColor(getResources().getColor(R.color.eg_pastel_green));
         else if(CaApplication.m_Info.m_dAvgKwhForAllMeter<CaApplication.m_Info.m_dKwhRefForAllMeter) barDataSetTotal.setColor(getResources().getColor(R.color.eg_pastel_yellow));
         else if(CaApplication.m_Info.m_dAvgKwhForAllMeter>=CaApplication.m_Info.m_dKwhRefForAllMeter) barDataSetTotal.setColor(getResources().getColor(R.color.eg_pastel_red));
 
+        barDataSetTotal.setValueFormatter(vfKwhWithUnit);
+
         BarData barDataTotal = new BarData(barDataSetTotal);
         barDataTotal.setBarWidth(0.5f);
+        barDataTotal.setValueTextSize(13f);
+        barDataTotal.setValueTypeface(tf2);
 
         usageTotalBarChart.setData(barDataTotal);
     }
@@ -397,7 +432,7 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
             @Override
             public String getFormattedValue(float v) {
                 if (v==0) return "";
-                else return CaApplication.m_Info.m_dfKwh.format(v)+" kWh";
+                else return CaApplication.m_Info.m_dfKwh.format(v);
             }
         };
 
@@ -429,7 +464,10 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
         dataKwh.setValueTextSize(10f);
         dataKwh.setBarWidth(barWidth);
         dataKwh.setHighlightEnabled(false);
-        //dataKwh.setValueTypeface(m_Typeface);
+
+        Typeface tf2 = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Regular.ttf");
+        dataKwh.setValueTypeface(tf2);
+        dataKwh.setValueTextColor(getResources().getColor(R.color.eg_cyan_dark));
         usageBarChart.getXAxis().setAxisMinimum(0);
         usageBarChart.getXAxis().setAxisMaximum(nCountUsage);
         usageBarChart.setData(dataKwh);
@@ -575,6 +613,8 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
             case R.id.btn_search: {
                 int date1 = Integer.parseInt(m_strSelectedDate1);
                 int date2 = Integer.parseInt(m_strSelectedDate2);
+                int dtSavePlan=Integer.parseInt(myyyyMMddFormat.format(CaApplication.m_Info.m_dtSavePlanCreated));
+
                 if(date1>=date2){
                     AlertDialog.Builder dlg = new AlertDialog.Builder(ActivitySaving.this);
                     dlg.setMessage("날짜입력이 잘못되었습니다.");
@@ -587,6 +627,15 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
                 else if(date1-date2>=40){
                     AlertDialog.Builder dlg = new AlertDialog.Builder(ActivitySaving.this);
                     dlg.setMessage("40일 이내의 데이터만 조회하실 수 있습니다.");
+                    dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    dlg.show();
+                }
+                else if(date1<dtSavePlan){
+                    AlertDialog.Builder dlg = new AlertDialog.Builder(ActivitySaving.this);
+                    dlg.setMessage("절감계획 이전의 데이터는 불러올 수 없습니다.");
                     dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                         }
