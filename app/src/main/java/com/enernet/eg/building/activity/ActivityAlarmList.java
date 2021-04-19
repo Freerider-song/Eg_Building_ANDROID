@@ -37,7 +37,7 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
 
     private ListView m_lvAlarm;
 
-    private ArrayList<CaAlarm> m_alAlarm = new ArrayList<>();
+    //private ArrayList<CaAlarm> m_alAlarm = new ArrayList<>();
 
     private class AlarmViewHolder {
         public ConstraintLayout m_clAreaRoot;
@@ -58,14 +58,14 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
 
         @Override
         public int getCount() {
-            return m_alAlarm.size();
+            return CaApplication.m_Info.m_alAlarm.size();
 
         }
 
         @Override
         public Object getItem(int position) {
 
-            return m_alAlarm.get(position);
+            return CaApplication.m_Info.m_alAlarm.get(position);
             //return position;
         }
 
@@ -103,7 +103,7 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
                 holder = (AlarmViewHolder) convertView.getTag();
             }
 
-            final CaAlarm alarm = m_alAlarm.get(position);
+            final CaAlarm alarm = CaApplication.m_Info.m_alAlarm.get(position);
 
             switch (alarm.m_nAlarmType) {
                 case CaEngine.ALARM_PLAN_ELEM_BEGIN:
@@ -215,10 +215,13 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
                 Log.i("Alarm", "Result of GetBldAlarmList received...");
 
                 try {
-                    m_alAlarm.clear();
+
                     JSONObject jo = Result.object;
                     JSONArray ja = jo.getJSONArray("list_alarm");
 
+                    CaApplication.m_Info.setAlarmList(ja);
+
+                    /*
                     for (int i=0; i<ja.length(); i++) {
                         JSONObject joAlarm=ja.getJSONObject(i);
 
@@ -236,7 +239,8 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
                         }
 
                         m_alAlarm.add(alarm);
-                    }
+                    }*/
+
                     initListView();
 
                 }

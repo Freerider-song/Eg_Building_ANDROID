@@ -15,6 +15,9 @@ public class CaPref {
     public static final String PREF_MEMBER_ID		= "MEMBER_ID";
     public static final String PREF_PASSWORD		= "PASSWORD";
 
+    public static final String PREF_SEQ_ADMIN          = "0";
+    public static final String PREF_SEQ_SAVE_PLAN_ACTIVE = "0";
+
     public static final String PREF_METER_ID			= "meterId";
     public static final String PREF_SITE_SEQ			= "siteSeq";
     public static final String PREF_APP_USER_SEQ		= "appUserSeq";

@@ -9,5 +9,7 @@ public class CaAct {
     public int m_nSeqAct=0;
     public String m_strActContent="";
 
-    public ArrayList<CaActHistory> m_alActHistory;
+    public boolean m_bAllChecked = true;
+
+   public ArrayList<CaActHistory> m_alActHistory;
 }

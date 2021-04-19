@@ -1,9 +1,12 @@
 package com.enernet.eg.building.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +16,25 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.enernet.eg.building.CaApplication;
+import com.enernet.eg.building.CaEngine;
 import com.enernet.eg.building.CaResult;
 import com.enernet.eg.building.IaResultHandler;
 import com.enernet.eg.building.R;
 import com.enernet.eg.building.model.CaAct;
+import com.enernet.eg.building.model.CaActHistory;
 import com.enernet.eg.building.model.CaPlan;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ActivityAlarm extends BaseActivity implements IaResultHandler {
 
@@ -36,6 +47,11 @@ public class ActivityAlarm extends BaseActivity implements IaResultHandler {
     private SavingCheckAdapter m_SavingCheckAdapter;
 
     private CaPlan plan;
+
+    SimpleDateFormat myyyyMMddFormat = new SimpleDateFormat("yyyyMMdd");
+
+    Calendar calToday = Calendar.getInstance();
+    String m_dtToday = myyyyMMddFormat.format(calToday.getTime());
 
 
     private class SavingCheckViewHolder {
@@ -89,14 +105,37 @@ public class ActivityAlarm extends BaseActivity implements IaResultHandler {
             final CaAct act = plan.m_alAct.get(position);
             holder.m_CheckBox.setText(act.m_strActContent);
 
+
+            boolean flag = false;
+
+            for(int i=0;i<act.m_alActHistory.size();i++){
+                CaActHistory actHistory = act.m_alActHistory.get(i);
+
+                if(m_dtToday.equals(myyyyMMddFormat.format(actHistory.m_dtBegin))){
+                    holder.m_CheckBox.setChecked(true);
+                    flag = true;
+                    break;
+                }
+            }
+
+            if(flag==false) holder.m_CheckBox.setChecked(false);
+
+
+            holder.m_CheckBox.setOnClickListener(new CheckBox.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (((CheckBox)v).isChecked()) {
+                        CaApplication.m_Engine.SetSaveActBegin(act.m_nSeqAct,CaApplication.m_Info.m_nSeqAdmin, m_dtToday, getApplicationContext(),ActivityAlarm.this);
+                    } else {
+                        // TODO : CheckBox is unchecked.
+                    }
+                }
+            }) ;
+
             if(holder.m_CheckBox.isChecked()){
                 holder.m_CheckBox.setClickable(false);
             }
 
-            if (act.m_alActHistory.isEmpty()){
-                holder.m_CheckBox.setChecked(false);
-            }
-            else{holder.m_CheckBox.setChecked(true);}
 
 
             return convertView;
@@ -182,18 +221,85 @@ public class ActivityAlarm extends BaseActivity implements IaResultHandler {
             break;
 
             case R.id.btn_saving_execute: {
-                //m_Drawer.openDrawer();
+                finish();
+
+                AlertDialog.Builder dlg = new AlertDialog.Builder(ActivityAlarm.this);
+                dlg.setMessage("절감 조치가 실행되었습니다.");
+                dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                dlg.show();
+
             }
             break;
 
 
             default:
-                throw new IllegalStateException("Unexpected value: " + v.getId());
+                //throw new IllegalStateException("Unexpected value: " + v.getId());
         }
     }
 
     @Override
     public void onResult(CaResult Result) {
+        if (Result.object==null) {
+            Toast.makeText(getApplicationContext(), "Check Network...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        switch (Result.m_nCallback) {
+            case CaEngine.CB_SET_SAVE_ACT_BEGIN: {
+
+                Log.i("Alarm", "Result of SEtSaveActBegin received...");
+
+                try {
+
+                    JSONObject jo = Result.object;
+                    int nResultCode = jo.getInt("result_code");
+                    if (nResultCode == 0) {
+                        AlertDialog.Builder dlg = new AlertDialog.Builder(ActivityAlarm.this);
+                        dlg.setMessage("이미 실행된 절감 조치입니다.");
+                        dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        dlg.show();
+
+                    } /*else {
+                        AlertDialog.Builder dlg = new AlertDialog.Builder(ActivityAlarm.this);
+                        dlg.setMessage("절감 조치가 실행되었습니다.");
+                        dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                        dlg.show();
+                    }*/
+
+
+
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            break;
+
+
+            case CaEngine.CB_SET_SAVE_ACT_END: {
+                Log.i("Alarm", "Result of SetSaveActEnd received...");
+
+            }
+            break;
+
+
+            default: {
+                Log.i("Alarm", "Unknown type result received : " + Result.m_nCallback);
+            }
+            break;
+
+        } // end of switch
 
     }
 }

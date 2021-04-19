@@ -43,6 +43,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import pl.pawelkleczkowski.customgauge.CustomGauge;
@@ -57,6 +58,10 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
 
     private ListView m_lvSavingList;
 
+    SimpleDateFormat myyyyMMddFormat = new SimpleDateFormat("yyyyMMdd");
+
+    Calendar calToday = Calendar.getInstance();
+    String m_dtToday = myyyyMMddFormat.format(calToday.getTime());
 
     private class SavingViewHolder {
         public ConstraintLayout m_clAreaRoot;
@@ -119,13 +124,25 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
 
             holder.m_CheckBox.setText(act.m_strActContent);
             holder.m_CheckBox.setClickable(false);
+            boolean flag = false;
 
             //여기 부분 상무님께 여쭤보고 수정
-            if (act.m_alActHistory.isEmpty()){
-                holder.m_CheckBox.setChecked(false);
-            }
-            else{holder.m_CheckBox.setChecked(true);}
 
+            for(int i=0;i<act.m_alActHistory.size();i++){
+                CaActHistory actHistory = act.m_alActHistory.get(i);
+                //Log.i("Home", "절감조치: " + act.m_strActContent +"체크박스 여부 " + myyyyMMddFormat.format(actHistory.m_dtBegin) + "오늘 날짜는 " + m_dtToday);
+                if(m_dtToday.equals(myyyyMMddFormat.format(actHistory.m_dtBegin))){
+                    holder.m_CheckBox.setChecked(true);
+                    //Log.i("Home", "절감조치: " + act.m_strActContent + "의 체크박스가 체크 되었음! 오늘날짜 " + m_dtToday);
+                    flag = true;
+                    break;
+                }
+            }
+
+            if(flag==false) {
+                holder.m_CheckBox.setChecked(false);
+                act.m_bAllChecked=false;
+            }
 
             return convertView;
         }
@@ -213,7 +230,7 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
 
             for (int i = 0; i < plan.m_alAct.size(); i++) {
                 CaAct act = plan.m_alAct.get(i);
-                if (act.m_alActHistory.isEmpty() && plan.m_nHourTo >= Integer.parseInt(getTime) && plan.m_nHourFrom <= Integer.parseInt(getTime)) {
+                if ((act.m_alActHistory.isEmpty() || !act.m_bAllChecked) && plan.m_nHourTo >= Integer.parseInt(getTime) && plan.m_nHourFrom <= Integer.parseInt(getTime)) {
                     holder.m_tvSavingResult.setText("지금 조치하기");
                     holder.m_tvSavingResult.setTextColor(getResources().getColor(R.color.white));
                     holder.m_tvSavingResult.setBackground(getResources().getDrawable(R.drawable.shape_round_corner_cyan_light_filled));
@@ -227,7 +244,7 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
                         }
                     });
                     break;
-                } else if (act.m_alActHistory.isEmpty() && plan.m_nHourTo <= Integer.parseInt(getTime)) {
+                } else if ((act.m_alActHistory.isEmpty() || !act.m_bAllChecked) && plan.m_nHourTo <= Integer.parseInt(getTime)) {
                     holder.m_tvSavingResult.setText("조치 미흡");
                     holder.m_tvSavingResult.setTextColor(getResources().getColor(R.color.red));
                     break;

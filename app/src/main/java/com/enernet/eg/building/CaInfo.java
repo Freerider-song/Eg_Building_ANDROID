@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.enernet.eg.building.model.CaAct;
 import com.enernet.eg.building.model.CaActHistory;
+import com.enernet.eg.building.model.CaAlarm;
 import com.enernet.eg.building.model.CaMeter;
 import com.enernet.eg.building.model.CaMeterUsage;
 import com.enernet.eg.building.model.CaNotice;
@@ -99,7 +100,8 @@ public class CaInfo {
     public int m_nActCount = 0;
     public int m_nActCountWithHistory=0;
 
-    //GetSaveResult
+    //
+    // GetSaveResult
     public int m_nTotalSaveActCount = 0;
     public int m_nTotalSaveActWithHistoryCount=0;
     public double m_dAvgKwhForAllMeter=0.0;
@@ -141,6 +143,7 @@ public class CaInfo {
     public ArrayList<CaNotice> m_alNotice=new ArrayList<>();
     public ArrayList<CaPlan> m_alPlan = new ArrayList<>();
     public ArrayList<CaMeter> m_alMeter = new ArrayList<>();
+    public ArrayList<CaAlarm> m_alAlarm = new ArrayList<>();
 
 
 
@@ -222,6 +225,37 @@ public class CaInfo {
         }
 
         return dt;
+    }
+
+    public void setAlarmList(JSONArray ja) {
+
+        m_alAlarm.clear();
+
+        try {
+            for (int i=0; i<ja.length(); i++) {
+                JSONObject joAlarm=ja.getJSONObject(i);
+
+                CaAlarm alarm=new CaAlarm();
+                alarm.m_nSeqAlarm=joAlarm.getInt("seq_alarm");
+                alarm.m_nAlarmType=joAlarm.getInt("alarm_type");
+                alarm.m_nSeqSavePlanElem=joAlarm.getInt("seq_save_plan_elem");
+                alarm.m_strTitle=joAlarm.getString("title");
+                alarm.m_strContent=joAlarm.getString("content");
+                alarm.m_bRead=(joAlarm.getInt("is_read")==1);
+                alarm.m_dtCreated=parseDate(joAlarm.getString("time_created"));
+
+                if (alarm.m_bRead) {
+                    alarm.m_dtRead=parseDate(joAlarm.getString("time_read"));
+                }
+
+                m_alAlarm.add(alarm);
+            }
+            Log.i("CaInfo", "SetAlarmList 성공적 호출");
+
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 

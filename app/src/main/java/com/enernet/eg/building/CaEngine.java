@@ -27,6 +27,8 @@ public class CaEngine {
     public static final int CB_GET_USAGE_FOR_ALL_METER_YEAR = 1015;
     public static final int CB_CHANGE_ADMIN_BLD_SETTINGS= 1016;
     public static final int CB_GET_BLD_ALARM_LIST=1017;
+    public static final int CB_SET_SAVE_ACT_BEGIN = 1018;
+    public static final int CB_SET_SAVE_ACT_END = 1019;
 
 
 
@@ -148,7 +150,7 @@ public class CaEngine {
     public void SetBldNoticeListAsRead(final int SeqAdmin, final String strSeqNoticeList, Context Ctx, IaResultHandler ResultHandler){
         Log.i("ENGINE", "-");
 
-        CaArg Arg = new CaArg("GetBldNoticeList", NO_CMD_ARGS, null);
+        CaArg Arg = new CaArg("SetBldNoticeListAsRead", NO_CMD_ARGS, null);
         Arg.addArg("SeqAdmin", SeqAdmin);
         Arg.addArg("SeqNoticeList", strSeqNoticeList);
 
@@ -240,7 +242,26 @@ public class CaEngine {
         executeCommand(Arg, CB_GET_BLD_ALARM_LIST, false, true, Ctx, ResultHandler);
     }
 
+    public void SetSaveActBegin(final int SeqSaveAct, final int SeqAdmin, final String DateTarget,Context Ctx, IaResultHandler ResultHandler){
+        Log.i("ENGINE", "-");
 
+        CaArg Arg = new CaArg("SetSaveActBegin", NO_CMD_ARGS, null);
+        Arg.addArg("SeqAdmin", SeqAdmin);
+        Arg.addArg("SeqSaveAct", SeqSaveAct);
+        Arg.addArg("DateTarget", DateTarget);
 
+        executeCommand(Arg, CB_SET_SAVE_ACT_BEGIN, false, true, Ctx, ResultHandler);
+    }
+
+    public void SetSaveActEnd(final int SeqSaveActHistory, final int SeqAdmin, final String yyyyMMdd,Context Ctx, IaResultHandler ResultHandler){
+        Log.i("ENGINE", "-");
+
+        CaArg Arg = new CaArg("SetSaveActEnd", NO_CMD_ARGS, null);
+        Arg.addArg("SeqAdmin", SeqAdmin);
+        Arg.addArg("SeqSaveActHistory", SeqSaveActHistory);
+        Arg.addArg("yyyyMMdd", yyyyMMdd);
+
+        executeCommand(Arg, CB_SET_SAVE_ACT_END, false, true, Ctx, ResultHandler);
+    }
 
 }

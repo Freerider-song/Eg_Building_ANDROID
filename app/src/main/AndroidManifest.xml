@@ -25,6 +25,12 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+        <service android:name=".NeverDieService"/>
+        <service android:name=".RestartService"/>
+
+        <receiver android:name=".ActionReceiver"/>
+        <receiver android:name=".AlarmReceiver"/>
+
 
         <activity
             android:name=".EgDialogLogout"

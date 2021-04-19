@@ -142,7 +142,8 @@ public class ActivityNoticeList extends BaseActivity implements IaResultHandler,
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
         String getTime = sdf.format(date);
 
-        CaApplication.m_Engine.GetBldNoticeList(CaApplication.m_Info.m_nSeqAdmin, getTime, 7, this , this);
+
+        CaApplication.m_Engine.GetBldNoticeList(CaApplication.m_Info.m_nSeqAdmin, getTime, 10, this , this);
 
         m_lvNotice = findViewById(R.id.lv_notice_list);
         TextView tvEmpty = findViewById(R.id.tv_empty2);
@@ -182,7 +183,8 @@ public class ActivityNoticeList extends BaseActivity implements IaResultHandler,
             finish();
         }
         else {
-            CaApplication.m_Engine.SetBldNoticeListAsRead(CaApplication.m_Info.m_nSeqMember, strSeqNoticeList, this, this);
+            CaApplication.m_Engine.SetBldNoticeListAsRead(CaApplication.m_Info.m_nSeqAdmin, strSeqNoticeList, this, this);
+            Log.i("NoticeList", "setBldNoticeListAsRead 실행");
         }
     }
 
@@ -217,13 +219,14 @@ public class ActivityNoticeList extends BaseActivity implements IaResultHandler,
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_back: {
-                //setNoticeReadStateToDb();
+                setNoticeReadStateToDb();
                 finish();
             }
             break;
 
             case R.id.btn_menu: {
                 m_Drawer.openDrawer();
+                setNoticeReadStateToDb();
             }
             break;
 

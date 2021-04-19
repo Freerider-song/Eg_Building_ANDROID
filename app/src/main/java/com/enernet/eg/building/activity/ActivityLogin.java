@@ -170,7 +170,7 @@ public class ActivityLogin extends BaseActivity implements IaResultHandler {
                 }
                 else {
                     Calendar calToday = Calendar.getInstance();
-                    calToday.add(Calendar.DATE, -1);
+                    calToday.add(Calendar.DATE, 0);
                     SimpleDateFormat myyyyMMddFormat = new SimpleDateFormat("yyMMdd");
                     String m_dtToday = myyyyMMddFormat.format(calToday.getTime())+"1";
 
@@ -209,6 +209,8 @@ public class ActivityLogin extends BaseActivity implements IaResultHandler {
 
                         CaApplication.m_Info.m_nSeqAdmin = jo.getInt("seq_admin");
                         CaApplication.m_Info.m_nTeamType = jo.getInt("team_type");
+                        m_Pref.setValue(CaPref.PREF_SEQ_ADMIN, CaApplication.m_Info.m_nSeqAdmin);
+
 
                         CaApplication.m_Info.m_strAdminId = m_strMemberId;
                         CaApplication.m_Info.m_strPassword = m_strPassword;
@@ -284,6 +286,8 @@ public class ActivityLogin extends BaseActivity implements IaResultHandler {
                     String getTime = sdf.format(date);
 
                     Log.i("get time is ", "is "+ getTime + "and saveplan is" + CaApplication.m_Info.m_nSeqSavePlanActive);
+
+                    m_Pref.setValue(CaPref.PREF_SEQ_SAVE_PLAN_ACTIVE, CaApplication.m_Info.m_nSeqSavePlanActive);
 
                     //CaApplication.m_Engine.GetSaveResultDaily(CaApplication.m_Info.m_nSeqSavePlanActive, getTime, this, this);
 

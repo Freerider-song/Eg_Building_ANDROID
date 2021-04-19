@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
@@ -19,9 +20,23 @@ import com.enernet.eg.building.activity.ActivityHome;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 public class ServicePush extends FirebaseMessagingService implements IaResultHandler {
+    Context m_Context;
+    CaPref m_Pref;
+
+    long now = System.currentTimeMillis();
+    Date date = new Date(now);
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+    String getTime = sdf.format(date);
+
 
     @Override
     public void onNewToken(String s) {
@@ -44,7 +59,12 @@ public class ServicePush extends FirebaseMessagingService implements IaResultHan
         String strTitle=data.get("title");
         String strBody=data.get("body");
         String strPushType=data.get("push_type");
+        String strSeqPlanElem = data.get("seq_plan_elem");
+
         int nPushType=Integer.parseInt(strPushType==null? "0" : strPushType);
+        int nSeqPlanElem=Integer.parseInt(strSeqPlanElem==null? "0" : strSeqPlanElem);
+
+
 
         Log.d("ServicePush", "all data : " + data);
         Log.d("ServicePush", "from : " + strFrom);
@@ -53,9 +73,14 @@ public class ServicePush extends FirebaseMessagingService implements IaResultHan
         Log.d("ServicePush", "body : " + strBody);
         Log.d("ServicePush", "push_type : " + nPushType);
 
+        m_Pref = new CaPref(m_Context);
+        //int nSeqAdmin=Integer.parseInt(m_Pref.getValue(CaPref.PREF_SEQ_ADMIN, "0"));
+        //int nSeqSavePlanActive = Integer.parseInt(m_Pref.getValue(CaPref.PREF_SEQ_SAVE_PLAN_ACTIVE, "0"));
+        CaApplication.m_Engine.GetBldAlarmList(CaApplication.m_Info.m_nSeqAdmin, 20, this, this);
+        CaApplication.m_Engine.GetSaveResultDaily(CaApplication.m_Info.m_nSeqSavePlanActive, getTime, this, this);
+
         switch (nPushType){
-            case CaEngine.ALARM_PLAN_ELEM_END:
-            case CaEngine.ALARM_PLAN_ELEM_BEGIN:
+
             case CaEngine.ALARM_THIS_MONTH_WON_OVER:
             case CaEngine.ALARM_METER_KWH_OVER_SAVE_REF:
             case CaEngine.ALARM_METER_KWH_OVER_SAVE_PLAN:
@@ -67,9 +92,11 @@ public class ServicePush extends FirebaseMessagingService implements IaResultHan
             }
             break;
 
+            case CaEngine.ALARM_PLAN_ELEM_END:
+            case CaEngine.ALARM_PLAN_ELEM_BEGIN:
             case CaEngine.ALARM_SAVE_ACT_MISSED: {
-                Log.d("ServicePush", "미시행절감조치 알림");
-                notifyAlarm(strTitle,strBody);
+                Log.d("ServicePush", "절감조치 알림");
+                notifyNotImplemented(strTitle,strBody, nSeqPlanElem);
             }
             break;
 
@@ -88,9 +115,15 @@ public class ServicePush extends FirebaseMessagingService implements IaResultHan
         final int nNotiId=3186;
 
         Context ctx=getApplicationContext();
+        Intent it;
 
-        // Intent it=new Intent(ctx, ActivityLogin.class);
-        Intent it=new Intent(ctx, ActivityAlarm.class);
+        //
+        if(CaApplication.m_Info.m_alPlan.isEmpty()){
+            it=new Intent(ctx, com.enernet.eg.building.ActivityLogin.class);
+        }
+        else {
+            it = new Intent(ctx, ActivityAlarm.class);
+        }
         it.putExtra("seq_plan_elem", nSeqPlanElem);
         it.setAction(Intent.ACTION_MAIN);
         it.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -130,7 +163,7 @@ public class ServicePush extends FirebaseMessagingService implements IaResultHan
                             .setContentText(strBody)
                             .setContentIntent(pit)
                             .setAutoCancel(true)
-                            .addAction(R.drawable.speaker_icon, "실행", pitAccept)
+                            .addAction(R.drawable.speaker_icon, "조치하기", pitAccept)
                             .addAction(R.drawable.speaker_icon, "취소", pitReject)
                             .setOngoing(false)
                             .setStyle(new NotificationCompat.BigTextStyle()
@@ -148,7 +181,7 @@ public class ServicePush extends FirebaseMessagingService implements IaResultHan
                             .setContentText(strBody)
                             .setContentIntent(pit)
                             .setAutoCancel(true)
-                            .addAction(R.drawable.speaker_icon, "실행", pitAccept)
+                            .addAction(R.drawable.speaker_icon, "조치하기", pitAccept)
                             .addAction(R.drawable.speaker_icon, "취소", pitReject)
                             .setOngoing(false)
                             .setStyle(new NotificationCompat.BigTextStyle()
@@ -170,9 +203,16 @@ public class ServicePush extends FirebaseMessagingService implements IaResultHan
         final int nNotiId=3186;
 
         Context ctx=getApplicationContext();
+        Intent it;
 
         //Tap 할 시 이동할 activity 설정
-        Intent it=new Intent(ctx, ActivityAlarmList.class);
+        if(CaApplication.m_Info.m_alAlarm.isEmpty()){
+            it=new Intent(ctx, com.enernet.eg.building.ActivityLogin.class);
+        }
+        else {
+            it = new Intent(ctx, ActivityAlarmList.class);
+        }
+
         it.setAction(Intent.ACTION_MAIN);
         it.addCategory(Intent.CATEGORY_LAUNCHER);
 
@@ -227,6 +267,70 @@ public class ServicePush extends FirebaseMessagingService implements IaResultHan
 
         @Override
     public void onResult(CaResult Result) {
+            if (Result.object==null) {
+                Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-    }
+            switch (Result.m_nCallback) {
+                case CaEngine.CB_GET_BLD_ALARM_LIST: {
+                    Log.i("ServicePush", "Result of GetAlarmList received...");
+
+                    try {
+                        JSONObject jo = Result.object;
+                        JSONArray jaAlarm = jo.getJSONArray("list_alarm");
+                        CaApplication.m_Info.setAlarmList(jaAlarm);
+                    }
+                    catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+
+                case CaEngine.CB_GET_SAVE_RESULT_DAILY: {
+                    Log.i("Home", "Result of GetSaveResultDaily received...");
+
+                    try {
+                        JSONObject jo = Result.object;
+                        JSONObject joSave = jo.getJSONObject("save_result_daily");
+                        JSONArray jaPlan = joSave.getJSONArray("list_plan_elem");
+
+                        CaApplication.m_Info.m_nSeqSaveRef = joSave.getInt("seq_save_ref");
+                        CaApplication.m_Info.m_nSeqSite = joSave.getInt("seq_site");
+                        CaApplication.m_Info.m_strSavePlanName = joSave.getString("save_plan_name");
+                        CaApplication.m_Info.m_strSaveRefName = joSave.getString("save_ref_name");
+                        CaApplication.m_Info.m_dSaveKwhTotalFromElem = joSave.getDouble("save_kwh_total_from_elem");
+                        CaApplication.m_Info.m_dSaveWonTotalFromElem = joSave.getDouble("save_won_total_from_elem");
+                        CaApplication.m_Info.m_dSaveKwhTotalFromMeter = joSave.getDouble("save_kwh_total_from_meter");
+                        CaApplication.m_Info.m_dSaveWonTotalFromMeter = joSave.getDouble("save_kwh_total_from_meter");
+                        CaApplication.m_Info.m_dKwhPlanForAllMeter = joSave.getDouble("kwh_plan_for_all_meter");
+                        CaApplication.m_Info.m_dKwhRealForAllMeter = joSave.getDouble("kwh_real_for_all_meter");
+                        CaApplication.m_Info.m_dKwhRefForAllMeter = joSave.getDouble("kwh_ref_for_all_meter");
+                        CaApplication.m_Info.m_dWonPlanForAllMeter = joSave.getDouble("won_plan_for_all_meter");
+                        CaApplication.m_Info.m_dWonRealForAllMeter = joSave.getDouble("won_real_for_all_meter");
+                        CaApplication.m_Info.m_dWonRefForAllMeter = joSave.getDouble("won_ref_for_all_meter");
+                        //CaApplication.m_Info.m_dtSavePlanEnded = parseDate(joSave.getString("time_ended"));
+                        //CaApplication.m_Info.m_dtSavePlanCreated = parseDate(joSave.getString("time_created"));
+                        CaApplication.m_Info.m_nActCount = joSave.getInt("act_count");
+                        CaApplication.m_Info.m_nActCountWithHistory = joSave.getInt("act_count_with_history");
+
+                        CaApplication.m_Info.setPlanList(jaPlan);
+
+                    }
+                    catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+
+                default: {
+                    Log.i("ServicePush", "Unknown type result received : " + Result.m_nCallback);
+                }
+                break;
+
+            } // end of switch
+        }
+
+
 }
+
