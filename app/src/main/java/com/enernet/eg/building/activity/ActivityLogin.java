@@ -4,11 +4,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -21,6 +23,7 @@ import com.enernet.eg.building.activity.ActivityChangePasswordAuth;
 import com.enernet.eg.building.activity.ActivityHome;
 import com.enernet.eg.building.activity.ActivityHome_2;
 import com.enernet.eg.building.activity.BaseActivity;
+import com.enernet.eg.building.activity.PreferenceUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -49,7 +52,10 @@ public class ActivityLogin extends BaseActivity implements IaResultHandler {
     String m_strPassword;
     String m_strDeviceId;
 
-    String m_Os = "ANDROID";
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+
+    //String m_Os = "ANDROID";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,6 +83,11 @@ public class ActivityLogin extends BaseActivity implements IaResultHandler {
         }
 
         getPushId();
+
+        //기본 SharedPreferences 환경과 관련된 객체를 얻어옵니다.
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        // SharedPreferences 수정을 위한 Editor 객체를 얻어옵니다.
+        editor = preferences.edit();
     }
 
     private String getVersion()
@@ -210,6 +221,7 @@ public class ActivityLogin extends BaseActivity implements IaResultHandler {
                         CaApplication.m_Info.m_nSeqAdmin = jo.getInt("seq_admin");
                         CaApplication.m_Info.m_nTeamType = jo.getInt("team_type");
                         m_Pref.setValue(CaPref.PREF_SEQ_ADMIN, CaApplication.m_Info.m_nSeqAdmin);
+                        PreferenceUtil.setPreferences(m_Context, "SeqAdmin", CaApplication.m_Info.m_nSeqAdmin);
 
 
                         CaApplication.m_Info.m_strAdminId = m_strMemberId;
@@ -288,6 +300,7 @@ public class ActivityLogin extends BaseActivity implements IaResultHandler {
                     Log.i("get time is ", "is "+ getTime + "and saveplan is" + CaApplication.m_Info.m_nSeqSavePlanActive);
 
                     m_Pref.setValue(CaPref.PREF_SEQ_SAVE_PLAN_ACTIVE, CaApplication.m_Info.m_nSeqSavePlanActive);
+                    PreferenceUtil.setPreferences(m_Context, "SeqSavePlanActive", CaApplication.m_Info.m_nSeqSavePlanActive);
 
                     //CaApplication.m_Engine.GetSaveResultDaily(CaApplication.m_Info.m_nSeqSavePlanActive, getTime, this, this);
 

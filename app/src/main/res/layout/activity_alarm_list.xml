@@ -8,6 +8,19 @@
     tools:context=".activity.ActivityAlarmList">
 
     <TextView
+        android:id="@+id/tv_alarm_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:text="* 총 30건"
+        android:textColor="@color/ks_gray"
+        android:textSize="16sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
+
+    <TextView
         android:id="@+id/tv_empty3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,8 +40,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:text="* 최대 20개의 최신 알림만 표시됩니다."
         android:textColor="@color/ks_gray"
         android:textSize="16sp"
         android:textStyle="normal"
@@ -70,10 +81,9 @@
 
         <Button
             android:id="@+id/btn_menu"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="15dp"
             android:background="@drawable/btn_menu"
             android:onClick="onClick"
             app:layout_constraintBottom_toBottomOf="parent"

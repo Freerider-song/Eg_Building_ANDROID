@@ -53,7 +53,7 @@
                 android:id="@+id/textView27"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="절감행동 실행"
+                android:text="절감조치 실행"
                 android:textColor="@color/black"
                 android:textSize="14dp"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout"
@@ -240,10 +240,9 @@
 
         <Button
             android:id="@+id/btn_menu"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="15dp"
             android:background="@drawable/btn_menu"
             android:onClick="onClick"
             app:layout_constraintBottom_toBottomOf="parent"

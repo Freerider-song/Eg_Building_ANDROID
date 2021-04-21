@@ -94,9 +94,11 @@ public class ActivitySetting extends BaseActivity implements IaResultHandler {
         tvPasswordChange.setText(CaApplication.m_Info.m_dfyyyyMMddhhmmStd.format(CaApplication.m_Info.m_dtChangePassword));
         tvName.setText(CaApplication.m_Info.m_strAdminName);
         tvPhone.setText(CaApplication.m_Info.m_strAdminPhone);
-        etThresholdKwh.setText(CaApplication.m_Info.m_dfKwh.format(CaApplication.m_Info.m_dThresholdThisMonthKwh));
-        etThresholdWon.setText(CaApplication.m_Info.m_dfWon.format(CaApplication.m_Info.m_dThresholdThisMonthWon));
+        //etThresholdKwh.setText(CaApplication.m_Info.m_dfKwh.format(CaApplication.m_Info.m_dThresholdThisMonthKwh));
+        //etThresholdWon.setText(CaApplication.m_Info.m_dfWon.format(CaApplication.m_Info.m_dThresholdThisMonthWon));
 
+        etThresholdKwh.setText(String.valueOf((int) CaApplication.m_Info.m_dThresholdThisMonthKwh));
+        etThresholdWon.setText(String.valueOf((int) CaApplication.m_Info.m_dThresholdThisMonthWon));
         setAlarmInfo();
     }
 
@@ -301,11 +303,11 @@ public class ActivitySetting extends BaseActivity implements IaResultHandler {
 
         EditText etThresholdWon=findViewById(R.id.et_threshold_won);
         String strThresholdWon=etThresholdWon.getText().toString();
-        m_dThresholdWon=Double.parseDouble(StringUtil.removeNonDigitChars(strThresholdWon));
+        m_dThresholdWon=Double.parseDouble((strThresholdWon));
 
 
-        if (Math.abs(m_dThresholdKwh - CaApplication.m_Info.m_dThresholdThisMonthKwh)>0.1) return true;
-        if (Math.abs(m_dThresholdWon - CaApplication.m_Info.m_dThresholdThisMonthWon)>0.1) return true;
+        if (Math.abs(m_dThresholdKwh - CaApplication.m_Info.m_dThresholdThisMonthKwh)>=1) return true;
+        if (Math.abs(m_dThresholdWon - CaApplication.m_Info.m_dThresholdThisMonthWon)>=1) return true;
 
 
         if (m_nUsageNotiHour != CaApplication.m_Info.m_nHourNotiThisMonthUsage) return true;

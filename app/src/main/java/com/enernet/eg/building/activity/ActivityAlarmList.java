@@ -5,6 +5,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,21 +22,31 @@ import com.enernet.eg.building.CaEngine;
 import com.enernet.eg.building.CaResult;
 import com.enernet.eg.building.IaResultHandler;
 import com.enernet.eg.building.R;
+import com.enernet.eg.building.model.CaAct;
+import com.enernet.eg.building.model.CaActHistory;
 import com.enernet.eg.building.model.CaAlarm;
+import com.enernet.eg.building.model.CaPlan;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
 
     private AlarmAdapter m_AlarmAdapter;
 
     private ListView m_lvAlarm;
+
+    SimpleDateFormat myyyyMMddFormat = new SimpleDateFormat("yyyyMMdd");
+
+    Calendar calToday = Calendar.getInstance();
+    String m_dtToday = myyyyMMddFormat.format(calToday.getTime());
 
     //private ArrayList<CaAlarm> m_alAlarm = new ArrayList<>();
 
@@ -105,13 +116,58 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
 
             final CaAlarm alarm = CaApplication.m_Info.m_alAlarm.get(position);
 
+
+
             switch (alarm.m_nAlarmType) {
                 case CaEngine.ALARM_PLAN_ELEM_BEGIN:
                 case CaEngine.ALARM_PLAN_ELEM_END:
                 case CaEngine.ALARM_SAVE_ACT_MISSED:
 
                     holder.m_btnAlarmExecute.setVisibility(View.VISIBLE);
+
+                    for(int i=0; i<CaApplication.m_Info.m_alPlan.size(); i++){
+                        CaPlan plan = CaApplication.m_Info.m_alPlan.get(i);
+                        if(plan.m_nSeqPlanElem==alarm.m_nSeqSavePlanElem){
+                            for (int j = 0; j < plan.m_alAct.size(); j++) {
+                                CaAct act = plan.m_alAct.get(j);
+                                boolean flag = false;
+
+                                for(int k=0;k<act.m_alActHistory.size();k++){
+                                    CaActHistory actHistory = act.m_alActHistory.get(k);
+                                    //Log.i("Home", "절감조치: " + act.m_strActContent +"체크박스 여부 " + myyyyMMddFormat.format(actHistory.m_dtBegin) + "오늘 날짜는 " + m_dtToday);
+                                    if(m_dtToday.equals(myyyyMMddFormat.format(actHistory.m_dtBegin))){
+                                        //Log.i("Home", "절감조치: " + act.m_strActContent + "의 체크박스가 체크 되었음! 오늘날짜 " + m_dtToday);
+                                        flag = true;
+                                        break;
+                                    }
+                                }
+                                if(flag==false) {
+
+                                    act.m_bAllChecked=false;
+                                }
+                                if (!act.m_bAllChecked) {
+                                    plan.m_bAllChecked = false;
+                                    //Log.i("AlarmList", " 다 체크 안된 절감계획 이름: " + plan.m_strMeterDescr + "시작시간 :" + plan.m_nHourFrom);
+                                    break;
+                                }
+                            }
+                            if (plan.m_bAllChecked) {
+                                //Log.i("AlarmList", "절감계획이름 :" + plan.m_strMeterDescr +" , 시작 날짜: " + plan.m_nHourFrom+" , 조치완료");
+                                holder.m_btnAlarmExecute.setText("조치 완료");
+                                holder.m_btnAlarmExecute.setEnabled(false);
+                                holder.m_btnAlarmExecute.setBackground(getResources().getDrawable(R.drawable.shape_round_corner_notice_normal));
+                                    }
+                            else {
+                                //Log.i("AlarmList", "시행안된 절감계획이름 :" + plan.m_strMeterDescr +" , 시작 날짜: " + plan.m_nHourFrom+" , 조치완료");
+                                holder.m_btnAlarmExecute.setText("지금조치하기");
+                                holder.m_btnAlarmExecute.setEnabled(true);
+                                holder.m_btnAlarmExecute.setBackground(getResources().getDrawable(R.drawable.shape_round_corner_dark_yellow_filled));
+                            }
+                            break;
+                        }
+                    }
                     break;
+
 
                 default: {
                     holder.m_btnAlarmExecute.setVisibility(View.INVISIBLE);
@@ -154,6 +210,24 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
         prepareDrawer();
         CaApplication.m_Engine.GetBldAlarmList(CaApplication.m_Info.m_nSeqAdmin, 30, this,this);
 
+
+    }
+
+    //ActivityAlarm에서 절감조치하고 돌아올 시 onResume 호출 -> 새로고침 유도.
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        int nSeqAdmin= PreferenceUtil.getPreferences(getApplicationContext(), "SeqAdmin");
+        int nSeqSavePlanActive = PreferenceUtil.getPreferences(getApplicationContext(), "SeqSavePlanActive");
+
+        CaApplication.m_Engine.GetBldAlarmList(nSeqAdmin, 30, this, this);
+
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH");
+        String getTime = sdf.format(date);
+        CaApplication.m_Engine.GetSaveResultDaily(nSeqSavePlanActive, getTime, this,this);
     }
 
     public void initListView() {
@@ -164,11 +238,16 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
 
         final ActivityAlarmList This=this;
 
-        ListView listView = (ListView) findViewById(R.id.lv_alarm_list);
+        // Save the ListView state (= includes scroll position) as a Parceble
+        Parcelable state = m_lvAlarm.onSaveInstanceState();
 
+        // e.g. set new items
         m_AlarmAdapter= new AlarmAdapter();
+        m_lvAlarm.setAdapter(m_AlarmAdapter);
 
-        listView.setAdapter(m_AlarmAdapter);
+        // Restore previous state (including selected item index and scroll position)
+        m_lvAlarm.onRestoreInstanceState(state);
+
     }
 
     public void onClick(View v) {
@@ -219,30 +298,32 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
                     JSONObject jo = Result.object;
                     JSONArray ja = jo.getJSONArray("list_alarm");
 
-                    CaApplication.m_Info.setAlarmList(ja);
+                    if(ja.length()!=0) CaApplication.m_Info.setAlarmList(ja);
 
-                    /*
-                    for (int i=0; i<ja.length(); i++) {
-                        JSONObject joAlarm=ja.getJSONObject(i);
 
-                        CaAlarm alarm=new CaAlarm();
-                        alarm.m_nSeqAlarm=joAlarm.getInt("seq_alarm");
-                        alarm.m_nAlarmType=joAlarm.getInt("alarm_type");
-                        alarm.m_nSeqSavePlanElem=joAlarm.getInt("seq_save_plan_elem");
-                        alarm.m_strTitle=joAlarm.getString("title");
-                        alarm.m_strContent=joAlarm.getString("content");
-                        alarm.m_bRead=(joAlarm.getInt("is_read")==1);
-                        alarm.m_dtCreated=parseDate(joAlarm.getString("time_created"));
 
-                        if (alarm.m_bRead) {
-                            alarm.m_dtRead=parseDate(joAlarm.getString("time_read"));
-                        }
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                        m_alAlarm.add(alarm);
-                    }*/
+            }
+            break;
+
+            case CaEngine.CB_GET_SAVE_RESULT_DAILY: {
+
+                Log.i("Alarm", "Result of GetBldAlarmList received...");
+
+                Log.i("Home", "Result of GetSaveResultDaily received...");
+
+                try {
+                    JSONObject jo = Result.object;
+                    JSONObject joSave = jo.getJSONObject("save_result_daily");
+                    JSONArray jaPlan = joSave.getJSONArray("list_plan_elem");
+
+                    CaApplication.m_Info.setPlanList(jaPlan);
 
                     initListView();
-
                 }
                 catch (JSONException e) {
                     e.printStackTrace();

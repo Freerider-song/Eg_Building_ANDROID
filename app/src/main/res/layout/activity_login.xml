@@ -29,6 +29,7 @@
         android:adjustViewBounds="true"
         android:src="@drawable/main_logo_a"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 

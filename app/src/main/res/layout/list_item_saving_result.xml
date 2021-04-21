@@ -5,69 +5,91 @@
     android:id="@+id/area_root2"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shape_round_corner_pastel_yellow_filled">
+    android:background="@drawable/shape_round_corner_pastel_red_hollow">
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="300dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/gray_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_instrument" />
 
     <TextView
         android:id="@+id/tv_saving_standard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginTop="5dp"
         android:fontFamily="@font/opensans_regular"
         android:gravity="center_horizontal"
         android:text="절감 기준  162.5"
-        android:textColor="@color/ks_gray"
+        android:textColor="@color/eg_cyan_dark"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_instrument_usage"
-        app:layout_constraintTop_toBottomOf="@+id/tv_instrument"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.74"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView10" />
 
     <TextView
         android:id="@+id/tv_saving_goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:fontFamily="@font/opensans_regular"
         android:gravity="center_horizontal"
         android:text="절감 목표  146.2"
-        android:textColor="@color/ks_gray"
+        android:textColor="@color/eg_cyan_dark"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_instrument"
-        app:layout_constraintTop_toBottomOf="@+id/tv_instrument" />
+        app:layout_constraintStart_toStartOf="@+id/tv_saving_standard"
+        app:layout_constraintTop_toBottomOf="@+id/tv_saving_standard" />
 
     <TextView
         android:id="@+id/tv_instrument"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
         android:layout_marginTop="16dp"
         android:ellipsize="end"
         android:fontFamily="@font/opensans_regular"
         android:singleLine="true"
         android:text="냉온방 공조기"
         android:textColor="@color/ks_gray"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.16"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_instrument_usage"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="70dp"
+        android:layout_marginTop="15dp"
         android:ellipsize="end"
         android:fontFamily="@font/opensans_regular"
         android:singleLine="true"
-        android:text="사용량   126.4"
+        android:text="126.4 kWh"
         android:textColor="@color/ks_gray"
-        android:textSize="17sp"
+        android:textSize="21sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.16"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_saving_standard" />
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="7dp"
+        android:background="@drawable/dot_cyan"
+        app:layout_constraintEnd_toStartOf="@+id/tv_instrument"
+        app:layout_constraintTop_toTopOf="@+id/tv_instrument" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -250,7 +250,7 @@ public class CaInfo {
 
                 m_alAlarm.add(alarm);
             }
-            Log.i("CaInfo", "SetAlarmList 성공적 호출");
+            Log.i("CaInfo", "SetAlarmList 성공적 호출" + m_alAlarm);
 
         }
         catch (JSONException e) {

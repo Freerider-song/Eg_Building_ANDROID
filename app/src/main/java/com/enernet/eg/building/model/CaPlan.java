@@ -24,5 +24,7 @@ public class CaPlan {
     public double m_dWonPlan=0.0;
     public double m_dWonReal=0.0;
 
+    public boolean m_bAllChecked = true;
+
     public ArrayList<CaAct> m_alAct;
 }

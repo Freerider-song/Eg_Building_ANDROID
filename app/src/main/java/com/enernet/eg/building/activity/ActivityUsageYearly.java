@@ -186,7 +186,10 @@ public class ActivityUsageYearly extends BaseActivity implements IaResultHandler
         lgd.setDrawInside(false);
         lgd.setFormSize(8f);
         lgd.setXEntrySpace(6f);
-        lgd.setYEntrySpace(2f);
+        lgd.setYEntrySpace(12f);
+        lgd.setTypeface(tf2);
+        lgd.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        lgd.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
     }
 
     @Override
@@ -420,7 +423,7 @@ public class ActivityUsageYearly extends BaseActivity implements IaResultHandler
         xAxis.setLabelCount(nCountUsage);
 
         BarDataSet setKwhAll=new BarDataSet(yValsKwhAll, "전체 사용량");
-        setKwhAll.setColor(getResources().getColor(R.color.eg_cyan_light));
+        setKwhAll.setColor(getResources().getColor(R.color.ks_light_gray));
         setKwhAll.setValueFormatter(vfKwhWithUnit);
 
         BarDataSet setKwhMeter=new BarDataSet(yValsKwhMeter, m_alMeter.get(m_nMeter).m_strDescr);

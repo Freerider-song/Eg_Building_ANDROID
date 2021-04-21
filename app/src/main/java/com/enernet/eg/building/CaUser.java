@@ -11,11 +11,12 @@ public class CaUser {
     private static final String MDL_LOGIN_ID			= "loginId";
     private static final String MDL_ROLE_INFO			= "roleInfo";
 
-    private String loginid			= "";
-    private String roleInfo			= "";
+    private int nSeqAdmin		= 0;
+    private int nSeqSavePlanActive	     = 0;
 
-    private String c2dm 			= "";
-    private String registration_id	= "";
+
+
+
 
     public CaUser() {
 
@@ -23,6 +24,7 @@ public class CaUser {
 
     public void load() {
         Context context 		= CaApplication.getContext();
+        //기본 SharedPreferences 환경과 관련된 객체를 얻어옵니다.
         SharedPreferences pref 	= context.getSharedPreferences(MDL_APP_PREFERENCES, Context.MODE_PRIVATE);
 
         //	loginid			= pref.getString(MDL_LOGIN_ID, "");

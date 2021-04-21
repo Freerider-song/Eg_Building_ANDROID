@@ -17,6 +17,7 @@ import androidx.core.app.NotificationCompat;
 import com.enernet.eg.building.activity.ActivityAlarm;
 import com.enernet.eg.building.activity.ActivityAlarmList;
 import com.enernet.eg.building.activity.ActivityHome;
+import com.enernet.eg.building.activity.PreferenceUtil;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -29,6 +30,7 @@ import java.util.Date;
 import java.util.Map;
 
 public class ServicePush extends FirebaseMessagingService implements IaResultHandler {
+
     Context m_Context;
     CaPref m_Pref;
 
@@ -36,6 +38,12 @@ public class ServicePush extends FirebaseMessagingService implements IaResultHan
     Date date = new Date(now);
     SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
     String getTime = sdf.format(date);
+    String strTitle;
+    String strBody;
+    String strPushType;
+    String strSeqPlanElem;
+    int nPushType;
+    int nSeqPlanElem;
 
 
     @Override
@@ -56,14 +64,13 @@ public class ServicePush extends FirebaseMessagingService implements IaResultHan
         String strFrom = rm.getFrom();
         Map<String, String> data = rm.getData();
 
-        String strTitle=data.get("title");
-        String strBody=data.get("body");
-        String strPushType=data.get("push_type");
-        String strSeqPlanElem = data.get("seq_plan_elem");
+        strTitle=data.get("title");
+        strBody=data.get("body");
+        strPushType=data.get("push_type");
+        strSeqPlanElem = data.get("seq_plan_elem");
 
-        int nPushType=Integer.parseInt(strPushType==null? "0" : strPushType);
-        int nSeqPlanElem=Integer.parseInt(strSeqPlanElem==null? "0" : strSeqPlanElem);
-
+        nPushType=Integer.parseInt(strPushType==null? "0" : strPushType);
+        nSeqPlanElem=Integer.parseInt(strSeqPlanElem==null? "0" : strSeqPlanElem);
 
 
         Log.d("ServicePush", "all data : " + data);
@@ -72,40 +79,19 @@ public class ServicePush extends FirebaseMessagingService implements IaResultHan
         Log.d("ServicePush", "title : " + strTitle);
         Log.d("ServicePush", "body : " + strBody);
         Log.d("ServicePush", "push_type : " + nPushType);
+        m_Context=getApplicationContext();
 
         m_Pref = new CaPref(m_Context);
         //int nSeqAdmin=Integer.parseInt(m_Pref.getValue(CaPref.PREF_SEQ_ADMIN, "0"));
         //int nSeqSavePlanActive = Integer.parseInt(m_Pref.getValue(CaPref.PREF_SEQ_SAVE_PLAN_ACTIVE, "0"));
-        CaApplication.m_Engine.GetBldAlarmList(CaApplication.m_Info.m_nSeqAdmin, 20, this, this);
-        CaApplication.m_Engine.GetSaveResultDaily(CaApplication.m_Info.m_nSeqSavePlanActive, getTime, this, this);
+        int nSeqAdmin= PreferenceUtil.getPreferences(m_Context, "SeqAdmin");
+        int nSeqSavePlanActive = PreferenceUtil.getPreferences(m_Context, "SeqSavePlanActive");
+        //CaApplication.m_Engine.GetBldAlarmList(CaApplication.m_Info.m_nSeqAdmin, 20, this, this);
+        //CaApplication.m_Engine.GetSaveResultDaily(CaApplication.m_Info.m_nSeqSavePlanActive, getTime, this, this);
+        CaApplication.m_Engine.GetBldAlarmList(nSeqAdmin, 30, this, this);
+        CaApplication.m_Engine.GetSaveResultDaily(nSeqSavePlanActive, getTime, this, this);
 
-        switch (nPushType){
 
-            case CaEngine.ALARM_THIS_MONTH_WON_OVER:
-            case CaEngine.ALARM_METER_KWH_OVER_SAVE_REF:
-            case CaEngine.ALARM_METER_KWH_OVER_SAVE_PLAN:
-            case CaEngine.ALARM_THIS_MONTH_KWH_OVER:
-            case CaEngine.ALARM_THIS_MONTH_USAGE_AT:
-            case CaEngine.ALARM_NEW_NOTICE: {
-                Log.d("ServicePush", "단순 Push received...");
-                notifyAlarm(strTitle, strBody);
-            }
-            break;
-
-            case CaEngine.ALARM_PLAN_ELEM_END:
-            case CaEngine.ALARM_PLAN_ELEM_BEGIN:
-            case CaEngine.ALARM_SAVE_ACT_MISSED: {
-                Log.d("ServicePush", "절감조치 알림");
-                notifyNotImplemented(strTitle,strBody, nSeqPlanElem);
-            }
-            break;
-
-            default: {
-                Log.i("ServicePush", "Unknown push type : " + nPushType);
-                notifyAlarm(strTitle,strBody);
-            }
-            break;
-        }
 
     }
 
@@ -122,7 +108,7 @@ public class ServicePush extends FirebaseMessagingService implements IaResultHan
             it=new Intent(ctx, com.enernet.eg.building.ActivityLogin.class);
         }
         else {
-            it = new Intent(ctx, ActivityAlarm.class);
+            it = new Intent(ctx, ActivityAlarmList.class);
         }
         it.putExtra("seq_plan_elem", nSeqPlanElem);
         it.setAction(Intent.ACTION_MAIN);
@@ -206,6 +192,7 @@ public class ServicePush extends FirebaseMessagingService implements IaResultHan
         Intent it;
 
         //Tap 할 시 이동할 activity 설정
+        Log.i("ServicePush", "notifyAlarm 실시 alAlarm은 ? " + CaApplication.m_Info.m_alAlarm);
         if(CaApplication.m_Info.m_alAlarm.isEmpty()){
             it=new Intent(ctx, com.enernet.eg.building.ActivityLogin.class);
         }
@@ -315,6 +302,34 @@ public class ServicePush extends FirebaseMessagingService implements IaResultHan
                         CaApplication.m_Info.m_nActCountWithHistory = joSave.getInt("act_count_with_history");
 
                         CaApplication.m_Info.setPlanList(jaPlan);
+
+                        switch (nPushType){
+
+                            case CaEngine.ALARM_THIS_MONTH_WON_OVER:
+                            case CaEngine.ALARM_METER_KWH_OVER_SAVE_REF:
+                            case CaEngine.ALARM_METER_KWH_OVER_SAVE_PLAN:
+                            case CaEngine.ALARM_THIS_MONTH_KWH_OVER:
+                            case CaEngine.ALARM_THIS_MONTH_USAGE_AT:
+                            case CaEngine.ALARM_NEW_NOTICE: {
+                                Log.d("ServicePush", "단순 Push received...");
+                                notifyAlarm(strTitle, strBody);
+                            }
+                            break;
+
+                            case CaEngine.ALARM_PLAN_ELEM_END:
+                            case CaEngine.ALARM_PLAN_ELEM_BEGIN:
+                            case CaEngine.ALARM_SAVE_ACT_MISSED: {
+                                Log.d("ServicePush", "절감조치 알림");
+                                notifyNotImplemented(strTitle,strBody, nSeqPlanElem);
+                            }
+                            break;
+
+                            default: {
+                                Log.i("ServicePush", "Unknown push type : " + nPushType);
+                                notifyAlarm(strTitle,strBody);
+                            }
+                            break;
+                        }
 
                     }
                     catch (JSONException e) {

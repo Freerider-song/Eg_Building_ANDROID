@@ -221,12 +221,13 @@ public class ActivityAlarm extends BaseActivity implements IaResultHandler {
             break;
 
             case R.id.btn_saving_execute: {
-                finish();
+
 
                 AlertDialog.Builder dlg = new AlertDialog.Builder(ActivityAlarm.this);
                 dlg.setMessage("절감 조치가 실행되었습니다.");
                 dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        finish();
                     }
                 });
                 dlg.show();

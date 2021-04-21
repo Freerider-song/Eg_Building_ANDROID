@@ -27,6 +27,7 @@ import com.ekn.gruzer.gaugelibrary.HalfGauge;
 import com.ekn.gruzer.gaugelibrary.Range;
 import com.enernet.eg.building.CaApplication;
 import com.enernet.eg.building.CaEngine;
+import com.enernet.eg.building.CaPref;
 import com.enernet.eg.building.CaResult;
 import com.enernet.eg.building.IaResultHandler;
 import com.enernet.eg.building.R;
@@ -62,6 +63,15 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
 
     Calendar calToday = Calendar.getInstance();
     String m_dtToday = myyyyMMddFormat.format(calToday.getTime());
+
+    public static Context HOME_CONTEXT;
+
+    long now = System.currentTimeMillis();
+    Date date = new Date(now);
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+    String getTime = sdf.format(date);
+
+    CaPref m_Pref;
 
     private class SavingViewHolder {
         public ConstraintLayout m_clAreaRoot;
@@ -230,6 +240,11 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
 
             for (int i = 0; i < plan.m_alAct.size(); i++) {
                 CaAct act = plan.m_alAct.get(i);
+                if(!act.m_bAllChecked){
+                    plan.m_bAllChecked=false;
+                    break;
+                }
+                /*
                 if ((act.m_alActHistory.isEmpty() || !act.m_bAllChecked) && plan.m_nHourTo >= Integer.parseInt(getTime) && plan.m_nHourFrom <= Integer.parseInt(getTime)) {
                     holder.m_tvSavingResult.setText("지금 조치하기");
                     holder.m_tvSavingResult.setTextColor(getResources().getColor(R.color.white));
@@ -252,7 +267,33 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
                     holder.m_tvSavingResult.setText("");
                     break;
                 }
+
+                 */
             }
+
+            if (!plan.m_bAllChecked && plan.m_nHourTo >= Integer.parseInt(getTime) && plan.m_nHourFrom <= Integer.parseInt(getTime)) {
+                holder.m_tvSavingResult.setText("지금 조치하기");
+                holder.m_tvSavingResult.setTextColor(getResources().getColor(R.color.white));
+                holder.m_tvSavingResult.setBackground(getResources().getDrawable(R.drawable.shape_round_corner_cyan_light_filled));
+                holder.m_tvSavingResult.setOnClickListener(new Button.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        Intent it = new Intent(ActivityHome.this, ActivityAlarm.class);
+                        it.putExtra("seq_meter",plan.m_nSeqMeter);
+                        it.putExtra("seq_plan_elem", plan.m_nSeqPlanElem);
+                        startActivity(it);
+                    }
+                });
+            } else if (!plan.m_bAllChecked && plan.m_nHourTo <= Integer.parseInt(getTime)) {
+                holder.m_tvSavingResult.setText("조치 미흡");
+                holder.m_tvSavingResult.setTextColor(getResources().getColor(R.color.red));
+
+            } else if (plan.m_nHourFrom > Integer.parseInt(getTime)) {
+                holder.m_tvSavingResult.setText("");
+
+            }
+
+
 
                 Log.i("Home", "current time="+getTime);
 
@@ -293,8 +334,12 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
 
             setContentView(R.layout.activity_home);
 
+            HOME_CONTEXT=this;
+
             prepareDrawer();
 
+
+            CaApplication.m_Info.m_nSeqSavePlanActive = PreferenceUtil.getPreferences(HOME_CONTEXT, "SeqSavePlanActive");
             /*
             ProgressBar progressBar = (ProgressBar)findViewById(R.id.spin_kit);
             Sprite wanderingCubes = new WanderingCubes();
@@ -310,55 +355,22 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
             targetView.getParent().requestChildFocus(targetView, targetView);
 
 
-            long now = System.currentTimeMillis();
-            Date date = new Date(now);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-            String getTime = sdf.format(date);
+
 
             Log.i("get time is ", "is "+ getTime + "and saveplan is" + CaApplication.m_Info.m_nSeqSavePlanActive);
 
             CaApplication.m_Engine.GetSaveResultDaily(CaApplication.m_Info.m_nSeqSavePlanActive, getTime, this, this);
 
-
-
-
         }
 
-        /*
 
-        private class CheckTypesTask extends AsyncTask<Void,Void,Void> {
+       @Override
+       public void onResume() {
+           super.onResume();
 
-            SpinKitView asyncDialog = new SpinKitView(ActivityHome.this);
+           CaApplication.m_Engine.GetSaveResultDaily(CaApplication.m_Info.m_nSeqSavePlanActive, getTime, this, this);
 
-            @Override
-            protected void onPreExecute() {
-                asyncDialog.animate();
-                super.onPreExecute();
-            }
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-                try{
-                    for(int i=0; i<5; i++) {
-                        Thread.sleep(2000);
-                    }
-                } catch (InterruptedException e){
-                    e.printStackTrace();
-                }
-                return null;
-            }
-            @Override
-            protected void onPostExecute(Void result){
-
-            }
-        }
-*/
-        public void onStart() {
-            super.onStart();
-
-
-
-        }
+       }
 
         private void initListView() {
 

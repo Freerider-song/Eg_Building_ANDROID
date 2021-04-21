@@ -137,13 +137,13 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
 
 
             holder.m_tvInstrument.setText(meter.m_strDescr);
-            holder.m_tvInstrumentUsage.setText("사용량  "+CaApplication.m_Info.m_dfKwh.format(meter.m_dKwhReal));
+            holder.m_tvInstrumentUsage.setText(CaApplication.m_Info.m_dfKwh.format(meter.m_dKwhReal)+ " kWh");
             holder.m_tvSavingStandard.setText("절감 기준  "+CaApplication.m_Info.m_dfKwh.format(meter.m_dKwhRef));
             holder.m_tvSavingGoal.setText("절감 목표  " + CaApplication.m_Info.m_dfKwh.format(meter.m_dKwhPlan));
 
-            if(meter.m_dKwhReal<meter.m_dKwhPlan) holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_green_filled));
-            else if(meter.m_dKwhReal< meter.m_dKwhRef) holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_yellow_filled));
-            else if(meter.m_dKwhReal>= meter.m_dKwhRef) holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_red_filled));
+            if(meter.m_dKwhReal<meter.m_dKwhPlan) holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_green_hollow));
+            else if(meter.m_dKwhReal< meter.m_dKwhRef) holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_yellow_hollow));
+            else if(meter.m_dKwhReal>= meter.m_dKwhRef) holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_red_hollow));
 
 
             return convertView;
@@ -231,9 +231,7 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
         savingStackedBarChart.setDescription(descriptionSaving);*/
         savingStackedBarChart.setDescription(null);
 
-        savingStackedBarChart.getLegend().setEnabled(true);
-
-
+        savingStackedBarChart.getLegend().setEnabled(false);
 
 
 
@@ -260,11 +258,13 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
         yAxisLeftTotal.setTypeface(tf2);
         yAxisLeftTotal.setDrawGridLines(false);
 
+
         LimitLine llStandard = new LimitLine(parseFloat(CaApplication.m_Info.m_dfKwh.format(CaApplication.m_Info.m_dKwhRefForAllMeter)), "기준");
         llStandard.setLineWidth(1f);
         llStandard.setTypeface(tf2);
         //llStandard.setLineColor(getResources().getColor(R.color.ks_light_blue));
         llStandard.setTextColor(getResources().getColor(R.color.ks_gray));
+        llStandard.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
         //llStandard.enableDashedLine(10f,10f,0f);
         //llStandard.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
         //llStandard.setTextSize(10f);
@@ -274,7 +274,8 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
         llGoal.setLineWidth(1f);
         llGoal.setLineColor(getResources().getColor(R.color.ks_light_blue));
         llGoal.setTypeface(tf2);
-        llGoal.setTextColor(getResources().getColor(R.color.ks_gray));
+        llGoal.setTextColor(getResources().getColor(R.color.ks_white_blue));
+        llGoal.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
 
         //llGoal.enableDashedLine(10f,10f,0f);
         //llGoal.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
@@ -288,6 +289,8 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
 
 
         usageTotalBarChart.setDescription(null);
+        Legend totalLgd=usageTotalBarChart.getLegend();
+        totalLgd.setTypeface(tf2);
 
 
         /*
@@ -373,9 +376,19 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
         };
 
         BarDataSet barDataSetTotal = new BarDataSet(dataValueUsageTotal(),"평균 사용량");
-        if(CaApplication.m_Info.m_dAvgKwhForAllMeter<CaApplication.m_Info.m_dKwhPlanForAllMeter) barDataSetTotal.setColor(getResources().getColor(R.color.eg_pastel_green));
-        else if(CaApplication.m_Info.m_dAvgKwhForAllMeter<CaApplication.m_Info.m_dKwhRefForAllMeter) barDataSetTotal.setColor(getResources().getColor(R.color.eg_pastel_yellow));
-        else if(CaApplication.m_Info.m_dAvgKwhForAllMeter>=CaApplication.m_Info.m_dKwhRefForAllMeter) barDataSetTotal.setColor(getResources().getColor(R.color.eg_pastel_red));
+        double maxYValue = 0;
+        if(CaApplication.m_Info.m_dAvgKwhForAllMeter<CaApplication.m_Info.m_dKwhPlanForAllMeter) {
+            barDataSetTotal.setColor(getResources().getColor(R.color.eg_pastel_green));
+            maxYValue=CaApplication.m_Info.m_dKwhRefForAllMeter + 30f;
+        }
+        else if(CaApplication.m_Info.m_dAvgKwhForAllMeter<CaApplication.m_Info.m_dKwhRefForAllMeter) {
+            barDataSetTotal.setColor(getResources().getColor(R.color.eg_pastel_yellow));
+            maxYValue=CaApplication.m_Info.m_dKwhRefForAllMeter + 30;
+        }
+        else if(CaApplication.m_Info.m_dAvgKwhForAllMeter>=CaApplication.m_Info.m_dKwhRefForAllMeter) {
+            barDataSetTotal.setColor(getResources().getColor(R.color.eg_pastel_red));
+            maxYValue=CaApplication.m_Info.m_dAvgKwhForAllMeter + 30;
+        }
 
         barDataSetTotal.setValueFormatter(vfKwhWithUnit);
 
@@ -385,6 +398,8 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
         barDataTotal.setValueTypeface(tf2);
 
         usageTotalBarChart.setData(barDataTotal);
+        yAxisLeftTotal.setAxisMaximum((float)maxYValue);
+
     }
 
     private ArrayList dataValueSaving(){
@@ -697,9 +712,9 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
                 meter.m_dKwhRef=jo.getDouble("kwh_ref");
                 meter.m_dWonRef=jo.getDouble("won_ref");
                 meter.m_dKwhPlan=jo.getDouble("kwh_plan");
-                meter.m_dWonPlan=jo.getDouble("kwh_plan");
-                meter.m_dKwhReal=jo.getDouble("kwh_plan");
-                meter.m_dWonReal=jo.getDouble("kwh_plan");
+                meter.m_dWonPlan=jo.getDouble("won_plan");
+                meter.m_dKwhReal=jo.getDouble("kwh_real");
+                meter.m_dWonReal=jo.getDouble("won_real");
 
 
                 m_alMeterGross.add(meter);
