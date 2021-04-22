@@ -20,4 +20,9 @@ public class CaAlarm {
         SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return df.format(m_dtCreated);
     }
+
+    public String getTimeCreatedAsyyyyMMdd(){
+        SimpleDateFormat df=new SimpleDateFormat("yyyyMMdd");
+        return df.format(m_dtCreated);
+    }
 }

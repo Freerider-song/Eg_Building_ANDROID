@@ -164,7 +164,7 @@ public class ActivityUsageMonthly extends BaseActivity implements IaResultHandle
         m_Chart.setTouchEnabled(false);
 
         // if more than 60 entries are displayed in the chart, no values will be drawn
-        m_Chart.setMaxVisibleValueCount(60);
+        //m_Chart.setMaxVisibleValueCount(60);
 
         // scaling can now only be done on x- and y-axis separately
         m_Chart.setPinchZoom(true);
@@ -468,7 +468,7 @@ public class ActivityUsageMonthly extends BaseActivity implements IaResultHandle
 
         BarData dataKwh = new BarData(setKwhMeter, setKwhAll);
 
-        dataKwh.setValueTextSize(7f);
+        dataKwh.setValueTextSize(10f);
         dataKwh.setBarWidth(barWidth);
         dataKwh.setHighlightEnabled(false);
         Typeface tf2 = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Regular.ttf");
@@ -478,6 +478,7 @@ public class ActivityUsageMonthly extends BaseActivity implements IaResultHandle
         m_Chart.getXAxis().setAxisMinimum(0);
         m_Chart.getXAxis().setAxisMaximum(nCountUsage);
         m_Chart.setData(dataKwh);
+        //m_Chart.setDrawValueAboveBar(true);
         m_Chart.getAxisLeft().setAxisMinimum(0f);
         m_Chart.getAxisRight().setAxisMinimum(0f);
         m_Chart.groupBars(0f, groupSpace, barSpace);

@@ -44,9 +44,11 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
     private ListView m_lvAlarm;
 
     SimpleDateFormat myyyyMMddFormat = new SimpleDateFormat("yyyyMMdd");
+    SimpleDateFormat mHHFormat = new SimpleDateFormat("HH");
 
     Calendar calToday = Calendar.getInstance();
     String m_dtToday = myyyyMMddFormat.format(calToday.getTime());
+
 
     //private ArrayList<CaAlarm> m_alAlarm = new ArrayList<>();
 
@@ -123,51 +125,58 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
                 case CaEngine.ALARM_PLAN_ELEM_END:
                 case CaEngine.ALARM_SAVE_ACT_MISSED:
 
-                    holder.m_btnAlarmExecute.setVisibility(View.VISIBLE);
+                holder.m_btnAlarmExecute.setVisibility(View.VISIBLE);
 
-                    for(int i=0; i<CaApplication.m_Info.m_alPlan.size(); i++){
-                        CaPlan plan = CaApplication.m_Info.m_alPlan.get(i);
-                        if(plan.m_nSeqPlanElem==alarm.m_nSeqSavePlanElem){
-                            for (int j = 0; j < plan.m_alAct.size(); j++) {
-                                CaAct act = plan.m_alAct.get(j);
-                                boolean flag = false;
-
-                                for(int k=0;k<act.m_alActHistory.size();k++){
-                                    CaActHistory actHistory = act.m_alActHistory.get(k);
-                                    //Log.i("Home", "절감조치: " + act.m_strActContent +"체크박스 여부 " + myyyyMMddFormat.format(actHistory.m_dtBegin) + "오늘 날짜는 " + m_dtToday);
-                                    if(m_dtToday.equals(myyyyMMddFormat.format(actHistory.m_dtBegin))){
-                                        //Log.i("Home", "절감조치: " + act.m_strActContent + "의 체크박스가 체크 되었음! 오늘날짜 " + m_dtToday);
-                                        flag = true;
-                                        break;
-                                    }
-                                }
-                                if(flag==false) {
-
-                                    act.m_bAllChecked=false;
-                                }
-                                if (!act.m_bAllChecked) {
-                                    plan.m_bAllChecked = false;
-                                    //Log.i("AlarmList", " 다 체크 안된 절감계획 이름: " + plan.m_strMeterDescr + "시작시간 :" + plan.m_nHourFrom);
+                for(int i=0; i<CaApplication.m_Info.m_alPlan.size(); i++){
+                    CaPlan plan = CaApplication.m_Info.m_alPlan.get(i);
+                    if(plan.m_nSeqPlanElem==alarm.m_nSeqSavePlanElem){
+                        Log.i("AlarmList" , "여기까지 옴?");
+                        for (int j = 0; j < plan.m_alAct.size(); j++) {
+                            CaAct act = plan.m_alAct.get(j);
+                            boolean flag = false;
+                            Log.i("AlarmList" , "여기까지 옴2?");
+                            for(int k=0;k<act.m_alActHistory.size();k++){
+                                Log.i("AlarmList" , "여기까지 옴3?");
+                                CaActHistory actHistory = act.m_alActHistory.get(k);
+                                Log.i("AlarmList", "절감조치: " + act.m_strActContent +"체크박스 여부 " + myyyyMMddFormat.format(actHistory.m_dtBegin) + "오늘 날짜는 " + m_dtToday);
+                                if(m_dtToday.equals(myyyyMMddFormat.format(actHistory.m_dtBegin))){
+                                    Log.i("AlarmList", "절감조치: " + act.m_strActContent + "의 체크박스가 체크 되었음! 오늘날짜 " + m_dtToday);
+                                    flag = true;
                                     break;
                                 }
                             }
-                            if (plan.m_bAllChecked) {
-                                //Log.i("AlarmList", "절감계획이름 :" + plan.m_strMeterDescr +" , 시작 날짜: " + plan.m_nHourFrom+" , 조치완료");
-                                holder.m_btnAlarmExecute.setText("조치 완료");
-                                holder.m_btnAlarmExecute.setEnabled(false);
-                                holder.m_btnAlarmExecute.setBackground(getResources().getDrawable(R.drawable.shape_round_corner_notice_normal));
-                                    }
-                            else {
-                                //Log.i("AlarmList", "시행안된 절감계획이름 :" + plan.m_strMeterDescr +" , 시작 날짜: " + plan.m_nHourFrom+" , 조치완료");
-                                holder.m_btnAlarmExecute.setText("지금조치하기");
-                                holder.m_btnAlarmExecute.setEnabled(true);
-                                holder.m_btnAlarmExecute.setBackground(getResources().getDrawable(R.drawable.shape_round_corner_dark_yellow_filled));
+                            if(flag==false) {
+                                act.m_bAllChecked=false;
                             }
-                            break;
+                            if (!act.m_bAllChecked) {
+                                plan.m_bAllChecked = false;
+                                Log.i("AlarmList", " 다 체크 안된 절감계획 이름: " + plan.m_strMeterDescr + "시작시간 :" + plan.m_nHourFrom);
+                                break;
+                            }
                         }
-                    }
-                    break;
+                        Log.i("AlarmList", "현재시간 "+Integer.parseInt(mHHFormat.format(calToday.getTime())));
+                        if (plan.m_bAllChecked) {
+                            Log.i("AlarmList", "절감계획이름 :" + plan.m_strMeterDescr +" , 시작 날짜: " + plan.m_nHourFrom+" , 조치완료");
+                            holder.m_btnAlarmExecute.setText("조치 완료");
+                            holder.m_btnAlarmExecute.setEnabled(false);
+                            holder.m_btnAlarmExecute.setBackground(getResources().getDrawable(R.drawable.shape_round_corner_notice_normal));
+                                }
 
+                        else if(plan.m_nHourTo<=Integer.parseInt(mHHFormat.format(calToday.getTime()))){
+                            holder.m_btnAlarmExecute.setText("조치 미흡");
+                            holder.m_btnAlarmExecute.setEnabled(false);
+                            holder.m_btnAlarmExecute.setBackground(getResources().getDrawable(R.drawable.shape_round_corner_notice_normal));
+                        }
+                        else {
+                            Log.i("AlarmList", "시행안된 절감계획이름 :" + plan.m_strMeterDescr +" , 시작 날짜: " + plan.m_nHourFrom+" , 지금조치하기");
+                            holder.m_btnAlarmExecute.setText("지금조치하기");
+                            holder.m_btnAlarmExecute.setEnabled(true);
+                            holder.m_btnAlarmExecute.setBackground(getResources().getDrawable(R.drawable.shape_round_corner_dark_yellow_filled));
+                        }
+                        break;
+                    }
+                }
+                break;
 
                 default: {
                     holder.m_btnAlarmExecute.setVisibility(View.INVISIBLE);
@@ -177,6 +186,12 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
             holder.m_tvAlarmTitle.setText(alarm.m_strTitle);
             holder.m_tvAlarmContent.setText(alarm.m_strContent);
             holder.m_tvAlarmTimeCreated.setText(alarm.getTimeCreated());
+
+            if(!myyyyMMddFormat.format(alarm.m_dtCreated).equals(m_dtToday)) {
+                holder.m_btnAlarmExecute.setVisibility(View.INVISIBLE);
+
+            }
+
 
             if (alarm.m_bRead) holder.m_ivNew.setVisibility(View.INVISIBLE);
             else holder.m_ivNew.setVisibility(View.VISIBLE);
@@ -196,9 +211,6 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
                 }
             });
 
-
-
-
             return convertView;
         }
     }
@@ -208,7 +220,7 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
         setContentView(R.layout.activity_alarm_list);
 
         prepareDrawer();
-        CaApplication.m_Engine.GetBldAlarmList(CaApplication.m_Info.m_nSeqAdmin, 30, this,this);
+        CaApplication.m_Engine.GetBldAlarmList(CaApplication.m_Info.m_nSeqAdmin, 50, this,this);
 
 
     }
@@ -221,13 +233,13 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
         int nSeqAdmin= PreferenceUtil.getPreferences(getApplicationContext(), "SeqAdmin");
         int nSeqSavePlanActive = PreferenceUtil.getPreferences(getApplicationContext(), "SeqSavePlanActive");
 
-        CaApplication.m_Engine.GetBldAlarmList(nSeqAdmin, 30, this, this);
+        CaApplication.m_Engine.GetBldAlarmList(nSeqAdmin, 50, this, this);
 
         long now = System.currentTimeMillis();
         Date date = new Date(now);
         SimpleDateFormat sdf = new SimpleDateFormat("HH");
         String getTime = sdf.format(date);
-        CaApplication.m_Engine.GetSaveResultDaily(nSeqSavePlanActive, getTime, this,this);
+        CaApplication.m_Engine.GetSaveResultDaily(nSeqSavePlanActive, m_dtToday, this,this);
     }
 
     public void initListView() {
