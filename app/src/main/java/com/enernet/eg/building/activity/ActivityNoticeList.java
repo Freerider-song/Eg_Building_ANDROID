@@ -278,6 +278,23 @@ public class ActivityNoticeList extends BaseActivity implements IaResultHandler,
             }
             break;
 
+            case CaEngine.CB_SET_BLD_NOTICE_AS_READ: {
+
+
+                CaApplication.m_Engine.GetUnreadBldNoticeCount(CaApplication.m_Info.m_nSeqAdmin, this,this);
+            }
+
+            case CaEngine.CB_GET_UNREAD_BLD_NOTICE_COUNT: {
+
+                try {
+                    JSONObject jo = Result.object;
+                    CaApplication.m_Info.m_nUnreadNoticeCount = jo.getInt("count_unread");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            break;
+
             default: {
                 Log.i("NoticeList", "Unknown type result received : " + Result.m_nCallback);
             }

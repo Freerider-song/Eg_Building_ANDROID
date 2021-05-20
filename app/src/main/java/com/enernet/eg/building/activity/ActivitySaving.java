@@ -378,7 +378,7 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
             maxYValue=CaApplication.m_Info.m_dKwhRefForAllMeter + 30f;
         }
         else if(CaApplication.m_Info.m_dAvgKwhForAllMeter<CaApplication.m_Info.m_dKwhRefForAllMeter) {
-            barDataSetTotal.setColor(getResources().getColor(R.color.eg_pastel_yellow));
+            barDataSetTotal.setColor(getResources().getColor(R.color.eg_yellow_dark));
             maxYValue=CaApplication.m_Info.m_dKwhRefForAllMeter + 30;
         }
         else if(CaApplication.m_Info.m_dAvgKwhForAllMeter>=CaApplication.m_Info.m_dKwhRefForAllMeter) {
@@ -433,8 +433,8 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
             //CaMeterUsage Usage=m_alUsageForAllMeter.get(i);
             yValsKwh.add(new BarEntry(i, (float)Usage.m_dKwh));
             if(Usage.m_dKwh<CaApplication.m_Info.m_dKwhPlanForAllMeter) colors.add(getResources().getColor(R.color.eg_pastel_green));
-            else if(Usage.m_dKwh<CaApplication.m_Info.m_dKwhRefForAllMeter) colors.add(getResources().getColor(R.color.eg_pastel_yellow));
-            else if(Usage.m_dKwh>=CaApplication.m_Info.m_dKwhRefForAllMeter) colors.add(getResources().getColor(R.color.eg_pastel_red));
+            else if(Usage.m_dKwh<CaApplication.m_Info.m_dKwhRefForAllMeter) colors.add(getResources().getColor(R.color.eg_yellow_dark));
+            else if(Usage.m_dKwh>=CaApplication.m_Info.m_dKwhRefForAllMeter) colors.add(getResources().getColor(R.color.red));
             //Log.i("Saving", "each Usage is " + Usage.m_dKwh);
 
         }
@@ -742,6 +742,8 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
                     CaApplication.m_Info.m_nTotalSaveActWithHistoryCount=jo.getInt("total_save_act_with_history_count");
                     CaApplication.m_Info.m_dAvgKwhForAllMeter=jo.getDouble("avg_kwh_for_all_meter");
                     CaApplication.m_Info.m_dAvgWonForAllMeter=jo.getDouble("avg_won_for_all_meter");
+                    CaApplication.m_Info.m_dKwhRefForAllMeter=jo.getDouble("kwh_ref_for_all_meter");
+                    CaApplication.m_Info.m_dKwhPlanForAllMeter=jo.getDouble("kwh_plan_for_all_meter");
                     JSONArray jaMeter = jo.getJSONArray("list_meter");
                     JSONArray jaUsageForAllMeter = jo.getJSONArray("list_usage_for_all_meter");
                     JSONArray jaMeterGross = jo.getJSONArray("list_meter_gross");

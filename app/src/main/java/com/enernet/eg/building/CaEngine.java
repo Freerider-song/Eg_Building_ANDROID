@@ -29,6 +29,8 @@ public class CaEngine {
     public static final int CB_GET_BLD_ALARM_LIST=1017;
     public static final int CB_SET_SAVE_ACT_BEGIN = 1018;
     public static final int CB_SET_SAVE_ACT_END = 1019;
+    public static final int CB_GET_UNREAD_BLD_NOTICE_COUNT = 1020;
+    public static final int CB_GET_UNREAD_BLD_ALARM_COUNT = 1021;
 
 
 
@@ -262,6 +264,26 @@ public class CaEngine {
         Arg.addArg("yyyyMMdd", yyyyMMdd);
 
         executeCommand(Arg, CB_SET_SAVE_ACT_END, false, true, Ctx, ResultHandler);
+    }
+
+    public void GetUnreadBldNoticeCount(final int SeqAdmin,Context Ctx, IaResultHandler ResultHandler){
+        Log.i("ENGINE", "-");
+
+        CaArg Arg = new CaArg("GetUnreadBldNoticeCount", NO_CMD_ARGS, null);
+        Arg.addArg("SeqAdmin", SeqAdmin);
+
+
+        executeCommand(Arg, CB_GET_UNREAD_BLD_NOTICE_COUNT, false, true, Ctx, ResultHandler);
+    }
+
+    public void GetUnreadBldAlarmCount(final int SeqAdmin,Context Ctx, IaResultHandler ResultHandler){
+        Log.i("ENGINE", "-");
+
+        CaArg Arg = new CaArg("GetUnreadBldAlarmCount", NO_CMD_ARGS, null);
+        Arg.addArg("SeqAdmin", SeqAdmin);
+
+
+        executeCommand(Arg, CB_GET_UNREAD_BLD_ALARM_COUNT, false, true, Ctx, ResultHandler);
     }
 
 }
