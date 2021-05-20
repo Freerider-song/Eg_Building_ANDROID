@@ -91,7 +91,7 @@ public class ActivityChangePasswordAuth extends BaseActivity implements IaResult
             case R.id.btn_auth_check: {
                 m_strAuthCode = m_etAuthCode.getText().toString();
 
-                CaApplication.m_Engine.CheckAuthCode(m_strUserPhone, m_strAuthCode, 50, this,this);
+                CaApplication.m_Engine.CheckAuthCode(m_strUserPhone, m_strAuthCode, 180, this,this);
             }
             break;
 

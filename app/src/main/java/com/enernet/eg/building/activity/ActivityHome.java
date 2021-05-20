@@ -271,7 +271,8 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
                  */
             }
 
-            if (!plan.m_bAllChecked && plan.m_nHourTo >= Integer.parseInt(getTime) && plan.m_nHourFrom <= Integer.parseInt(getTime)) {
+
+            if (!plan.m_bAllChecked && plan.m_nHourTo > Integer.parseInt(getTime) && plan.m_nHourFrom <= Integer.parseInt(getTime)) {
                 holder.m_tvSavingResult.setText("지금 조치하기");
                 holder.m_tvSavingResult.setTextColor(getResources().getColor(R.color.white));
                 holder.m_tvSavingResult.setBackground(getResources().getDrawable(R.drawable.shape_round_corner_cyan_light_filled));
@@ -302,19 +303,19 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
                     holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_gray_hollow));
                 } else {
                     if (plan.m_dKwhReal <= plan.m_dKwhPlan) {
-                        if (plan.m_nHourTo >= Integer.parseInt(getTime)) {
+                        if (plan.m_nHourTo > Integer.parseInt(getTime)) {
                             holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_green_filled_stroke));
                         } else {
                             holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_green_filled));
                         }
                     } else if (plan.m_dKwhReal <= plan.m_dKwhRef) {
-                        if (plan.m_nHourTo >= Integer.parseInt(getTime)) {
+                        if (plan.m_nHourTo > Integer.parseInt(getTime)) {
                             holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_yellow_filled_stroke));
                         } else {
                             holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_yellow_filled));
                         }
                     } else {
-                        if (plan.m_nHourTo >= Integer.parseInt(getTime)) {
+                        if (plan.m_nHourTo > Integer.parseInt(getTime)) {
                             holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_red_filled_stroke));
                         } else {
                             holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_red_filled));

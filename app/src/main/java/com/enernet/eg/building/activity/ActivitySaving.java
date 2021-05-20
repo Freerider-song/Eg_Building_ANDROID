@@ -56,10 +56,6 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
     private Button btnSelectTime;
     private Button btnSelectTime2;
 
-    public int Year;
-    public int Month;
-    public int Day;
-
     public String m_strSelectedDate1;
     public String m_strSelectedDate2;
 
@@ -141,9 +137,9 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
             holder.m_tvSavingStandard.setText("절감 기준  "+CaApplication.m_Info.m_dfKwh.format(meter.m_dKwhRef));
             holder.m_tvSavingGoal.setText("절감 목표  " + CaApplication.m_Info.m_dfKwh.format(meter.m_dKwhPlan));
 
-            if(meter.m_dKwhReal<meter.m_dKwhPlan) holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_green_hollow));
-            else if(meter.m_dKwhReal< meter.m_dKwhRef) holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_yellow_hollow));
-            else if(meter.m_dKwhReal>= meter.m_dKwhRef) holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_red_hollow));
+            if(meter.m_dKwhReal<meter.m_dKwhPlan) holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_green_filled));
+            else if(meter.m_dKwhReal< meter.m_dKwhRef) holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_yellow_filled));
+            else if(meter.m_dKwhReal>= meter.m_dKwhRef) holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_red_filled));
 
 
             return convertView;
@@ -639,7 +635,8 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
                     });
                     dlg.show();
                 }
-                else if(date1-date2>=40){
+                /*
+                else if(date2-date1>=40){
                     AlertDialog.Builder dlg = new AlertDialog.Builder(ActivitySaving.this);
                     dlg.setMessage("40일 이내의 데이터만 조회하실 수 있습니다.");
                     dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -648,6 +645,8 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
                     });
                     dlg.show();
                 }
+
+                 */
                 else if(date1<dtSavePlan){
                     AlertDialog.Builder dlg = new AlertDialog.Builder(ActivitySaving.this);
                     dlg.setMessage("절감계획 이전의 데이터는 불러올 수 없습니다.");

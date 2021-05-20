@@ -46,12 +46,17 @@ public class ActivityNotice extends BaseActivity implements IaResultHandler {
             ImageView ivNoticeType=findViewById(R.id.iv_noti_type);
 
             if (notice.m_nWriterType==3) {
-                tvWriter.setText("에너넷");
-                ivNoticeType.setImageDrawable(getDrawable(R.drawable.notice_eg));
+                tvWriter.setText("구청관리자");
+                ivNoticeType.setImageDrawable(getDrawable(R.drawable.notice_site));
 
             }
+            else if (notice.m_nWriterType==2){
+                tvWriter.setText("에너넷");
+                ivNoticeType.setImageDrawable(getDrawable(R.drawable.notice_eg));
+            }
+
             else {
-                tvWriter.setText("관리사무실");
+                tvWriter.setText("아파트관리실");
                 ivNoticeType.setImageDrawable(getDrawable(R.drawable.notice_site));
             }
 

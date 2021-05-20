@@ -113,10 +113,19 @@ public class ActivityNoticeList extends BaseActivity implements IaResultHandler,
 
             if (notice.m_nWriterType==1) {
                 holder.m_ivNoticeType.setImageDrawable(getDrawable(R.drawable.notice_site));
+                holder.m_tvNoticeType.setText("아파트관리실");
+            }
+            else if (notice.m_nWriterType==2){
+                holder.m_ivNoticeType.setImageDrawable(getDrawable(R.drawable.notice_eg));
+                holder.m_tvNoticeType.setText("에너넷");
+
             }
             else {
-                holder.m_ivNoticeType.setImageDrawable(getDrawable(R.drawable.notice_eg));
+                holder.m_ivNoticeType.setImageDrawable(getDrawable(R.drawable.notice_site));
+                holder.m_tvNoticeType.setText("구청관리자");
+
             }
+
 
             holder.m_tvNoticeTitle.setText(notice.m_strTitle);
             holder.m_tvTimeCreated.setText(notice.getTimeCreated());

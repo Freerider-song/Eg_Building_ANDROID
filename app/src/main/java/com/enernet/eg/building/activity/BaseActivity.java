@@ -110,7 +110,7 @@ public class BaseActivity extends AppCompatActivity {
         ahb.withActivity(this);
         ahb.withSelectionListEnabled(false);
         ahb.addProfiles(
-                new ProfileDrawerItem().withName(CaApplication.m_Info.m_strAdminName).withIcon(getResources().getDrawable(R.drawable.gg_1)).withEmail("호암노인종합복지관"));
+                new ProfileDrawerItem().withName(CaApplication.m_Info.m_strAdminName).withIcon(getResources().getDrawable(R.drawable.gg_1)).withEmail(CaApplication.m_Info.m_strSiteName));
 
         AccountHeader ah=ahb.build();
 

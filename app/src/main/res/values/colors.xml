@@ -73,8 +73,12 @@
     <!--<color name="eg_pastel_blue">#C0F0F0</color>-->
 
     <color name="eg_pastel_red">#FF9AA2</color>
+    <!-- 255,154,162 -->
+
     <color name="eg_pastel_yellow">#FDFD96</color>
+    <!-- 253,253,150 -->
     <color name="eg_pastel_green">#B5EAD7</color>
+    <!-- 181,234,215 -->
 
     <color name="main">#FFFFFF</color>
     <color name="ks_yellow">#F0E805</color>

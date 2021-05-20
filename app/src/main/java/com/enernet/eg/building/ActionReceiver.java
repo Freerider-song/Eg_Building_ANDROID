@@ -10,6 +10,8 @@ import android.util.Log;
 import com.enernet.eg.building.activity.ActivityAlarm;
 import com.enernet.eg.building.activity.ActivityAlarmList;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class ActionReceiver extends BroadcastReceiver implements com.enernet.eg.building.IaResultHandler {
 
     int m_nSeqPlanElem;
@@ -55,7 +57,7 @@ public class ActionReceiver extends BroadcastReceiver implements com.enernet.eg.
         it.putExtra("seq_plan_elem", m_nSeqPlanElem);
 
         //PendingIntent pit=PendingIntent.getActivity(context, 0, it, 0);
-        context.startActivity(it);
+        context.startActivity(it.addFlags(FLAG_ACTIVITY_NEW_TASK));
     }
 
     public void performReject(Context context) {
