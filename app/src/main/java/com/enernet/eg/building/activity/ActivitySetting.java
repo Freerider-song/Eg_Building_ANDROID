@@ -58,7 +58,7 @@ public class ActivitySetting extends BaseActivity implements IaResultHandler {
 
         m_SpAlarmUsageAtTime = findViewById(R.id.sp_alarm_usage_at_time);
 
-        m_SpAlarmUsageAtTime.setSelection(m_nUsageNotiHour);
+        m_SpAlarmUsageAtTime.setSelection(m_nUsageNotiHour+1);
         m_SpAlarmUsageAtTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

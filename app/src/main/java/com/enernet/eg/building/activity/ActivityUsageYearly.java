@@ -325,7 +325,7 @@ public class ActivityUsageYearly extends BaseActivity implements IaResultHandler
                 CaMeter meter = new CaMeter();
 
                 meter.m_nSeqMeter=jo.getInt("seq_meter");
-                //Log.i("UsageD", "데이터 셋 계측기는? " +meter.m_nSeqMeter);
+
                 meter.m_strMid=jo.getString("mid");
                 meter.m_strDescr=jo.getString("descr");
 
@@ -341,7 +341,6 @@ public class ActivityUsageYearly extends BaseActivity implements IaResultHandler
                         usage.m_dKwh=joUsage.getDouble("kwh");
                     }
 
-                    //Log.i("UsageDaily", "데이터 셋 유닛은 " +usage.m_nUnit + " 그에 따른 전기는? "+usage.m_dKwh);
                     meter.m_alMeterUsage.add(usage);
                 }
                 m_alMeter.add(meter);
@@ -385,10 +384,6 @@ public class ActivityUsageYearly extends BaseActivity implements IaResultHandler
 
             yValsKwhAll.add(new BarEntry(UsageAll.m_nUnit, (float)UsageAll.m_dKwh));
             yValsKwhMeter.add(new BarEntry(UsageMeter.m_nUnit, (float)UsageMeter.m_dKwh));
-            //  yValsKwhAvg.add(new BarEntry((float)Usage.m_dKwhAvg, i));
-
-
-            //  yValsWonAvg.add(new BarEntry((float)Usage.m_dWonAvg, i));
 
         }
 

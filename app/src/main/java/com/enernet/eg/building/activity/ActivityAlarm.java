@@ -60,7 +60,7 @@ public class ActivityAlarm extends BaseActivity implements IaResultHandler {
 
     private class SavingCheckAdapter extends BaseAdapter {
 
-        //ArrayList<CaAct> m_lvAct;
+
 
         public SavingCheckAdapter() {
             super();
@@ -68,15 +68,14 @@ public class ActivityAlarm extends BaseActivity implements IaResultHandler {
 
         @Override
         public int getCount() {
-            //return CaApplication.m_Info.m_alAlarm.size();
+
             return plan.m_alAct.size();
         }
 
         @Override
         public Object getItem(int position) {
             return plan.m_alAct.get(position);
-            //return position;
-            //return position;
+
 
         }
 
@@ -267,15 +266,7 @@ public class ActivityAlarm extends BaseActivity implements IaResultHandler {
                         });
                         dlg.show();
 
-                    } /*else {
-                        AlertDialog.Builder dlg = new AlertDialog.Builder(ActivityAlarm.this);
-                        dlg.setMessage("절감 조치가 실행되었습니다.");
-                        dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        });
-                        dlg.show();
-                    }*/
+                    }
 
 
 

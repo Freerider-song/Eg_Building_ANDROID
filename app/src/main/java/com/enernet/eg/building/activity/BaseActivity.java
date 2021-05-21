@@ -51,11 +51,11 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
-        if (mTypeface == null) {
-            // font_open_sans_regular or font_nanumgothic
-            mTypeface = Typeface.createFromAsset(this.getAssets(), StringUtil.getString(this, R.string.font_open_sans_regular)); // 외부폰트 사용
-            //mTypeface = Typeface.MONOSPACE; // 내장 폰트 사용
-        }
+
+        // font_open_sans_regular or font_nanumgothic
+        mTypeface = Typeface.createFromAsset(this.getAssets(), StringUtil.getString(this, R.string.font_open_sans_regular)); // 외부폰트 사용
+        //mTypeface = Typeface.MONOSPACE; // 내장 폰트 사용
+
         setGlobalFont(getWindow().getDecorView());
         // 또는
         // View view = findViewById(android.R.id.content);
@@ -102,8 +102,7 @@ public class BaseActivity extends AppCompatActivity {
 
 
     public void prepareDrawer() {
-        //String strAddress=CaApplication.m_Info.m_strSiteName + " " + CaApplication.m_Info.m_strAptDongName + "동 " + CaApplication.m_Info.m_strAptHoName + "호";
-        //String strMember=CaApplication.m_Info.m_strMemberName + " 님";
+
 
         AccountHeaderBuilder ahb = new AccountHeaderBuilder();
 

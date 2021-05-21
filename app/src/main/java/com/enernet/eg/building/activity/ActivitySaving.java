@@ -49,6 +49,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static java.lang.Float.intBitsToFloat;
 import static java.lang.Float.parseFloat;
 
 public class ActivitySaving extends BaseActivity implements IaResultHandler {
@@ -625,6 +626,9 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
                 int date1 = Integer.parseInt(m_strSelectedDate1);
                 int date2 = Integer.parseInt(m_strSelectedDate2);
                 int dtSavePlan=Integer.parseInt(myyyyMMddFormat.format(CaApplication.m_Info.m_dtSavePlanCreated));
+                Calendar calToday = Calendar.getInstance();
+                String m_dtToday = myyyyMMddFormat.format(calToday.getTime());
+
 
                 if(date1>=date2){
                     AlertDialog.Builder dlg = new AlertDialog.Builder(ActivitySaving.this);
@@ -650,6 +654,16 @@ public class ActivitySaving extends BaseActivity implements IaResultHandler {
                 else if(date1<dtSavePlan){
                     AlertDialog.Builder dlg = new AlertDialog.Builder(ActivitySaving.this);
                     dlg.setMessage("절감계획 이전의 데이터는 불러올 수 없습니다.");
+                    dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    dlg.show();
+                }
+
+                else if(date2>=Integer.parseInt(m_dtToday)){
+                    AlertDialog.Builder dlg = new AlertDialog.Builder(ActivitySaving.this);
+                    dlg.setMessage("오늘 이후의 데이터는 불러올 수 없습니다.");
                     dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                         }

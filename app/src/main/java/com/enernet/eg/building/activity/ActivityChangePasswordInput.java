@@ -36,7 +36,7 @@ public class ActivityChangePasswordInput extends BaseActivity implements IaResul
 
         m_strUserId=getIntent().getStringExtra("user_id");
 
-        Log.i("changepasswordInput", "user id received is " + m_strUserId);
+        Log.i("ChangePasswordInput", "user id received is " + m_strUserId);
         m_etUserId= findViewById(R.id.et_member_id);
         m_etUserId.setText(m_strUserId);
 

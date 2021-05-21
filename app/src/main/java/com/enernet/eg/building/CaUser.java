@@ -45,35 +45,5 @@ public class CaUser {
         editor.commit();
     }
 
-	/*
-	public String getC2dm() {
-		return c2dm;
-	}
 
-	public void setC2dm(String c2dm) {
-		this.c2dm = c2dm;
-	}
-
-	public String getRegistration_id() {
-		return registration_id;
-	}
-
-	public void setRegistration_id(String registration_id) {
-		this.registration_id = registration_id;
-	}
-	public String getLoginid() {
-		return loginid;
-	}
-
-	public void setLoginid(String loginid) {
-		this.loginid = loginid;
-	}
-	public String getRoleInfo() {
-		return roleInfo;
-	}
-	public void setRoleInfo(String roleInfo) {
-		this.roleInfo = roleInfo;
-	}
-
-*/
 }

@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Paint;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -21,15 +19,10 @@ import androidx.annotation.NonNull;
 
 import com.enernet.eg.building.activity.ActivityChangePasswordAuth;
 import com.enernet.eg.building.activity.ActivityHome;
-import com.enernet.eg.building.activity.ActivityHome_2;
 import com.enernet.eg.building.activity.BaseActivity;
 import com.enernet.eg.building.activity.PreferenceUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.FirebaseInstanceIdReceiver;
-import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;

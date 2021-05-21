@@ -50,8 +50,6 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
     String m_dtToday = myyyyMMddFormat.format(calToday.getTime());
 
 
-    //private ArrayList<CaAlarm> m_alAlarm = new ArrayList<>();
-
     private class AlarmViewHolder {
         public ConstraintLayout m_clAreaRoot;
         public TextView m_tvAlarmTitle;
@@ -79,7 +77,7 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
         public Object getItem(int position) {
 
             return CaApplication.m_Info.m_alAlarm.get(position);
-            //return position;
+
         }
 
         @Override
@@ -347,14 +345,6 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
 
             }
             break;
-
-            /*
-            case CaEngine.CB_SET_ALARM_LIST_AS_READ: {
-                Log.i("Alarm", "Result of SetAlarmListAsRead received...");
-                finish();
-            }
-            break;
-             */
 
             default: {
                 Log.i("Alarm", "Unknown type result received : " + Result.m_nCallback);

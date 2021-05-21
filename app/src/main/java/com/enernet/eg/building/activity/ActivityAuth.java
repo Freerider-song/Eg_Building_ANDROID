@@ -126,55 +126,7 @@ public class ActivityAuth extends BaseActivity implements IaResultHandler {
             // Toast.makeText(m_Context, StringUtil.getString(this, R.string.tv_label_network_error), Toast.LENGTH_SHORT).show();
             return;
         }
-/*
-        switch (Result.m_nCallback) {
-            case CaEngine.CB_GET_MEMBER_ID_SEQ: {
 
-                try {
-                    JSONObject jo = Result.object;
-                    int nSeqMember = jo.getInt("seq_member");
-                    String strMemberId = jo.getString("member_id");
-
-                    Log.i("ActivityAuth", "GetMemberIdSeq : " + jo.toString());
-
-                    if (nSeqMember == 0) {
-
-                        View.OnClickListener LsnConfirm = new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Log.i("ActivitySubscribe", "확인 button clicked...");
-                                m_dlgNoMemberFound.dismiss();
-
-                                finish();
-
-                                Intent nextIntent = new Intent(getApplicationContext(), ActivityChangePasswordAuth.class);
-                                startActivity(nextIntent);
-                            }
-                        };
-
-                        m_dlgNoMemberFound = new EgDialog(this, R.layout.dialog01, "본인인증을 받은 분과 일치하는 사용자가 없습니다", LsnConfirm);
-                        m_dlgNoMemberFound.show();
-
-                    }
-                    else {
-                        Intent nextIntent = new Intent(this, ActivityChangePasswordInput.class);
-                        nextIntent.putExtra("seq_member", nSeqMember);
-                        nextIntent.putExtra("member_id", strMemberId);
-
-                        startActivity(nextIntent);
-
-                        finish();
-                    }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            break;
-
-        }
-*/
 
     }
 }

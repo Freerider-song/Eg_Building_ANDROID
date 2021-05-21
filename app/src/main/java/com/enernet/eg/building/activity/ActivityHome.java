@@ -104,8 +104,7 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
 
         @Override
         public Object getItem(int position) {
-            //return CaApplication.m_Info.m_alAlarm.get(position);
-            //return position;
+
             return m_lvAct.get(position);
         }
 
@@ -140,10 +139,10 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
 
             for(int i=0;i<act.m_alActHistory.size();i++){
                 CaActHistory actHistory = act.m_alActHistory.get(i);
-                //Log.i("Home", "절감조치: " + act.m_strActContent +"체크박스 여부 " + myyyyMMddFormat.format(actHistory.m_dtBegin) + "오늘 날짜는 " + m_dtToday);
+
                 if(m_dtToday.equals(myyyyMMddFormat.format(actHistory.m_dtBegin))){
                     holder.m_CheckBox.setChecked(true);
-                    //Log.i("Home", "절감조치: " + act.m_strActContent + "의 체크박스가 체크 되었음! 오늘날짜 " + m_dtToday);
+
                     flag = true;
                     break;
                 }
@@ -244,31 +243,7 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
                     plan.m_bAllChecked=false;
                     break;
                 }
-                /*
-                if ((act.m_alActHistory.isEmpty() || !act.m_bAllChecked) && plan.m_nHourTo >= Integer.parseInt(getTime) && plan.m_nHourFrom <= Integer.parseInt(getTime)) {
-                    holder.m_tvSavingResult.setText("지금 조치하기");
-                    holder.m_tvSavingResult.setTextColor(getResources().getColor(R.color.white));
-                    holder.m_tvSavingResult.setBackground(getResources().getDrawable(R.drawable.shape_round_corner_cyan_light_filled));
-                    holder.m_tvSavingResult.setOnClickListener(new Button.OnClickListener(){
-                        @Override
-                        public void onClick(View v) {
-                            Intent it = new Intent(ActivityHome.this, ActivityAlarm.class);
-                            it.putExtra("seq_meter",plan.m_nSeqMeter);
-                            it.putExtra("seq_plan_elem", plan.m_nSeqPlanElem);
-                            startActivity(it);
-                        }
-                    });
-                    break;
-                } else if ((act.m_alActHistory.isEmpty() || !act.m_bAllChecked) && plan.m_nHourTo <= Integer.parseInt(getTime)) {
-                    holder.m_tvSavingResult.setText("조치 미흡");
-                    holder.m_tvSavingResult.setTextColor(getResources().getColor(R.color.red));
-                    break;
-                } else if (plan.m_nHourFrom >= Integer.parseInt(getTime)) {
-                    holder.m_tvSavingResult.setText("");
-                    break;
-                }
 
-                 */
             }
 
 
@@ -341,12 +316,7 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
 
 
             CaApplication.m_Info.m_nSeqSavePlanActive = PreferenceUtil.getPreferences(HOME_CONTEXT, "SeqSavePlanActive");
-            /*
-            ProgressBar progressBar = (ProgressBar)findViewById(R.id.spin_kit);
-            Sprite wanderingCubes = new WanderingCubes();
-            progressBar.setIndeterminateDrawable(wanderingCubes);
 
-             */
             //액티비티 전환시 리스트뷰 쪽으로 포커스가 맞춰지는 문제 해결
 
             m_lvSavingList = findViewById(R.id.lv_saving_list);
@@ -414,7 +384,7 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
         }
 
         public void initChart() {
-            Log.i("HOme", "Gauge Chart가 정상적으로 호출되었습니다.");
+            Log.i("Home", "Gauge Chart가 정상적으로 호출되었습니다.");
 
             double kwhPlan = Double.parseDouble(CaApplication.m_Info.m_dfKwh.format(CaApplication.m_Info.m_dKwhPlanForAllMeter));
             double kwhRef = Double.parseDouble(CaApplication.m_Info.m_dfKwh.format(CaApplication.m_Info.m_dKwhRefForAllMeter));
@@ -441,14 +411,7 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
 
             Range range3 = new Range();
             range3.setColor(getResources().getColor(R.color.eg_pastel_red));
-            /*
-            if (kwhRef > kwhReal) {
-                range3.setTo(1.5 * kwhRef);
-                m_HalfGauge.setMaxValue(1.5 * kwhRef);
-            } else {
-                range3.setTo(1.5 * kwhReal);
-                m_HalfGauge.setMaxValue(1.5 * kwhReal);
-            }*/
+
             range3.setTo(kwhMax);
             range3.setFrom(kwhRef);
 

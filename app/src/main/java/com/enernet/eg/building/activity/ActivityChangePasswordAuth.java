@@ -136,8 +136,6 @@ public class ActivityChangePasswordAuth extends BaseActivity implements IaResult
                 // 변경 후
                 m_tvTimer.setText("인증시간이 초과되었습니다");
 
-                // TODO : 타이머가 모두 종료될때 어떤 이벤트를 진행할지
-
             }
         }.start();
 
