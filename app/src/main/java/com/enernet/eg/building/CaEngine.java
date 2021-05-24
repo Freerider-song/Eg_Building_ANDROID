@@ -17,7 +17,7 @@ public class CaEngine {
     public static final int CB_CHECK_AUTH_CODE = 1005;
     public static final int CB_CHECK_ADMIN_CANDIDATE = 1006;
     public static final int CB_GET_ADMIN_USAGE_CURRENT = 1007;
-    public static final int CB_GET_ADMIN_ALARM_LIST = 1008;
+    public static final int CB_SET_BLD_ALARM_AS_READ = 1008;
     public static final int CB_GET_BLD_NOTICE_LIST = 1009;
     public static final int CB_SET_BLD_NOTICE_AS_READ = 1010;
     public static final int CB_GET_SAVE_RESULT_DAILY = 1011;
@@ -159,6 +159,16 @@ public class CaEngine {
         executeCommand(Arg, CB_SET_BLD_NOTICE_AS_READ, false, true, Ctx, ResultHandler);
     }
 
+    public void SetBldAlarmListAsRead(final int SeqAdmin, final String strSeqAlarmList, Context Ctx, IaResultHandler ResultHandler){
+        Log.i("ENGINE", "-");
+
+        CaArg Arg = new CaArg("SetBldAlarmListAsRead", NO_CMD_ARGS, null);
+        Arg.addArg("SeqAdmin", SeqAdmin);
+        Arg.addArg("SeqAlarmList", strSeqAlarmList);
+
+        executeCommand(Arg, CB_SET_BLD_ALARM_AS_READ, false, true, Ctx, ResultHandler);
+    }
+
     public void GetSaveResultDaily(final int SeqSavePlanActive, final String DateTarget, Context Ctx, IaResultHandler ResultHandler){
         Log.i("ENGINE", "-");
 
@@ -234,10 +244,11 @@ public class CaEngine {
         executeCommand(Arg, CB_CHANGE_ADMIN_BLD_SETTINGS, false, true, Ctx, ResultHandler);
     }
 
-    public void GetBldAlarmList(final int SeqAdmin, final int CountMax, Context Ctx, IaResultHandler ResultHandler){
+    public void GetBldAlarmList(final int SeqAdmin, final String TimeCreatedMax, final int CountMax, Context Ctx, IaResultHandler ResultHandler){
         Log.i("ENGINE", "-");
 
         CaArg Arg = new CaArg("GetBldAlarmList", NO_CMD_ARGS, null);
+        Arg.addArg("TimeCreatedMax", TimeCreatedMax);
         Arg.addArg("SeqAdmin", SeqAdmin);
         Arg.addArg("CountMax", CountMax);
 

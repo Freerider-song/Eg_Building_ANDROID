@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,17 +20,21 @@ import android.widget.Toast;
 
 import com.enernet.eg.building.CaApplication;
 import com.enernet.eg.building.CaEngine;
+import com.enernet.eg.building.CaInfo;
 import com.enernet.eg.building.CaResult;
 import com.enernet.eg.building.IaResultHandler;
+import com.enernet.eg.building.ListViewInfinite;
 import com.enernet.eg.building.R;
 import com.enernet.eg.building.model.CaAct;
 import com.enernet.eg.building.model.CaActHistory;
 import com.enernet.eg.building.model.CaAlarm;
+import com.enernet.eg.building.model.CaNotice;
 import com.enernet.eg.building.model.CaPlan;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
@@ -37,14 +42,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
+public class ActivityAlarmList extends BaseActivity implements IaResultHandler, ListViewInfinite.ListenerInfinite {
 
     private AlarmAdapter m_AlarmAdapter;
 
-    private ListView m_lvAlarm;
+    private ListViewInfinite m_lvAlarm;
 
     SimpleDateFormat myyyyMMddFormat = new SimpleDateFormat("yyyyMMdd");
     SimpleDateFormat mHHFormat = new SimpleDateFormat("HH");
+
+    Boolean reset = false;
 
     Calendar calToday = Calendar.getInstance();
     String m_dtToday = myyyyMMddFormat.format(calToday.getTime());
@@ -221,9 +228,19 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_list);
 
-        prepareDrawer();
-        CaApplication.m_Engine.GetBldAlarmList(CaApplication.m_Info.m_nSeqAdmin, 30, this,this);
+        CaApplication.m_Info.m_alAlarm.clear();
 
+        prepareDrawer();
+
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+        String getTime = sdf.format(date);
+
+        //CaApplication.m_Engine.GetBldAlarmList(CaApplication.m_Info.m_nSeqAdmin, getTime,20, this,this);
+
+
+        initListView();
 
     }
 
@@ -232,16 +249,32 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
     public void onResume(){
         super.onResume();
 
+        CaApplication.m_Info.m_alAlarm.clear();
+        setAlarmCount();
         int nSeqAdmin= PreferenceUtil.getPreferences(getApplicationContext(), "SeqAdmin");
         int nSeqSavePlanActive = PreferenceUtil.getPreferences(getApplicationContext(), "SeqSavePlanActive");
 
-        CaApplication.m_Engine.GetBldAlarmList(nSeqAdmin, 30, this, this);
-
         long now = System.currentTimeMillis();
         Date date = new Date(now);
-        SimpleDateFormat sdf = new SimpleDateFormat("HH");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
         String getTime = sdf.format(date);
+
+        CaApplication.m_Engine.GetBldAlarmList(nSeqAdmin, getTime,20, this, this);
         CaApplication.m_Engine.GetSaveResultDaily(nSeqSavePlanActive, m_dtToday, this,this);
+
+        m_AlarmAdapter.notifyDataSetChanged();
+
+    }
+
+    public void setAlarmReadStateToDb() {
+        String strSeqAlarmList = CaApplication.m_Info.getAlarmReadListString();
+        if(strSeqAlarmList.isEmpty()) {
+
+        }
+        else {
+            CaApplication.m_Engine.SetBldAlarmListAsRead(CaApplication.m_Info.m_nSeqAdmin, strSeqAlarmList,this,this);
+            Log.i("AlarmList", "setBldAlarmListAsRead called..");
+        }
     }
 
     public void initListView() {
@@ -251,6 +284,9 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
         m_lvAlarm.setEmptyView(tvEmpty);
 
         final ActivityAlarmList This=this;
+
+        m_lvAlarm.setLoadingView(R.layout.loading_layout);
+        m_lvAlarm.setListener(This);
 
         // Save the ListView state (= includes scroll position) as a Parceble
         Parcelable state = m_lvAlarm.onSaveInstanceState();
@@ -262,18 +298,34 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
         // Restore previous state (including selected item index and scroll position)
         m_lvAlarm.onRestoreInstanceState(state);
 
+        m_lvAlarm.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("ListNotice", "Item clicked, pos="+position);
+
+
+                CaAlarm alarm=CaApplication.m_Info.m_alAlarm.get(position);
+                alarm.m_bRead=true;
+                alarm.m_bReadStateChanged=true;
+                alarm.m_dtRead= Calendar.getInstance().getTime();
+                m_AlarmAdapter.notifyDataSetChanged();
+
+            }
+        });
     }
 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_back: {
-                //setNoticeReadStateToDb();
+                setAlarmReadStateToDb();
                 finish();
             }
             break;
 
             case R.id.btn_menu: {
+                setAlarmReadStateToDb();
                 m_Drawer.openDrawer();
+
             }
             break;
 
@@ -288,10 +340,16 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
             m_Drawer.closeDrawer();
         }
         else {
-            //setNoticeReadStateToDb();
+            setAlarmReadStateToDb();
             finish();
         }
 
+    }
+
+    public void setAlarmCount() {
+        TextView tvAlarmCount = findViewById(R.id.tv_alarm_count);
+        String strAlarmCount = "* 총 " + CaApplication.m_Info.m_alAlarm.size()+" 건";
+        tvAlarmCount.setText(strAlarmCount);
     }
 
     @Override
@@ -312,7 +370,14 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
                     JSONObject jo = Result.object;
                     JSONArray ja = jo.getJSONArray("list_alarm");
 
+                    if(ja.length()==0) {
+                        m_lvAlarm.m_bNoMoreData = true;
+                    }
                     if(ja.length()!=0) CaApplication.m_Info.setAlarmList(ja);
+
+                    setAlarmCount();
+
+                    m_lvAlarm.onDataAppended();
 
 
 
@@ -337,7 +402,7 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
 
                     CaApplication.m_Info.setPlanList(jaPlan);
 
-                    initListView();
+                   // initListView();
                 }
                 catch (JSONException e) {
                     e.printStackTrace();
@@ -346,12 +411,41 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler {
             }
             break;
 
+            case CaEngine.CB_SET_BLD_ALARM_AS_READ: {
+
+                CaApplication.m_Engine.GetUnreadBldAlarmCount(CaApplication.m_Info.m_nSeqAdmin, this,this);
+            }
+
+            case CaEngine.CB_GET_UNREAD_BLD_ALARM_COUNT: {
+
+                try {
+                    JSONObject jo = Result.object;
+                    CaApplication.m_Info.m_nUnreadAlarmCount = jo.getInt("count_unread");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            break;
+
+
             default: {
                 Log.i("Alarm", "Unknown type result received : " + Result.m_nCallback);
             }
             break;
 
         } // end of switch
+    }
+
+    @Override
+    public void onNeedLoadData() {
+        Log.i("NoticeList", "onNeedLoadData called...");
+
+        String strTimeMax=CaApplication.m_Info.m_dfyyyyMMddhhmmss.format(CaApplication.m_Info.m_dtAlarmCreatedMaxForNextRequest);
+
+
+        reset = false;
+        CaApplication.m_Engine.GetBldAlarmList(CaApplication.m_Info.m_nSeqAdmin, strTimeMax, 20, this, this);
+        Log.i("AlarmList", "Alarm Loaded more... and strTimeMax is " + strTimeMax);
     }
 
 

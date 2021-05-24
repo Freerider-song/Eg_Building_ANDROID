@@ -132,6 +132,7 @@ public class CaInfo {
     public int m_nCountNoticeTotal=0;
 
     public Date m_dtNoticeCreatedMaxForNextRequest=null;
+    public Date m_dtAlarmCreatedMaxForNextRequest=null;
 
     public Date m_dtPicSendCreatedMaxForNextRequest=null;
 
@@ -209,6 +210,21 @@ public class CaInfo {
         return strResult;
     }
 
+    public String getAlarmReadListString() {
+        String strResult="";
+
+        for (CaAlarm alarm : m_alAlarm) {
+            if (alarm.m_bReadStateChanged) {
+                strResult = (strResult + Integer.toString(alarm.m_nSeqAlarm)+",");
+            }
+        }
+
+        if (strResult.isEmpty()) return strResult;
+
+        strResult = strResult.substring(0, strResult.length() - 1);
+        return strResult;
+    }
+
 
 
     public Date parseDate(String str) {
@@ -225,37 +241,6 @@ public class CaInfo {
         }
 
         return dt;
-    }
-
-    public void setAlarmList(JSONArray ja) {
-
-        m_alAlarm.clear();
-
-        try {
-            for (int i=0; i<ja.length(); i++) {
-                JSONObject joAlarm=ja.getJSONObject(i);
-
-                CaAlarm alarm=new CaAlarm();
-                alarm.m_nSeqAlarm=joAlarm.getInt("seq_alarm");
-                alarm.m_nAlarmType=joAlarm.getInt("alarm_type");
-                alarm.m_nSeqSavePlanElem=joAlarm.getInt("seq_save_plan_elem");
-                alarm.m_strTitle=joAlarm.getString("title");
-                alarm.m_strContent=joAlarm.getString("content");
-                alarm.m_bRead=(joAlarm.getInt("is_read")==1);
-                alarm.m_dtCreated=parseDate(joAlarm.getString("time_created"));
-
-                if (alarm.m_bRead) {
-                    alarm.m_dtRead=parseDate(joAlarm.getString("time_read"));
-                }
-
-                m_alAlarm.add(alarm);
-            }
-            Log.i("CaInfo", "SetAlarmList 성공적 호출" + m_alAlarm);
-
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
 
@@ -384,6 +369,45 @@ public class CaInfo {
 
         return notice;
     }
+
+    public void setAlarmList(JSONArray ja) {
+
+       // m_alAlarm.clear();
+
+        try {
+            for (int i=0; i<ja.length(); i++) {
+                JSONObject joAlarm=ja.getJSONObject(i);
+
+                CaAlarm alarm=new CaAlarm();
+                alarm.m_nSeqAlarm=joAlarm.getInt("seq_alarm");
+                alarm.m_nAlarmType=joAlarm.getInt("alarm_type");
+                alarm.m_nSeqSavePlanElem=joAlarm.getInt("seq_save_plan_elem");
+                alarm.m_strTitle=joAlarm.getString("title");
+                alarm.m_strContent=joAlarm.getString("content");
+                alarm.m_bRead=(joAlarm.getInt("is_read")==1);
+                alarm.m_dtCreated=parseDate(joAlarm.getString("time_created"));
+
+
+                String strTimeRead=joAlarm.getString("time_read");
+                Log.i("AlarmList", "strTimeRead="+strTimeRead);
+
+
+                if (alarm.m_bRead) {
+                    alarm.m_dtRead=parseDate(joAlarm.getString("time_read"));
+                }
+                m_dtAlarmCreatedMaxForNextRequest=alarm.m_dtCreated;
+                Log.i("CaInfo", "alarm created: " + m_dtAlarmCreatedMaxForNextRequest);
+                m_alAlarm.add(alarm);
+            }
+            Log.i("CaInfo", "SetAlarmList 성공적 호출" + m_alAlarm);
+
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     public void setNoticeList(JSONArray jaTop, JSONArray jaNormal) {
 

@@ -189,7 +189,6 @@ public class ActivityNoticeList extends BaseActivity implements IaResultHandler,
     public void setNoticeReadStateToDb() {
         String strSeqNoticeList = CaApplication.m_Info.getNoticeReadListString();
         if (strSeqNoticeList.isEmpty()) {
-            finish();
         }
         else {
             CaApplication.m_Engine.SetBldNoticeListAsRead(CaApplication.m_Info.m_nSeqAdmin, strSeqNoticeList, this, this);
@@ -234,8 +233,9 @@ public class ActivityNoticeList extends BaseActivity implements IaResultHandler,
             break;
 
             case R.id.btn_menu: {
-                m_Drawer.openDrawer();
                 setNoticeReadStateToDb();
+                m_Drawer.openDrawer();
+
             }
             break;
 

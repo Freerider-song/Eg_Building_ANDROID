@@ -37,7 +37,9 @@ public class ServicePush extends FirebaseMessagingService implements IaResultHan
     long now = System.currentTimeMillis();
     Date date = new Date(now);
     SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMddhhmmss");
     String getTime = sdf.format(date);
+    String getTime2 = sdf2.format(date);
     String strTitle;
     String strBody;
     String strPushType;
@@ -88,7 +90,7 @@ public class ServicePush extends FirebaseMessagingService implements IaResultHan
         int nSeqSavePlanActive = PreferenceUtil.getPreferences(m_Context, "SeqSavePlanActive");
         //CaApplication.m_Engine.GetBldAlarmList(CaApplication.m_Info.m_nSeqAdmin, 20, this, this);
         //CaApplication.m_Engine.GetSaveResultDaily(CaApplication.m_Info.m_nSeqSavePlanActive, getTime, this, this);
-        CaApplication.m_Engine.GetBldAlarmList(nSeqAdmin, 30, this, this);
+        CaApplication.m_Engine.GetBldAlarmList(nSeqAdmin, getTime2,20, this, this);
         CaApplication.m_Engine.GetSaveResultDaily(nSeqSavePlanActive, getTime, this, this);
 
 
