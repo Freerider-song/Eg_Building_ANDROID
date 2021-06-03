@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
@@ -226,6 +228,8 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
             }
 
 
+            Animation startAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink_animation);
+            Animation startAnimation2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink_animation2);
             long now = System.currentTimeMillis();
             Date date = new Date(now);
             SimpleDateFormat sdf = new SimpleDateFormat("HH");
@@ -249,6 +253,8 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
 
             if (!plan.m_bAllChecked && plan.m_nHourTo > Integer.parseInt(getTime) && plan.m_nHourFrom <= Integer.parseInt(getTime)) {
                 holder.m_tvSavingResult.setText("지금 조치하기");
+                holder.m_clAreaRoot.startAnimation(startAnimation2);
+                holder.m_tvSavingResult.startAnimation(startAnimation);
                 holder.m_tvSavingResult.setTextColor(getResources().getColor(R.color.white));
                 holder.m_tvSavingResult.setBackground(getResources().getDrawable(R.drawable.shape_round_corner_cyan_light_filled));
                 holder.m_tvSavingResult.setOnClickListener(new Button.OnClickListener(){
@@ -280,6 +286,7 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
                     if (plan.m_dKwhReal <= plan.m_dKwhPlan) {
                         if (plan.m_nHourTo > Integer.parseInt(getTime)) {
                             holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_green_filled_stroke));
+
                         } else {
                             holder.m_clAreaRoot.setBackground(getDrawable(R.drawable.shape_round_corner_pastel_green_filled));
                         }

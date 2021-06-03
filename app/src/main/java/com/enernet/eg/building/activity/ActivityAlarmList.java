@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -174,7 +176,9 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler, 
                         }
                         else if(plan.m_nHourTo>Integer.parseInt(mHHFormat.format(calToday.getTime())) && plan.m_nHourFrom <= Integer.parseInt(mHHFormat.format(calToday.getTime()))){
                             Log.i("AlarmList", "시행안된 절감계획이름 :" + plan.m_strMeterDescr +" , 시작 날짜: " + plan.m_nHourFrom+" , 지금조치하기");
+                            Animation startAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink_animation);
                             holder.m_btnAlarmExecute.setText("지금조치하기");
+                            holder.m_btnAlarmExecute.startAnimation(startAnimation);
                             holder.m_btnAlarmExecute.setEnabled(true);
                             holder.m_btnAlarmExecute.setBackground(getResources().getDrawable(R.drawable.shape_round_corner_dark_yellow_filled));
                         }

@@ -38,7 +38,7 @@
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="40dp"
         android:background="@drawable/shape_round_corner_cyan_light_hollow"
         android:drawableLeft="@drawable/login_id"
@@ -110,14 +110,15 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:text="EG 건물관리자"
         android:textColor="@color/eg_cyan_light"
         android:textSize="26dp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.16" />
 
     <TextView
         android:id="@+id/textView23"
