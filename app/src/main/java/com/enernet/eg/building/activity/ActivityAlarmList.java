@@ -178,7 +178,7 @@ public class ActivityAlarmList extends BaseActivity implements IaResultHandler, 
                             Log.i("AlarmList", "시행안된 절감계획이름 :" + plan.m_strMeterDescr +" , 시작 날짜: " + plan.m_nHourFrom+" , 지금조치하기");
                             Animation startAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink_animation);
                             holder.m_btnAlarmExecute.setText("지금조치하기");
-                            holder.m_btnAlarmExecute.startAnimation(startAnimation);
+                            //holder.m_btnAlarmExecute.startAnimation(startAnimation);
                             holder.m_btnAlarmExecute.setEnabled(true);
                             holder.m_btnAlarmExecute.setBackground(getResources().getDrawable(R.drawable.shape_round_corner_dark_yellow_filled));
                         }

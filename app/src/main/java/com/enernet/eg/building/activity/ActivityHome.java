@@ -253,8 +253,8 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
 
             if (!plan.m_bAllChecked && plan.m_nHourTo > Integer.parseInt(getTime) && plan.m_nHourFrom <= Integer.parseInt(getTime)) {
                 holder.m_tvSavingResult.setText("지금 조치하기");
-                holder.m_clAreaRoot.startAnimation(startAnimation2);
-                holder.m_tvSavingResult.startAnimation(startAnimation);
+                //holder.m_clAreaRoot.startAnimation(startAnimation2);
+                //holder.m_tvSavingResult.startAnimation(startAnimation);
                 holder.m_tvSavingResult.setTextColor(getResources().getColor(R.color.white));
                 holder.m_tvSavingResult.setBackground(getResources().getDrawable(R.drawable.shape_round_corner_cyan_light_filled));
                 holder.m_tvSavingResult.setOnClickListener(new Button.OnClickListener(){
@@ -269,10 +269,19 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
             } else if (!plan.m_bAllChecked && plan.m_nHourTo <= Integer.parseInt(getTime)) {
                 holder.m_tvSavingResult.setText("조치 미흡");
                 holder.m_tvSavingResult.setTextColor(getResources().getColor(R.color.red));
+                holder.m_tvSavingResult.clearAnimation();
+                holder.m_clAreaRoot.clearAnimation();
 
             } else if (plan.m_nHourFrom > Integer.parseInt(getTime)) {
                 holder.m_tvSavingResult.setText("");
+                holder.m_tvSavingResult.clearAnimation();
+                holder.m_clAreaRoot.clearAnimation();
+            }
 
+            else{
+                holder.m_tvSavingResult.setText("조치 완료");
+                holder.m_tvSavingResult.clearAnimation();
+                holder.m_clAreaRoot.clearAnimation();
             }
 
 
@@ -345,7 +354,7 @@ public class ActivityHome extends BaseActivity implements IaResultHandler {
        @Override
        public void onResume() {
            super.onResume();
-
+           //setContentView(R.layout.activity_home);
            CaApplication.m_Engine.GetSaveResultDaily(CaApplication.m_Info.m_nSeqSavePlanActive, getTime, this, this);
 
        }

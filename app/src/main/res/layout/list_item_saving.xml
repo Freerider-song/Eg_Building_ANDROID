@@ -18,7 +18,7 @@
         android:singleLine="true"
         android:text="오늘  42.4 kWh"
         android:textColor="@color/eg_cyan_dark"
-        android:textSize="18sp"
+        android:textSize="18dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_usage_goal" />
@@ -34,7 +34,7 @@
         android:singleLine="true"
         android:text="절감기준  31.4 kWh"
         android:textColor="@color/eg_cyan_dark"
-        android:textSize="15sp"
+        android:textSize="15dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/lv_saving_check_list"
         app:layout_constraintStart_toStartOf="@+id/tv_usage_goal"
@@ -51,7 +51,7 @@
         android:singleLine="true"
         android:text="절감목표  42.4 kWh"
         android:textColor="@color/eg_cyan_dark"
-        android:textSize="15sp"
+        android:textSize="15dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_saving_title" />
@@ -103,7 +103,7 @@
         android:fontFamily="@font/opensans_regular"
         android:text="냉온방 공조기"
         android:textColor="@color/ks_gray"
-        android:textSize="19sp"
+        android:textSize="19dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -13,7 +13,7 @@
         android:layout_marginBottom="5dp"
         android:fontFamily="@font/opensans_regular"
         android:text="2층 에어컨 끄기"
-        android:textSize="15sp"
+        android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="16dp" />
